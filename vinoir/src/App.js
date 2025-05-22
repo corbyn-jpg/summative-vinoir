@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Home from './Pages/Home';
-
+import './App.css';
 
 // Import your page components (you'll need to create these)
 import SearchPage from './Pages/Search/SearchPage';

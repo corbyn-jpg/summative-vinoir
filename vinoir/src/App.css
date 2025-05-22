@@ -1,6 +1,17 @@
-body{
-    background-color: #272727;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    color: #A5A9B4;
+.App {
+  position: relative;
+  min-height: 100vh;
+}
+
+main {
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Optional: Add a nice background */
+body {
+  background-color: #146e3a;
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
