@@ -1,23 +1,79 @@
-// AccountPage.js
-import React, { useState } from 'react';
+// src/Pages/AccountPage/AccountPage.js
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import EmojiSelector from '../../Components/EmojiSelector';
+import axios from 'axios';
 
 function AccountPage() {
   const [emojiPassword, setEmojiPassword] = useState([]);
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
-  const handleSaveChanges = () => {
+  useEffect(() => {
+    // Fetch user data when component mounts
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          window.location.href = '/login';
+          return;
+        }
+
+        const response = await axios.get('http://localhost:5000/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUserEmail(response.data.email);
+        if (response.data.password) {
+          setEmojiPassword(response.data.password.split(''));
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleSaveChanges = async () => {
     setIsLoading(true);
     setMessage('');
-    
-    // Simulate API call
-    setTimeout(() => {
+    setError('');
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/login';
+        return;
+      }
+
+      await axios.patch(
+        'http://localhost:5000/api/users/update-password',
+        {
+          password: emojiPassword.join(''),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
       setMessage('Your emoji password has been updated successfully!');
-      setIsLoading(false);
       setTimeout(() => setMessage(''), 3000);
-    }, 1500);
+    } catch (error) {
+      console.error('Update error:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Failed to update password. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -43,6 +99,19 @@ function AccountPage() {
       >
         My Account
       </Typography>
+
+      {userEmail && (
+        <Typography
+          variant="h6"
+          sx={{
+            textAlign: 'center',
+            marginBottom: '2rem',
+            color: '#444',
+          }}
+        >
+          Logged in as: {userEmail}
+        </Typography>
+      )}
       
       <EmojiSelector
         selectedEmojis={emojiPassword}
@@ -86,6 +155,22 @@ function AccountPage() {
           }}
         >
           {message}
+        </Typography>
+      )}
+
+      {error && (
+        <Typography
+          sx={{
+            marginTop: '1.5rem',
+            padding: '1rem',
+            backgroundColor: '#ffebee',
+            color: '#c62828',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          {error}
         </Typography>
       )}
     </Box>
