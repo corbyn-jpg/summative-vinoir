@@ -1,0 +1,72 @@
+/* Container */
+.create-user-container {
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background-color: #fdfdfd;
+  font-family: Arial, sans-serif;
+}
+
+/* Headings */
+.create-user-heading {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.create-user-subheading {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+/* Input Fields */
+.create-user-input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Button */
+.create-user-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-user-button:hover {
+  background-color: #555;
+}
+
+/* Alerts */
+.create-user-alert-success {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.create-user-alert-error {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #ffebee;
+  color: #c62828;
+  font-weight: bold;
+  border-radius: 8px;
+}

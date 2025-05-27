@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './CreateUser.css'; // Import the CSS file
 
 const CreateUser = () => {
   const [name, setName] = useState('');
@@ -27,66 +28,52 @@ const CreateUser = () => {
         email,
         password,
       });
-      setMessage('User created successfully!');
-      // Redirect to the home page after successful registration
+      setMessage('Welcome to the Vinoir family! Your account has been created successfully.');
       setTimeout(() => {
         window.location.href = '/';
-      }, 2000); // Redirect after 2 seconds
+      }, 3000); // Redirect after 3 seconds
     } catch (error) {
-      setError(error.response?.data?.message || 'Error creating user.');
+      setError(error.response?.data?.message || 'An error occurred while creating your account.');
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '2rem auto', fontFamily: 'Arial' }}>
-      <h1>Register User</h1>
+    <div className="create-user-container">
+      <h1 className="create-user-heading">Join the Vinoir Experience</h1>
+      <p className="create-user-subheading">
+        Sign up to explore our exclusive collection of luxury fragrances.
+      </p>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label>Name:</label><br />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label>Email:</label><br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label>Password:</label><br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: '100%', padding: '0.5rem' }}
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            width: '100%',
-            padding: '0.5rem',
-            backgroundColor: '#007BFF',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Register
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="create-user-input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email Address"
+          className="create-user-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="create-user-input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit" className="create-user-button">
+          Create Account
         </button>
       </form>
-      {message && <p style={{ marginTop: '1rem', color: 'green' }}>{message}</p>}
-      {error && <p style={{ marginTop: '1rem', color: 'red' }}>{error}</p>}
+      {message && <div className="create-user-alert-success">{message}</div>}
+      {error && <div className="create-user-alert-error">{error}</div>}
     </div>
   );
 };
