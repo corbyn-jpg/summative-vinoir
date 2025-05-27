@@ -1,4 +1,4 @@
-// Login.js
+// src/Pages/Login/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Typography, TextField, Button } from '@mui/material';
@@ -22,24 +22,37 @@ const Login = () => {
     setError('');
     setIsLoading(true);
 
-    // Validation
+    // Frontend validation
     if (!email || !validateEmail(email)) {
       setError('Please enter a valid email address.');
       setIsLoading(false);
       return;
     }
 
-    if (emojiPassword.length === 0) {
-      setError('Please select your emoji password.');
+    if (emojiPassword.length < 3) {
+      setError('Please select at least 3 emojis for your password.');
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
-        email,
-        emojiPassword: emojiPassword.join(''),
+      console.log('Sending login request with:', {
+        email: email.trim(),
+        password: emojiPassword.join('')
       });
+
+      const response = await axios.post(
+        'http://localhost:5000/api/users/login', 
+        {
+          email: email.trim(),
+          password: emojiPassword.join(''),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
       
       localStorage.setItem('token', response.data.token);
       setMessage('Login successful! Redirecting...');
@@ -48,7 +61,8 @@ const Login = () => {
         window.location.href = '/';
       }, 2000);
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Invalid email or password. Please try again.');
     } finally {
       setIsLoading(false);
     }
