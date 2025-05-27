@@ -1,4 +1,4 @@
-// CreateUser.js
+// src/Pages/CreateUser/CreateUser.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Typography, TextField, Button } from '@mui/material';
@@ -43,11 +43,25 @@ const CreateUser = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/users/register', {
+      console.log('Sending registration request with:', {
         name: name.trim(),
         email: email.trim(),
-        emojiPassword: emojiPassword.join(''),
+        password: emojiPassword.join('')
       });
+
+      const response = await axios.post(
+        'http://localhost:5000/api/users/register',
+        {
+          name: name.trim(),
+          email: email.trim(),
+          password: emojiPassword.join(''),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
       
       localStorage.setItem('token', response.data.token);
       setMessage('Welcome! Your account has been created successfully. Redirecting...');
@@ -56,6 +70,7 @@ const CreateUser = () => {
         window.location.href = '/';
       }, 2000);
     } catch (error) {
+      console.error('Registration error:', error.response?.data || error.message);
       setError(error.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
