@@ -5,11 +5,8 @@ import Home from './Pages/Home';
 import './App.css';
 
 // Import your page components
-import SearchPage from './Pages/Search/SearchPage';
-import AccountPage from './Pages/account/AccountPage';
-import WishlistPage from './Pages/wishlist/WishlistPage';
-import CartPage from './Pages/cart/CartPage';
-import CreateUser from './Pages/account/CreateUser'; // Import CreateUser
+import CreateUser from './Pages/account/CreateUser'; // Signup
+import Login from './Pages/account/Login'; // Login
 
 function App() {
   return (
@@ -17,11 +14,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/register" element={<CreateUser />} /> {/* Add route */}
+        <Route path="/register" element={<CreateUser />} /> {/* Signup */}
+        <Route path="/login" element={<Login />} /> {/* Login */}
       </Routes>
     </Router>
   );

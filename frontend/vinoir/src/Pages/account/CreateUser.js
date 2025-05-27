@@ -1,80 +1,192 @@
+// CreateUser.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import './CreateUser.css'; // Import the CSS file
+import { Box, Typography, TextField, Button } from '@mui/material';
+import EmojiSelector from '../../Components/EmojiSelector';
 
 const CreateUser = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [emojiPassword, setEmojiPassword] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Clear previous messages
     setMessage('');
     setError('');
+    setIsLoading(true);
 
-    // Basic validation
-    if (!name || !email || !password) {
-      setError('All fields are required.');
+    // Validation
+    if (!name || name.trim().length < 2) {
+      setError('Please enter a valid name (at least 2 characters).');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!email || !validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (emojiPassword.length < 3) {
+      setError('Please select at least 3 emojis for your password.');
+      setIsLoading(false);
       return;
     }
 
     try {
       const response = await axios.post('http://localhost:5000/api/users/register', {
-        name,
-        email,
-        password,
+        name: name.trim(),
+        email: email.trim(),
+        emojiPassword: emojiPassword.join(''),
       });
-      setMessage('Welcome to the Vinoir family! Your account has been created successfully.');
+      
+      localStorage.setItem('token', response.data.token);
+      setMessage('Welcome! Your account has been created successfully. Redirecting...');
+      
       setTimeout(() => {
         window.location.href = '/';
-      }, 3000); // Redirect after 3 seconds
+      }, 2000);
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred while creating your account.');
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="create-user-container">
-      <h1 className="create-user-heading">Join the Vinoir Experience</h1>
-      <p className="create-user-subheading">
-        Sign up to explore our exclusive collection of luxury fragrances.
-      </p>
+    <Box
+      sx={{
+        maxWidth: '600px',
+        margin: '3rem auto',
+        padding: '2rem',
+        borderRadius: '12px',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+        background: 'linear-gradient(145deg, #ffffff, #f3f3f3)',
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          fontFamily: 'Playfair Display, serif',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginBottom: '1.5rem',
+          color: '#222',
+        }}
+      >
+        Join the Vinoir Experience
+      </Typography>
+      
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="create-user-input"
+        <TextField
+          label="Full Name"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          sx={{ marginBottom: '1.5rem' }}
         />
-        <input
+        
+        <TextField
+          label="Email Address"
           type="email"
-          placeholder="Email Address"
-          className="create-user-input"
+          variant="outlined"
+          fullWidth
+          margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          sx={{ marginBottom: '1.5rem' }}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          className="create-user-input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+        
+        <EmojiSelector
+          selectedEmojis={emojiPassword}
+          setSelectedEmojis={setEmojiPassword}
+          maxLength={5}
         />
-        <button type="submit" className="create-user-button">
-          Create Account
-        </button>
+        
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          disabled={isLoading}
+          sx={{
+            padding: '0.9rem',
+            background: 'linear-gradient(145deg, #333, #555)',
+            color: '#fff',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            marginTop: '1.5rem',
+            '&:hover': {
+              background: 'linear-gradient(145deg, #555, #333)',
+            },
+            '&:disabled': {
+              background: '#e0e0e0',
+              color: '#9e9e9e',
+            },
+          }}
+        >
+          {isLoading ? 'Creating account...' : 'Create Account'}
+        </Button>
       </form>
-      {message && <div className="create-user-alert-success">{message}</div>}
-      {error && <div className="create-user-alert-error">{error}</div>}
-    </div>
+      
+      {message && (
+        <Typography
+          sx={{
+            marginTop: '1.5rem',
+            padding: '1rem',
+            backgroundColor: '#e8f5e9',
+            color: '#2e7d32',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          {message}
+        </Typography>
+      )}
+      
+      {error && (
+        <Typography
+          sx={{
+            marginTop: '1.5rem',
+            padding: '1rem',
+            backgroundColor: '#ffebee',
+            color: '#c62828',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            textAlign: 'center',
+          }}
+        >
+          {error}
+        </Typography>
+      )}
+      
+      <Typography
+        variant="body2"
+        sx={{
+          textAlign: 'center',
+          marginTop: '1.5rem',
+          color: '#555',
+        }}
+      >
+        Already have an account?{' '}
+        <a href="/login" style={{ color: '#333', fontWeight: 'bold' }}>
+          Login here
+        </a>
+      </Typography>
+    </Box>
   );
 };
 
