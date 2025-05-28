@@ -5,16 +5,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 
-// Helper function for error responses
-const errorResponse = (res, status, message, error = null) => {
-  const response = { message };
-  if (error && process.env.NODE_ENV === 'development') {
-    response.error = error.message;
-    response.stack = error.stack;
-  }
-  return res.status(status).json(response);
-};
-
 // Register
 router.post('/register', async (req, res) => {
   try {
@@ -46,14 +36,13 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // Create user
-    const user = new User({ name, email, password });
-    const user = new User({ name, email, password });
-    await user.save();
+    // Create and save new user
+    const newUser = new User({ name, email, password });
+    await newUser.save();
 
     // Create token
     const token = jwt.sign(
-      { userId: user._id },
+      { userId: newUser._id },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
@@ -61,16 +50,16 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ 
       token,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email
       }
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({
+    res.status(500).json({ 
       message: 'Registration failed',
-      error: error.message
+      ...(process.env.NODE_ENV === 'development' && { error: error.message })
     });
   }
 });
@@ -78,7 +67,6 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
     const { email, password } = req.body;
 
     // Validation
@@ -92,16 +80,16 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
+    // Find user
+    const foundUser = await User.findOne({ email });
+    if (!foundUser) {
       return res.status(401).json({ 
         message: 'Invalid email or password' 
       });
     }
 
-    // Compare password (plain text comparison for emoji passwords)
-    if (user.password !== password) {
+    // Compare password
+    if (foundUser.password !== password) {
       return res.status(401).json({ 
         message: 'Invalid email or password' 
       });
@@ -109,7 +97,7 @@ router.post('/login', async (req, res) => {
 
     // Create token
     const token = jwt.sign(
-      { userId: user._id },
+      { userId: foundUser._id },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
@@ -117,28 +105,34 @@ router.post('/login', async (req, res) => {
     res.json({ 
       token,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email
+        id: foundUser._id,
+        name: foundUser.name,
+        email: foundUser.email
       }
     });
   } catch (error) {
     console.error('Login error:', error);
-    return errorResponse(res, 500, 'Login failed', error);
+    res.status(500).json({ 
+      message: 'Login failed',
+      ...(process.env.NODE_ENV === 'development' && { error: error.message })
+    });
   }
 });
 
 // Get current user
 router.get('/me', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('-password');
-    if (!user) {
+    const currentUser = await User.findById(req.user.userId).select('-password');
+    if (!currentUser) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.json(user);
+    res.json(currentUser);
   } catch (error) {
     console.error('Get user error:', error);
-    return errorResponse(res, 500, 'Error fetching user data', error);
+    res.status(500).json({ 
+      message: 'Error fetching user data',
+      ...(process.env.NODE_ENV === 'development' && { error: error.message })
+    });
   }
 });
 
@@ -153,18 +147,21 @@ router.patch('/update-password', auth, async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.user.userId);
-    if (!user) {
+    const userToUpdate = await User.findById(req.user.userId);
+    if (!userToUpdate) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.password = password;
-    await user.save();
+    userToUpdate.password = password;
+    await userToUpdate.save();
 
     res.json({ message: 'Password updated successfully' });
   } catch (error) {
     console.error('Update password error:', error);
-    return errorResponse(res, 500, 'Error updating password', error);
+    res.status(500).json({ 
+      message: 'Error updating password',
+      ...(process.env.NODE_ENV === 'development' && { error: error.message })
+    });
   }
 });
 
