@@ -11,8 +11,15 @@ router.post('/register', async (req, res) => {
     const { name, email, emojiPassword } = req.body;
 
     // Validation
-    if (!name || !email || !emojiPassword) {
-      return res.status(400).json({ message: 'All fields are required' });
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: 'All fields are required',
+        fields: {
+          name: !name ? 'Name is required' : undefined,
+          email: !email ? 'Email is required' : undefined,
+          password: !password ? 'Password is required' : undefined
+        }
+      });
     }
 
     if (emojiPassword.length < 3) {
