@@ -48,6 +48,7 @@ router.post('/register', async (req, res) => {
 
     // Create user
     const user = new User({ name, email, password });
+    const user = new User({ name, email, password });
     await user.save();
 
     // Create token
@@ -67,13 +68,17 @@ router.post('/register', async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
-    return errorResponse(res, 500, 'Registration failed', error);
+    res.status(500).json({
+      message: 'Registration failed',
+      error: error.message
+    });
   }
 });
 
 // Login
 router.post('/login', async (req, res) => {
   try {
+    const { email, password } = req.body;
     const { email, password } = req.body;
 
     // Validation
