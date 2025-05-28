@@ -1,45 +1,86 @@
 /* src/Components/ProductCard.css */
-.product-card {
-  background-color: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
+.dior-product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
-.product-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-}
-
-.product-image {
+.dior-product-image-container {
   width: 100%;
-  height: 350px;
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.dior-product-image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
 }
 
-.product-details {
-  padding: 1.2rem;
+.dior-product-card:hover .dior-product-image {
+  transform: scale(1.03);
+}
+
+.dior-product-details {
   text-align: center;
+  width: 100%;
 }
 
-.product-name {
-  font-size: 1.1rem;
-  font-weight: 600;
+.dior-product-name {
+  font-size: 1.2rem;
+  font-weight: 400;
   margin-bottom: 0.5rem;
-  color: #222;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #000;
 }
 
-.product-price {
+.dior-product-years {
   font-size: 1rem;
-  color: #444;
-  margin-bottom: 1rem;
+  color: #555;
+  letter-spacing: 0.05em;
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
-.add-button {
-  background: black;
-  color: white;
-  font-weight: bold;
-  border-radius: 8px;
-  text-transform: none;
+@media (max-width: 1200px) {
+  .dior-product-image-container {
+    height: 350px;
+  }
+}
+
+@media (max-width: 900px) {
+  .dior-product-image-container {
+    height: 300px;
+  }
+  
+  .dior-product-name {
+    font-size: 1.1rem;
+  }
+  
+  .dior-product-years {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dior-product-image-container {
+    height: 250px;
+  }
+  
+  .dior-product-name {
+    font-size: 1rem;
+  }
+  
+  .dior-product-years {
+    font-size: 0.8rem;
+  }
 }
