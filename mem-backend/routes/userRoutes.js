@@ -12,7 +12,7 @@ router.post('/register', async (req, res) => {
 
     // Validation
     if (!name || !email || !password) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: 'All fields are required',
         fields: {
           name: !name ? 'Name is required' : undefined,
@@ -23,26 +23,21 @@ router.post('/register', async (req, res) => {
     }
 
     if (password.length < 3) {
-      return res.status(400).json({ 
-        message: 'Password must be at least 3 characters long' 
+      return res.status(400).json({
+        message: 'Password must be at least 3 characters long'
       });
     }
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ 
-        message: 'User already exists with this email' 
+      return res.status(400).json({
+        message: 'User already exists with this email'
       });
     }
 
     // Create user
-    const user = new User({
-      name,
-      email,
-      password
-    });
-
+    const user = new User({ name, email, password });
     await user.save();
 
     // Create token
@@ -55,9 +50,9 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ token });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Registration failed',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -69,7 +64,7 @@ router.post('/login', async (req, res) => {
 
     // Validation
     if (!email || !password) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: 'Email and password are required',
         fields: {
           email: !email ? 'Email is required' : undefined,
@@ -80,16 +75,9 @@ router.post('/login', async (req, res) => {
 
     // Check if user exists
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ 
-        message: 'Invalid email or password' 
-      });
-    }
-
-    // Compare emoji password
-    if (user.password !== password) {
-      return res.status(401).json({ 
-        message: 'Invalid email or password' 
+    if (!user || user.password !== password) {
+      return res.status(401).json({
+        message: 'Invalid email or password'
       });
     }
 
@@ -103,9 +91,9 @@ router.post('/login', async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Login failed',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -120,9 +108,9 @@ router.get('/me', auth, async (req, res) => {
     res.json(user);
   } catch (error) {
     console.error('Get user error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error fetching user data',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -133,8 +121,8 @@ router.patch('/update-password', auth, async (req, res) => {
     const { password } = req.body;
 
     if (!password || password.length < 3) {
-      return res.status(400).json({ 
-        message: 'Password must be at least 3 characters long' 
+      return res.status(400).json({
+        message: 'Password must be at least 3 characters long'
       });
     }
 
@@ -149,30 +137,11 @@ router.patch('/update-password', auth, async (req, res) => {
     res.json({ message: 'Password updated successfully' });
   } catch (error) {
     console.error('Update password error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error updating password',
-      error: error.message 
+      error: error.message
     });
   }
 });
 
 module.exports = router;
-// middleware/auth.js
-const jwt = require('jsonwebtoken');
-
-module.exports = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    
-    if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    console.error('Authentication error:', error);
-    res.status(401).json({ message: 'Please authenticate' });
-  }
-};
