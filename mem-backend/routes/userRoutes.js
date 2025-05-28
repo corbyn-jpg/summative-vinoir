@@ -1,158 +1,172 @@
 // routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 
-// Register
-router.post('/register', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+// User Service Class (Single Responsibility Principle)
+class UserService {
+  constructor(UserModel) {
+    this.User = UserModel;
+  }
+
+  async registerUser(userData) {
+    const { name, email, password } = userData;
 
     // Validation
     if (!name || !email || !password) {
-      return res.status(400).json({
-        message: 'All fields are required',
-        fields: {
-          name: !name ? 'Name is required' : undefined,
-          email: !email ? 'Email is required' : undefined,
-          password: !password ? 'Password is required' : undefined
-        }
-      });
+      throw new Error('All fields are required');
     }
 
     if (password.length < 3) {
-      return res.status(400).json({ 
-        message: 'Password must be at least 3 characters long' 
-      });
+      throw new Error('Password must be at least 3 characters long');
     }
 
     // Check if user exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await this.User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ 
-        message: 'User already exists with this email' 
-      });
+      throw new Error('User already exists with this email');
     }
 
-    // Create user
-    const user = new User({
-      name,
-      email,
-      password
-    });
+    // Create and save new user
+    const newUser = new this.User({ name, email, password });
+    await newUser.save();
+    return newUser;
+  }
 
+  async loginUser(email, password) {
+    if (!email || !password) {
+      throw new Error('Email and password are required');
+    }
+
+    const user = await this.User.findOne({ email });
+    if (!user || user.password !== password) {
+      throw new Error('Invalid email or password');
+    }
+    return user;
+  }
+
+  async getCurrentUser(userId) {
+    const user = await this.User.findById(userId).select('-password');
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
+  }
+
+  async updateUserPassword(userId, newPassword) {
+    if (!newPassword || newPassword.length < 3) {
+      throw new Error('Password must be at least 3 characters long');
+    }
+
+    const user = await this.User.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.password = newPassword;
     await user.save();
+    return user;
+  }
+}
 
-    // Create token
-    const token = jwt.sign(
-      { userId: user._id },
+// Auth Service Class (Single Responsibility Principle)
+class AuthService {
+  static generateToken(userId) {
+    return jwt.sign(
+      { userId },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
+  }
+}
 
-    res.status(201).json({ token });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ 
-      message: 'Registration failed',
-      error: error.message 
+// Response Handler (Single Responsibility Principle)
+class ResponseHandler {
+  static success(res, data, statusCode = 200) {
+    res.status(statusCode).json({
+      success: true,
+      ...data
     });
+  }
+
+  static error(res, message, statusCode = 500, error = null) {
+    const response = {
+      success: false,
+      message
+    };
+
+    if (error && process.env.NODE_ENV === 'development') {
+      response.error = error.message;
+      response.stack = error.stack;
+    }
+
+    res.status(statusCode).json(response);
+  }
+}
+
+// Dependency Injection
+const User = require('../models/User');
+const userService = new UserService(User);
+
+// Register Route
+router.post('/register', async (req, res) => {
+  try {
+    const newUser = await userService.registerUser(req.body);
+    const token = AuthService.generateToken(newUser._id);
+    
+    ResponseHandler.success(res, {
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email
+      }
+    }, 201);
+  } catch (error) {
+    ResponseHandler.error(res, error.message, 
+      error.message.includes('exists') ? 409 : 400, 
+      error);
   }
 });
 
-// Login
+// Login Route
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Validation
-    if (!email || !password) {
-      return res.status(400).json({ 
-        message: 'Email and password are required',
-        fields: {
-          email: !email ? 'Email is required' : undefined,
-          password: !password ? 'Password is required' : undefined
-        }
-      });
-    }
-
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ 
-        message: 'Invalid email or password' 
-      });
-    }
-
-    // Compare emoji password
-    if (user.password !== password) {
-      return res.status(401).json({ 
-        message: 'Invalid email or password' 
-      });
-    }
-
-    // Create token
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
-    );
-
-    res.json({ token });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ 
-      message: 'Login failed',
-      error: error.message 
+    const user = await userService.loginUser(email, password);
+    const token = AuthService.generateToken(user._id);
+    
+    ResponseHandler.success(res, {
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
     });
+  } catch (error) {
+    ResponseHandler.error(res, error.message, 401, error);
   }
 });
 
-// Get current user
+// Get Current User Route
 router.get('/me', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('-password');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(user);
+    const user = await userService.getCurrentUser(req.user.userId);
+    ResponseHandler.success(res, { user });
   } catch (error) {
-    console.error('Get user error:', error);
-    res.status(500).json({ 
-      message: 'Error fetching user data',
-      error: error.message 
-    });
+    ResponseHandler.error(res, error.message, 404, error);
   }
 });
 
-// Update password
+// Update Password Route
 router.patch('/update-password', auth, async (req, res) => {
   try {
-    const { password } = req.body;
-
-    if (!password || password.length < 3) {
-      return res.status(400).json({ 
-        message: 'Password must be at least 3 characters long' 
-      });
-    }
-
-    const user = await User.findById(req.user.userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    user.password = password;
-    await user.save();
-
-    res.json({ message: 'Password updated successfully' });
+    await userService.updateUserPassword(req.user.userId, req.body.password);
+    ResponseHandler.success(res, { message: 'Password updated successfully' });
   } catch (error) {
-    console.error('Update password error:', error);
-    res.status(500).json({ 
-      message: 'Error updating password',
-      error: error.message 
-    });
+    ResponseHandler.error(res, error.message, 400, error);
   }
 });
 
