@@ -1,6 +1,5 @@
 .hamburger-icon {
   transition: transform 0.3s ease-in-out;
-  color: #000000;
   background-color: transparent;
   padding: 8px;
   border-radius: 50%;
@@ -15,12 +14,11 @@
   pointer-events: auto;
 }
 
-/* Remove hover background on X */
 .close-icon:hover {
   background-color: transparent !important;
 }
 
-/* Separator line below X */
+/* Separator line under X icon */
 .separator-line {
   width: 100%;
   height: 1px;
@@ -28,18 +26,17 @@
   margin: 8px 0 12px 0;
 }
 
-/* Drawer menu styling */
 .luxury-menu {
   width: 250px;
   background-color: #ffffff;
   height: 100%;
   font-family: 'Cormorant Garamond', serif;
-  color: #000000;
   display: flex;
   flex-direction: column;
+  color: #000000;
 }
 
-/* Menu item text */
+/* Text style */
 .luxury-menu .MuiListItemText-primary {
   font-size: 1.2rem;
   font-weight: 500;
@@ -54,7 +51,7 @@
   padding: 12px 16px;
 }
 
-/* Fade effect: dim others, emphasize hovered item */
+/* Fade effect: dim others, highlight hovered item */
 .luxury-menu:hover .MuiListItem-root {
   opacity: 0.4;
 }
@@ -64,6 +61,6 @@
 }
 
 .luxury-menu .MuiListItem-root:hover .MuiListItemText-primary {
-  color: #111111; /* Slightly darker text */
+  color: #111111; /* Slightly darker when hovered */
   font-weight: 600;
 }

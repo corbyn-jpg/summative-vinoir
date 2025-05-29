@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Box
-} from '@mui/material';
+import { Drawer, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import './HamburgerMenu.css';
@@ -15,44 +8,55 @@ export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
 
-  const handleOpen = () => {
-    setAnimating(true);
-    setTimeout(() => {
-      setOpen(true);
-      setAnimating(false);
-    }, 300);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const toggleDrawer = (isOpen) => (event) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+    if (isOpen) {
+      setAnimating(true);
+      setTimeout(() => {
+        setOpen(true);
+        setAnimating(false);
+      }, 300); // match transition time
+    } else {
+      setOpen(false);
+    }
   };
 
   return (
     <>
       <IconButton
         className={`hamburger-icon ${animating ? 'animating' : ''}`}
-        onClick={handleOpen}
+        onClick={toggleDrawer(true)}
+        sx={{ mr: 2 }}
       >
-        <MenuIcon />
+        <MenuIcon sx={{ color: '#ffffff' }} />
       </IconButton>
 
-      <Drawer anchor="left" open={open} onClose={handleClose}>
-        <Box className="drawer-header">
-          <IconButton onClick={handleClose} className="close-icon">
+      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+        <div className="luxury-menu">
+          <IconButton
+            className="close-icon"
+            onClick={toggleDrawer(false)}
+            sx={{ alignSelf: 'flex-start', m: 1 }}
+          >
             <CloseIcon />
           </IconButton>
-          <div className="separator-line" />
-        </Box>
 
-        <Box className="luxury-menu-container">
-          <List className="luxury-menu">
+          <div className="separator-line" />
+
+          <List>
             {['Home', 'Shop', 'About', 'Contact'].map((text) => (
-              <ListItem button key={text} className="menu-item">
+              <ListItem button key={text}>
                 <ListItemText primary={text} />
               </ListItem>
             ))}
           </List>
-        </Box>
+        </div>
       </Drawer>
     </>
   );
