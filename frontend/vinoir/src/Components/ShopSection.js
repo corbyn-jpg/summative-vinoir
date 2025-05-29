@@ -26,7 +26,6 @@ const productData = [
   { 
     id: 4, 
     name: "BENNIE FERGUSON & BOB", 
-    years: "1979",
     image: "/images/dior4.jpg" 
   }
 ];
