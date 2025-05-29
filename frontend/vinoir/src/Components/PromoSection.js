@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton, Grid, Card, CardMedia, CardContent } from "@mui/material";
+import { Box, Typography, IconButton,  Card, CardMedia, CardContent } from "@mui/material";
 import CircleIcon from '@mui/icons-material/Circle';
 
 class PromoCarousel {

@@ -1,0 +1,84 @@
+/* src/Pages/ShopSection.css */
+.dior-shop-section {
+  padding: 8rem 2rem;
+  max-width: 1800px;
+  margin: auto;
+  text-align: center;
+  position: relative;
+}
+
+.dior-shop-title {
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-align: center;
+  margin-bottom: 5rem;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.dior-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .dior-shop-section {
+    padding: 6rem 1.5rem;
+  }
+  
+  .dior-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .dior-shop-title {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .dior-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dior-shop-section {
+    padding: 4rem 1rem;
+  }
+  
+  .dior-shop-title {
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+  
+  .dior-product-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}/* Add these to your existing CSS */
+.dior-product-image-container {
+  background-color: #f8f8f8; /* Light gray background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dior-product-image {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.dior-product-name {
+  padding: 0 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}

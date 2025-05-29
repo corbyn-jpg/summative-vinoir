@@ -1,0 +1,86 @@
+/* src/Components/ProductCard.css */
+.dior-product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.dior-product-image-container {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.dior-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.dior-product-card:hover .dior-product-image {
+  transform: scale(1.03);
+}
+
+.dior-product-details {
+  text-align: center;
+  width: 100%;
+}
+
+.dior-product-name {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #000;
+}
+
+.dior-product-years {
+  font-size: 1rem;
+  color: #555;
+  letter-spacing: 0.05em;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+@media (max-width: 1200px) {
+  .dior-product-image-container {
+    height: 350px;
+  }
+}
+
+@media (max-width: 900px) {
+  .dior-product-image-container {
+    height: 300px;
+  }
+  
+  .dior-product-name {
+    font-size: 1.1rem;
+  }
+  
+  .dior-product-years {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dior-product-image-container {
+    height: 250px;
+  }
+  
+  .dior-product-name {
+    font-size: 1rem;
+  }
+  
+  .dior-product-years {
+    font-size: 0.8rem;
+  }
+}
