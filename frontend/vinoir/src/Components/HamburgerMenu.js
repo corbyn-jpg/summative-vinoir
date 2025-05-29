@@ -50,13 +50,32 @@ export default function HamburgerMenu() {
 
           <div className="separator-line" />
 
-          <List>
-            {['Home', 'Shop', 'About', 'Contact'].map((text) => (
-              <ListItem button key={text}>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
+          <List sx={{ width: 250 }}>
+          <ListItem button >
+
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Home
+            </Link>
+          </ListItem>
+
+          <ListItem button>
+            <Link to="/shop" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Shop
+            </Link>
+          </ListItem>
+
+          <ListItem button>
+            <Link to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>
+              About
+            </Link>
+          </ListItem>
+          
+          <ListItem button>
+            <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Contact
+            </Link>
+          </ListItem>
+        </List>
         </div>
       </Drawer>
     </>
