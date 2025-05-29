@@ -1,21 +1,68 @@
+/* App.css */
 .App {
   position: relative;
   min-height: 100vh;
+  /* New: Ensures proper stacking context */
+  display: flex;
+  flex-direction: column;
 }
 
 main {
   padding: 20px;
   position: relative;
   z-index: 1;
-  /* Add padding to account for the large initial title */
-  padding-top: 150px;
+  /* New: Accounts for navbar (64px) + initial title height (116px) */
+  padding-top: 20px; /* 64px (navbar) + 116px (title) */
 }
 
-/* Optional: Add a nice background */
 body {
   background-color: #146e3a;
   margin: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  /* New: Accounts for fixed navbar */
+  padding-top: 64px;
+}
+
+/* New: Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* New: Responsive adjustments */
+@media (max-width: 900px) {
+  main {
+    padding-top: 150px; /* Reduced space for medium screens */
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    padding-top: 120px; /* Further reduced for mobile */
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  body {
+    padding-top: 56px; /* Smaller navbar on mobile */
+  }
+}
+
+/* New: Optional scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d4d26;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a8c4a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1fa055;
 }
 
 /* Smooth scrolling behavior */
