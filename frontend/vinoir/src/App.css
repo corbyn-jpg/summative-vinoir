@@ -7,6 +7,8 @@ main {
   padding: 20px;
   position: relative;
   z-index: 1;
+  /* Add padding to account for the large initial title */
+  padding-top: 150px;
 }
 
 /* Optional: Add a nice background */
@@ -14,4 +16,16 @@ body {
   background-color: #146e3a;
   margin: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main {
+    padding-top: 120px;
+  }
 }
