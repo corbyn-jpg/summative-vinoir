@@ -46,11 +46,12 @@ export default function Navbar() {
     <>
       {/* AppBar with icons */}
       <AppBar
-        position="static"
-        sx={{
-          backgroundColor: 'transparent',
-          boxShadow: 'none',
-          color: 'black', // Dark icons like Dior
+        position="fixed" // Changed from static to fixed
+  sx={{
+    backgroundColor: '#146e3a', // Match your background
+    boxShadow: 'none',
+    color: 'white',
+    zIndex: 1200, // Higher than the title
         }}
       >
         <Toolbar
@@ -72,7 +73,7 @@ export default function Navbar() {
                 fontSize: '1.25rem',
               }}
             >
-              Vinoir
+             
             </Typography>
           </div>
 

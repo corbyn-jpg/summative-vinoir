@@ -64,3 +64,15 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #1fa055;
 }
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main {
+    padding-top: 120px;
+  }
+}
