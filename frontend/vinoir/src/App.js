@@ -3,20 +3,24 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Home from './Pages/Home';
 import './App.css';
-
-// Import your page components
-import CreateUser from './Pages/account/CreateUser'; // Signup
-import Login from './Pages/account/Login'; // Login
+import ReactiveTitle from './Components/ReactiveTitle';
+import CreateUser from './Pages/account/CreateUser';
+import Login from './Pages/account/Login';
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<CreateUser />} /> {/* Signup */}
-        <Route path="/login" element={<Login />} /> {/* Login */}
-      </Routes>
+      <div className="App">
+        <Navbar />
+        <ReactiveTitle />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<CreateUser />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </main>
+      </div>
     </Router>
   );
 }
