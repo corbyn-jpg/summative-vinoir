@@ -5,7 +5,7 @@ import HeroSection from "../Components/HeroSection";
 
 function Home() {
   return (
-    <div>
+    <main>
       {/* Hero Section */}
       <HeroSection
         title="Welcome to Vinoir"
@@ -19,7 +19,7 @@ function Home() {
 
       {/* Shop Section */}
       <ShopSection />
-    </div>
+    </main>
   );
 }
 
