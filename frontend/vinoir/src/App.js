@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
-import Navbar from './Components/Navbar';
+import Navbar from "./Components/Navbar";
 import ShrinkingTitle from './Components/ShrinkingTitle'; // new
 import Home from './Pages/Home';
 import CreateUser from './Pages/account/CreateUser';
@@ -10,6 +10,7 @@ import './App.css';
 import ShopPage from './Pages/shop/shop.js';
 import AboutPage from './Pages/about/about.js';
 import ContactPage from './Pages/contact/contact.js';
+import HeroSection from "./Components/HeroSection";
 
 function App() {
   return (

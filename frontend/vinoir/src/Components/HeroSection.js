@@ -1,18 +1,20 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 
-function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc }) {
+function HeroSection({ title, subtitle, buttonText, videoSrc }) {
+  // Set default image path directly in the component
+  const defaultBackground = "/images/vin.jpeg";
+  
   return (
     <Box
       sx={{
         width: "100%",
         position: "relative",
         overflow: "hidden",
-        height: { xs: "calc(100vh - 130px)", sm: "calc(100vh - 180px)" }, // Accounts for navbar + title
-        minHeight: "500px" // Ensures minimum height
+        height: { xs: "100vh", sm: "100vh" },
+        minHeight: "500px",
       }}
     >
-      {/* Background Image or Video */}
       {videoSrc ? (
         <video
           autoPlay
@@ -36,7 +38,7 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
       ) : (
         <Box
           sx={{
-            backgroundImage: `url(${backgroundImage})`,
+            backgroundImage: `url(${defaultBackground})`, // Using the default here
             backgroundSize: "cover",
             backgroundPosition: "center",
             width: "100%",
@@ -48,8 +50,6 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           }}
         />
       )}
-
-      {/* Overlay Content */}
       <Box
         sx={{
           position: "absolute",
@@ -64,7 +64,6 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           color: "white",
           textAlign: "center",
           backgroundColor: "rgba(0, 0, 0, 0.3)",
-          pt: { xs: 0, sm: 0 } // Adjust if needed
         }}
       >
         <Typography variant="h3" sx={{ fontWeight: "bold", mb: 2 }}>

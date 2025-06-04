@@ -1,11 +1,10 @@
-/* Reset and base styles */
 body {
   margin: 0;
   padding: 0;
-  background-color: #146e3a;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  scroll-behavior: smooth;
+  background-color: #146e3a;
   color: white;
+  scroll-behavior: smooth;
 }
 
 html {
@@ -13,51 +12,45 @@ html {
 }
 
 .App {
-  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
 }
 
-/* Main content area - large top padding to clear navbar + title */
+/* Main content spacing after hero */
 main {
-  position: relative;
+  padding: 40px 20px;
+  background-color: #2A4936;
   z-index: 1;
-  padding-top: 300px; /* 160px navbar + 160px title + some spacing */
-  padding-left: 20px;
-  padding-right: 20px;
+  position: relative;
 }
 
-/* Responsive main content padding */
 @media (max-width: 900px) {
   main {
-    padding-top: 250px;
+    padding-top: 200px;
   }
 }
 
 @media (max-width: 600px) {
   main {
-    padding-top: 220px;
+    padding-top: 180px;
     padding-left: 15px;
     padding-right: 15px;
   }
 }
 
-/* Scrollbar style */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: #0d4d26;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #1a8c4a;
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: #1fa055;
 }
