@@ -8,11 +8,14 @@ function HeroSection({ title, subtitle, buttonText, videoSrc }) {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "100vw",
         position: "relative",
         overflow: "hidden",
         height: { xs: "100vh", sm: "100vh" },
         minHeight: "500px",
+         left: "50%",      
+        right: "50%",     
+        marginX: "-50vw", 
       }}
     >
       {videoSrc ? (
