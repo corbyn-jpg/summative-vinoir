@@ -1,86 +1,121 @@
-/* src/Components/ProductCard.css */
-.dior-product-card {
+/* VINOIR Product Card — Large, Long Hero Panel Style */
+.vinoir-product-card {
+  width: 100%;
+  height: 60vh;
+  min-height: 240px;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #fff, #f6f6f6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+  justify-content: flex-start;
+  padding: 2rem;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.dior-product-image-container {
+.vinoir-product-card:hover {
+  transform: scale(1.025);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* Hero Image Container */
+.vinoir-product-image-container {
+  background-color: #f0f0f0;
   width: 100%;
-  height: 400px;
+  height: 200%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
 }
 
-.dior-product-image {
-  width: 100%;
-  height: 100%;
+.vinoir-product-image {
+  max-width: 90%;
+  max-height: 100%;
   object-fit: cover;
-  object-position: center;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
-.dior-product-card:hover .dior-product-image {
+.vinoir-product-card:hover .vinoir-product-image {
   transform: scale(1.03);
 }
 
-.dior-product-details {
+/* Details Section */
+.vinoir-product-details {
+  height: 25%;
+  padding-top: 1rem;
   text-align: center;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.dior-product-name {
-  font-size: 1.2rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  letter-spacing: 0.1em;
+.vinoir-product-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.3rem;
   text-transform: uppercase;
-  font-family: 'Helvetica Neue', sans-serif;
-  color: #000;
+  letter-spacing: 1px;
 }
 
-.dior-product-years {
-  font-size: 1rem;
-  color: #555;
-  letter-spacing: 0.05em;
-  font-family: 'Helvetica Neue', sans-serif;
+.vinoir-product-years {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
 }
 
-@media (max-width: 1200px) {
-  .dior-product-image-container {
-    height: 350px;
+/* BIG Responsive Grid Layout */
+.vinoir-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 0 1rem;
+}
+
+@media (max-width: 1400px) {
+  .vinoir-product-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 900px) {
-  .dior-product-image-container {
-    height: 300px;
+  .vinoir-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
   }
-  
-  .dior-product-name {
-    font-size: 1.1rem;
+
+  .vinoir-product-name {
+    font-size: 1.3rem;
   }
-  
-  .dior-product-years {
-    font-size: 0.9rem;
+
+  .vinoir-product-years {
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 600px) {
-  .dior-product-image-container {
-    height: 250px;
+  .vinoir-product-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  
-  .dior-product-name {
+
+  .vinoir-product-card {
+    height: 75vh;
+    min-height: 520px;
+    padding: 1.5rem;
+  }
+
+  .vinoir-product-name {
+    font-size: 1.2rem;
+  }
+
+  .vinoir-product-years {
     font-size: 1rem;
-  }
-  
-  .dior-product-years {
-    font-size: 0.8rem;
   }
 }

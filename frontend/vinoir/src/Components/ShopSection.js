@@ -5,39 +5,21 @@ import ProductCard from "../Components/ProductCard";
 import "./ShopSection.css";
 
 const productData = [
-  { 
-    id: 1, 
-    name: "BRIAN HALE & JOHN", 
-    years: "1980-2005",
-    image: "/images/dior1.jpg" 
-  },
-  { 
-    id: 2, 
-    name: "WINTERVILLE, INC.", 
-    years: "1996-2012",
-    image: "/images/dior2.jpg" 
-  },
-  { 
-    id: 3, 
-    name: "DENNIS WHITE & CHRISTOPHER PAUL", 
-    years: "1978",
-    image: "/images/dior3.jpg" 
-  },
-  { 
-    id: 4, 
-    name: "BENNIE FERGUSON & BOB", 
-    image: "/images/dior4.jpg" 
-  }
+  { id: 1, name: "BRIAN HALE & JOHN", years: "1980-2005", image: "/images/dior1.jpg" },
+  { id: 2, name: "WINTERVILLE, INC.", years: "1996-2012", image: "/images/dior2.jpg" },
+  { id: 3, name: "DENNIS WHITE & CHRISTOPHER PAUL", years: "1978", image: "/images/dior3.jpg" },
+  { id: 4, name: "BENNIE FERGUSON & BOB", image: "/images/dior4.jpg" },
 ];
 
 function ShopSection() {
   return (
-    <Box className="dior-shop-section">
+    <Box className="dior-shop-section" style={{ padding: "6rem 1rem" }}>
+
       <Typography variant="h1" className="dior-shop-title">
-        CHRISTIAN DIOR
+        SHOP
       </Typography>
       
-      <Box className="dior-product-grid">
+      <Box className="vinoir-product-grid">
         {productData.map((product) => (
           <ProductCard 
             product={product} 
