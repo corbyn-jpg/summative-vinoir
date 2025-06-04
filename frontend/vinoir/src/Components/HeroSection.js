@@ -3,7 +3,7 @@ import { Box, Typography, Button } from "@mui/material";
 
 function HeroSection({ title, subtitle, buttonText, videoSrc }) {
   // Set default image path directly in the component
-  const defaultBackground = "/images/vin.jpeg";
+  const defaultBackground = "/images/vin.png";
   
   return (
     <Box

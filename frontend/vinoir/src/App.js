@@ -10,7 +10,7 @@ import './App.css';
 import ShopPage from './Pages/shop/shop.js';
 import AboutPage from './Pages/about/about.js';
 import ContactPage from './Pages/contact/contact.js';
-import HeroSection from "./Components/HeroSection";
+
 
 function App() {
   return (
