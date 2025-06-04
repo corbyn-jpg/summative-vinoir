@@ -5,10 +5,11 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
   return (
     <Box
       sx={{
-        height: "100vh", // Full viewport height
-        width: "100%", // Full width
+        width: "100%",
         position: "relative",
         overflow: "hidden",
+        height: { xs: "calc(100vh - 130px)", sm: "calc(100vh - 180px)" }, // Accounts for navbar + title
+        minHeight: "500px" // Ensures minimum height
       }}
     >
       {/* Background Image or Video */}
@@ -22,7 +23,7 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover", // Ensures the video covers the entire area
+            objectFit: "cover",
             position: "absolute",
             top: 0,
             left: 0,
@@ -36,8 +37,8 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
         <Box
           sx={{
             backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "cover", // Ensures the image covers the entire area
-            backgroundPosition: "center", // Centers the image
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             width: "100%",
             height: "100%",
             position: "absolute",
@@ -62,7 +63,8 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           alignItems: "center",
           color: "white",
           textAlign: "center",
-          backgroundColor: "rgba(0, 0, 0, 0.3)", // Optional dark overlay
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          pt: { xs: 0, sm: 0 } // Adjust if needed
         }}
       >
         <Typography variant="h3" sx={{ fontWeight: "bold", mb: 2 }}>

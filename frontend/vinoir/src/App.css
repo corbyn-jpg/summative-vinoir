@@ -1,53 +1,50 @@
-/* App.css */
-.App {
-  position: relative;
-  min-height: 100vh;
-  /* New: Ensures proper stacking context */
-  display: flex;
-  flex-direction: column;
-}
-
-main {
-  padding: 20px;
-  position: relative;
-  z-index: 1;
-  /* New: Accounts for navbar (64px) + initial title height (116px) */
-  padding-top: 20px; /* 64px (navbar) + 116px (title) */
-}
-
+/* Reset and base styles */
 body {
-  background-color: #146e3a;
   margin: 0;
+  padding: 0;
+  background-color: #146e3a;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  /* New: Accounts for fixed navbar */
-  padding-top: 64px;
+  scroll-behavior: smooth;
+  color: white;
 }
 
-/* New: Smooth scrolling behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* New: Responsive adjustments */
+.App {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Main content area - large top padding to clear navbar + title */
+main {
+  position: relative;
+  z-index: 1;
+  padding-top: 300px; /* 160px navbar + 160px title + some spacing */
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Responsive main content padding */
 @media (max-width: 900px) {
   main {
-    padding-top: 150px; /* Reduced space for medium screens */
+    padding-top: 250px;
   }
 }
 
 @media (max-width: 600px) {
   main {
-    padding-top: 120px; /* Further reduced for mobile */
+    padding-top: 220px;
     padding-left: 15px;
     padding-right: 15px;
   }
-  
-  body {
-    padding-top: 56px; /* Smaller navbar on mobile */
-  }
 }
 
-/* New: Optional scrollbar styling */
+/* Scrollbar style */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -63,16 +60,4 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #1fa055;
-}
-
-/* Smooth scrolling behavior */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  main {
-    padding-top: 120px;
-  }
 }

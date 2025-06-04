@@ -1,18 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 import Navbar from './Components/Navbar';
+import ShrinkingTitle from './Components/ShrinkingTitle'; // new
 import Home from './Pages/Home';
-import './App.css';
-import ReactiveTitle from './Components/ReactiveTitle';
 import CreateUser from './Pages/account/CreateUser';
 import Login from './Pages/account/Login';
+import './App.css';
 
 function App() {
   return (
     <Router>
+      <CssBaseline />
       <div className="App">
         <Navbar />
-        <ReactiveTitle />
+        <ShrinkingTitle />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
