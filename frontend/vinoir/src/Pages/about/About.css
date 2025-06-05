@@ -5,7 +5,6 @@
 
 /* Hero section */
 .hero-wrapper {
-  border-radius: 25px;
   overflow: hidden;
   margin-bottom: 50px;
   height: 77vh;
@@ -17,7 +16,7 @@
 
 /* Mission section */
 .mission-section {
-  border-radius: 25px;
+
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
               url('../../assets/rose.jpeg');
   background-size: cover;
@@ -41,7 +40,10 @@
 
 /* Founders section */
 .founders-section {
-  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding: 40px;
   text-align: center;
 }
 
@@ -65,7 +67,6 @@
   background-color: #f9f5f0;
   padding: 80px 20px;
   text-align: center;
-  border-radius: 25px;
   margin: 50px 0;
 }
 
@@ -80,7 +81,6 @@
 .process-step {
   padding: 40px 30px;
   background: white;
-  border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
 }
@@ -111,7 +111,6 @@
   background-color: #2a2a2a;
   color: #BAB9B9;
   padding: 100px 20px;
-  border-radius: 25px;
   margin-bottom: 50px;
 }
 
