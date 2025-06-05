@@ -13,6 +13,8 @@
   height: 77vh;
   margin-top: 70px;
   position: relative;
+  size: cover;
+  display: cover;
 }
 
 /* Mission section */
