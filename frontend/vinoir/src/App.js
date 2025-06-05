@@ -1,11 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Components/Navbar';
+import { CssBaseline } from '@mui/material';
+import Navbar from "./Components/Navbar";
+import ShrinkingTitle from './Components/ShrinkingTitle';
+import Footer from './Components/Footer'; // Add this import
 import Home from './Pages/Home';
-import './App.css';
-import ReactiveTitle from './Components/ReactiveTitle';
 import CreateUser from './Pages/account/CreateUser';
 import Login from './Pages/account/Login';
+import './App.css';
 import ShopPage from './Pages/shop/shop.js';
 import AboutPage from './Pages/about/about.js';
 import ContactPage from './Pages/contact/contact.js';
@@ -13,9 +15,10 @@ import ContactPage from './Pages/contact/contact.js';
 function App() {
   return (
     <Router>
+      <CssBaseline />
       <div className="App">
         <Navbar />
-        <ReactiveTitle />
+        <ShrinkingTitle />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -26,6 +29,7 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </main>
+        <Footer /> {/* Add the Footer here */}
       </div>
     </Router>
   );

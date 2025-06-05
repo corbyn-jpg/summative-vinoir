@@ -1,17 +1,23 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 
-function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc }) {
+function HeroSection({ title, subtitle, buttonText, videoSrc }) {
+  // Set default image path directly in the component
+  const defaultBackground = "/images/vin.png";
+  
   return (
     <Box
       sx={{
-        height: "100vh", // Full viewport height
-        width: "100%", // Full width
+        width: "100vw",
         position: "relative",
         overflow: "hidden",
+        height: { xs: "100vh", sm: "100vh" },
+        minHeight: "500px",
+         left: "50%",      
+        right: "50%",     
+        marginX: "-50vw", 
       }}
     >
-      {/* Background Image or Video */}
       {videoSrc ? (
         <video
           autoPlay
@@ -22,7 +28,7 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover", // Ensures the video covers the entire area
+            objectFit: "cover",
             position: "absolute",
             top: 0,
             left: 0,
@@ -35,9 +41,9 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
       ) : (
         <Box
           sx={{
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundSize: "cover", // Ensures the image covers the entire area
-            backgroundPosition: "center", // Centers the image
+            backgroundImage: `url(${defaultBackground})`, // Using the default here
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             width: "100%",
             height: "100%",
             position: "absolute",
@@ -47,8 +53,6 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           }}
         />
       )}
-
-      {/* Overlay Content */}
       <Box
         sx={{
           position: "absolute",
@@ -62,7 +66,7 @@ function HeroSection({ title, subtitle, buttonText, backgroundImage, videoSrc })
           alignItems: "center",
           color: "white",
           textAlign: "center",
-          backgroundColor: "rgba(0, 0, 0, 0.3)", // Optional dark overlay
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
         }}
       >
         <Typography variant="h3" sx={{ fontWeight: "bold", mb: 2 }}>

@@ -1,31 +1,56 @@
-.App {
-  position: relative;
-  min-height: 100vh;
-}
-
-main {
-  padding: 20px;
-  position: relative;
-  z-index: 1;
-  /* Add padding to account for the large initial title */
-  padding-top: 150px;
-}
-
-/* Optional: Add a nice background */
 body {
-  background-color: #146e3a;
   margin: 0;
+  padding: 0;
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #146e3a;
+  color: white;
+  scroll-behavior: smooth;
 }
 
-/* Smooth scrolling behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Main content spacing after hero */
+main {
+  padding: 40px 20px;
+  background-color: #2A4936;
+  z-index: 1;
+  position: relative;
+}
+
+@media (max-width: 900px) {
   main {
-    padding-top: 120px;
+    padding-top: 200px;
   }
+}
+
+@media (max-width: 600px) {
+  main {
+    padding-top: 180px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0d4d26;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a8c4a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1fa055;
 }

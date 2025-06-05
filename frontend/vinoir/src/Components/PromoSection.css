@@ -1,0 +1,144 @@
+/* Main Container */
+.promo-container {
+  padding: 80px 0;
+  background-color: #f8f5f2;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+/* Title Styling */
+.promo-title {
+  margin-bottom: 64px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 2.5rem;
+  color: #222;
+  position: relative;
+}
+
+.promo-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background-color: #146e3a;
+  margin: 20px auto 0;
+  border-radius: 2px;
+}
+
+/* Carousel Container */
+.promo-carousel-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Carousel Flex Styling */
+.promo-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+  padding: 0 1vw;
+  position: relative;
+  width: 100%;
+  max-width: none;
+}
+
+/* Card Styling */
+.promo-card {
+  width: 30vw;
+  min-width: 400px;
+  height: 55vh;
+  min-height: 500px;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(to bottom, #fff, #f9f9f9);
+  flex-shrink: 0;
+  opacity: 0.9;
+  transform: scale(0.92);
+}
+
+.active-card {
+  transform: scale(1.08);
+  width: 32vw;
+  height: 58vh;
+  z-index: 2;
+  opacity: 1;
+}
+
+/* Image Styling */
+.promo-image {
+  height: 70%;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  width: 100%;
+}
+
+/* Content Styling */
+.promo-content {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2vh 3vw;
+}
+
+.promo-item-title {
+  font-size: 1.8vw;
+  font-weight: 600;
+  margin-bottom: 1vh;
+  color: #333;
+}
+
+.promo-item-subtitle {
+  font-size: 1.1vw;
+  color: #666;
+}
+
+/* Indicator Dots */
+.promo-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 48px;
+}
+
+.indicator-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #999;
+  padding: 0;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.indicator-dot.active {
+  background-color: black;
+  transform: scale(1.2);
+}
+
+.indicator-dot:hover {
+  background-color: #333;
+}
+
+/* Auto-slide Animation */
+.transitioning .promo-carousel {
+  animation: fadeSlide 0.5s ease-in-out;
+}
+
+@keyframes fadeSlide {
+  0% {
+    opacity: 0.5;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

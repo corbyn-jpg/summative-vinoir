@@ -1,146 +1,121 @@
-import React, { useState } from "react";
-import { Box, Typography, IconButton,  Card, CardMedia, CardContent } from "@mui/material";
-import CircleIcon from '@mui/icons-material/Circle';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Card,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
+import "./PromoSection.css";
 
-class PromoCarousel {
-  constructor(items) {
-    this.items = items;
-    this.currentIndex = 0;
-  }
+// PromoItem "class-like" data model
+const promoItems = [
+  {
+    id: 1,
+    title: "Élégance Noir",
+    subtitle: "A mysterious oriental blend",
+    image: "/images/promo1.jpg",
+  },
+  {
+    id: 2,
+    title: "Lumière d'Or",
+    subtitle: "Golden citrus top notes",
+    image: "/images/promo2.jpg",
+  },
+  {
+    id: 3,
+    title: "Velvet Rose",
+    subtitle: "Luxurious floral bouquet",
+    image: "/images/promo3.jpg",
+  },
+  {
+    id: 4,
+    title: "Oud Royal",
+    subtitle: "Regal woody intensity",
+    image: "/images/promo4.jpg",
+  },
+  {
+    id: 5,
+    title: "Jardin Secret",
+    subtitle: "Fresh green accords",
+    image: "/images/promo5.jpg",
+  },
+];
 
-  goTo(index) {
-    this.currentIndex = index;
-    return this.currentItem();
-  }
+const PromoSection = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  currentItem() {
-    return this.items[this.currentIndex];
-  }
-}
+  // Auto-advance every 5 seconds with smooth animation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % promoItems.length);
+        setIsTransitioning(false);
+      }, 500); // match with animation duration
+    }, 5000);
 
-const PromoItem = ({ item }) => (
-  <Card sx={{ 
-    width: 450, 
-    height: 500,
-    margin: "0 auto",
-    borderRadius: "16px",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-8px)",
-      boxShadow: "0 12px 28px rgba(0,0,0,0.16)"
-    }
-  }}>
-    <CardMedia
-      component="img"
-      height="380"
-      image={item.image}
-      alt={item.title}
-      sx={{ 
-        objectFit: "cover",
-        borderTopLeftRadius: "16px",
-        borderTopRightRadius: "16px"
-      }}
-    />
-    <CardContent sx={{ textAlign: "center", py: 3 }}>
-      <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: "0.5px" }}>
-        {item.title}
-      </Typography>
-    </CardContent>
-  </Card>
-);
+    return () => clearInterval(interval);
+  }, []);
 
-function PromoSection() {
-  const promoItems = [
-    { id: 1, title: "Summer Collection", image: "/path-to-promo1.jpg" },
-    { id: 2, title: "Limited Edition", image: "/path-to-promo2.jpg" },
-    { id: 3, title: "New Arrivals", image: "/path-to-promo3.jpg" },
-  ];
-
-  const [carousel] = useState(() => new PromoCarousel(promoItems));
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handleDotClick = (index) => {
-    carousel.goTo(index);
-    setCurrentIndex(index);
+  // Get 3 visible items for the carousel
+  const getVisibleItems = () => {
+    return Array.from({ length: 3 }, (_, i) =>
+      promoItems[(activeIndex + i) % promoItems.length]
+    );
   };
 
   return (
-    <Box sx={{ 
-      py: 10, 
-      textAlign: "center",
-      backgroundColor: "#fafafa",
-      minHeight: "80vh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      position: "relative",
-      overflow: "hidden",
-      "&::before": {
-        content: '""',
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "120px",
-        background: "linear-gradient(to bottom, rgba(0,0,0,0.03), transparent)",
-        zIndex: 1
-      }
-    }}>
-      <Typography variant="h3" sx={{ 
-        mb: 8, 
-        fontWeight: 700,
-        letterSpacing: "1px",
-        position: "relative",
-        "&::after": {
-          content: '""',
-          display: "block",
-          width: "80px",
-          height: "4px",
-          backgroundColor: "primary.main",
-          margin: "16px auto 0",
-          borderRadius: "2px"
-        }
-      }}>
+    <Box className="promo-container">
+      <Typography variant="h2" className="promo-title">
         PRODUCT PROMO
       </Typography>
-      
-      <Box sx={{ 
-        width: "100%",
-        margin: "0 auto",
-        position: "relative",
-        zIndex: 2
-      }}>
-        <PromoItem item={carousel.goTo(currentIndex)} />
+
+      <Box
+        className={`promo-carousel-container ${
+          isTransitioning ? "transitioning" : ""
+        }`}
+      >
+        <Box className="promo-carousel">
+          {getVisibleItems().map((item, index) => (
+            <Card
+              key={item.id}
+              className={`promo-card ${index === 1 ? "active-card" : ""}`}
+            >
+              <CardMedia
+                component="img"
+                image={item.image}
+                alt={item.title}
+                className="promo-image"
+              />
+              <CardContent className="promo-content">
+                <Typography className="promo-item-title">
+                  {item.title}
+                </Typography>
+                <Typography className="promo-item-subtitle">
+                  {item.subtitle}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
       </Box>
 
-      <Box sx={{ 
-        display: "flex", 
-        justifyContent: "center",
-        gap: 1.5,
-        mt: 6,
-        "& .MuiIconButton-root": {
-          color: currentIndex === 0 ? "primary.main" : "action.disabled",
-          transition: "color 0.3s ease",
-          padding: 0,
-          "&:hover": {
-            backgroundColor: "transparent",
-            color: "primary.main"
-          }
-        }
-      }}>
+      <Box className="promo-indicators">
         {promoItems.map((_, index) => (
-          <IconButton 
+          <IconButton
             key={index}
-            onClick={() => handleDotClick(index)}
-            size="small"
-          >
-            <CircleIcon fontSize="small" />
-          </IconButton>
+            onClick={() => setActiveIndex(index)}
+            className={`indicator-dot ${
+              activeIndex === index ? "active" : ""
+            }`}
+          />
         ))}
       </Box>
     </Box>
   );
-}
+};
 
 export default PromoSection;

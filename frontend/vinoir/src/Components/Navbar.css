@@ -1,0 +1,42 @@
+.navbar {
+  background-color: #146e3a;
+  box-shadow: none;
+  height: 80px; /* Fixed height */
+  transition: all 0.3s ease-in-out;
+  z-index: 1200;
+}
+
+.navbar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 24px;
+  position: relative;
+}
+
+.nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  white-space: nowrap;
+}
+
+.nav-title.large {
+  font-size: 4rem;
+  top: 160px;
+  color: black;
+  z-index: 1100;
+}
+
+.nav-title.small {
+  font-size: 1.5rem;
+  top: 20px;
+  color: white;
+  z-index: 1300;
+}
