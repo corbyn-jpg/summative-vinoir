@@ -49,3 +49,45 @@
   background: linear-gradient(145deg, #555, #333);
   transform: translateY(-2px);
 }
+/* src/Pages/AccountPage/AccountPage.css */
+
+.account-page-container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(145deg, #ffffff, #f3f3f3);
+  font-family: 'Playfair Display', serif;
+  color: #333;
+}
+
+.account-page-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  color: #222;
+}
+
+.MuiListItem-root {
+  transition: all 0.3s ease;
+}
+
+.MuiListItem-root:hover {
+  background-color: rgba(20, 110, 58, 0.1);
+}
+
+.MuiDivider-root {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.MuiPaper-root {
+  background-color: transparent !important;
+}
+
+.MuiListItemText-primary {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 500;
+  color: #444;
+}
