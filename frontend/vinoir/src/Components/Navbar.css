@@ -40,3 +40,94 @@
   color: white;
   z-index: 1300;
 }
+/* src/Components/Navbar.css */
+
+/* Existing navbar styles... */
+
+/* Account drawer styles */
+.account-drawer {
+  background-color: #f8f8f8;
+}
+
+.account-drawer .MuiDrawer-paper {
+  width: 350px;
+  padding: 24px;
+  background-color: #f8f8f8;
+}
+
+.account-drawer .MuiTypography-h5 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #333;
+}
+
+.account-drawer .MuiButton-contained {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.account-drawer .MuiButton-outlined {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.account-drawer .emoji-selection {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.account-drawer .emoji-option {
+  font-size: 1.5rem;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.account-drawer .emoji-option:hover {
+  transform: scale(1.2);
+}
+
+.account-drawer .selected-emojis {
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.account-drawer .selected-emoji {
+  font-size: 1.8rem;
+  margin: 0 2px;
+}
+
+.account-drawer .register-link {
+  color: #146e3a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.account-drawer .register-link:hover {
+  color: #0d5a2c;
+  text-decoration: underline;
+}
+/* Add to Navbar.css */
+.search-drawer .MuiTextField-root,
+.wishlist-drawer .MuiTypography-body1,
+.cart-drawer .MuiTypography-body1 {
+  color: #555;
+}
+
+.search-drawer .MuiButton-contained,
+.wishlist-drawer .MuiButton-outlined,
+.cart-drawer .MuiButton-outlined {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
