@@ -104,7 +104,7 @@ export default function Navbar() {
 
           <Stack direction="row" spacing={3} sx={{ alignItems: 'center', zIndex: 1400 }}>
             <IconButton color="inherit" onClick={toggleDrawer('search')}>
-              <Search sx={{ fontSize: '1.5rem' }} />
+              <Search sx={{ fontSize: '1.5rem'}} />
             </IconButton>
             <IconButton color="inherit" onClick={toggleDrawer('account')}>
               <PersonOutline sx={{ fontSize: '1.5rem' }} />
@@ -130,7 +130,7 @@ export default function Navbar() {
       >
         <Box sx={{ padding: 3 }}>
           <Typography variant="h5" sx={{
-            fontWeight: 'bold', mb: 2, fontFamily: 'Playfair Display, serif'
+            fontWeight: 'bold', mb: 2, fontFamily: ' serif'
           }}>
             {isLoggedIn ? 'My Account' : 'Welcome Back'}
           </Typography>
@@ -167,7 +167,7 @@ export default function Navbar() {
                 required
                 sx={{ mb: 2 }}
               />
-              <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
+              <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold',  }}>
                 Select your emoji password:
               </Typography>
               <EmojiSelector
@@ -195,7 +195,7 @@ export default function Navbar() {
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
               <Divider sx={{ my: 3 }} />
-              <Typography variant="body2" sx={{ textAlign: 'center' }}>
+              <Typography variant="body2" sx={{ textAlign: 'center', fontFamily: 'serif'}}>
                 Don't have an account?{' '}
                 <a href="/register" style={{
                   color: '#146e3a', fontWeight: 'bold', textDecoration: 'none'
@@ -219,7 +219,7 @@ export default function Navbar() {
       >
         <Box>
           <Typography variant="h5" sx={{
-            fontWeight: 'bold', mb: 2, fontFamily: 'Playfair Display, serif'
+            fontWeight: 'bold', mb: 2, fontFamily: 'serif'
           }}>
             Search Products
           </Typography>
@@ -250,7 +250,7 @@ export default function Navbar() {
       >
         <Box>
           <Typography variant="h5" sx={{
-            fontWeight: 'bold', mb: 2, fontFamily: 'Playfair Display, serif'
+            fontWeight: 'bold', mb: 2, fontFamily: 'serif'
           }}>
             Your Wishlist
           </Typography>
@@ -286,11 +286,11 @@ export default function Navbar() {
       >
         <Box>
           <Typography variant="h5" sx={{
-            fontWeight: 'bold', mb: 2, fontFamily: 'Playfair Display, serif'
+            fontWeight: 'bold', mb: 2, fontFamily: 'serif'
           }}>
             Your Cart
           </Typography>
-          <Typography variant="body1" sx={{ textAlign: 'center', color: '#777' }}>
+          <Typography variant="body1" sx={{ textAlign: 'center', color: '#777', fontFamily: 'serif'}}>
             {isLoggedIn ?
               "Your cart items will appear here" :
               "Sign in to view your cart"}
