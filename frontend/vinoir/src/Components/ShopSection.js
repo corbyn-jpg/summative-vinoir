@@ -13,12 +13,19 @@ const productData = [
 
 function ShopSection() {
   return (
-    <Box className="dior-shop-section" style={{ padding: "6rem 1rem" }}>
+    <Box className="dior-shop-section" style={{ padding: "80px 0" }}>
 
-      <Typography variant="h1" className="dior-shop-title" sx={{ textAlign: 'center', color: ' white', fontFamily: 'serif'}}>
+      <Typography variant="h2" className="dior-shop-title" sx={{ textAlign: 'center', color: ' 731d8d', fontFamily: 'serif'}}>
         SHOP
       </Typography>
       
+      {/*margin-bottom: 64px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 2.5rem;
+  color: #731d8d;
+  position: relative;*/}
       <Box className="vinoir-product-grid">
         {productData.map((product) => (
           <ProductCard 

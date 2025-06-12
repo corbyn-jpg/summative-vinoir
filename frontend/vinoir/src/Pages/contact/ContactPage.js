@@ -66,7 +66,7 @@ const ContactPage = () => {
         <HeroSection 
           title={"CONTACT VINOIR"} 
           backgroundImage={contactHeroImage} 
-          buttonText={"EXPLORE"} 
+          buttonText={"EXPLORE"}
           videoSrc={contactHeroVideo}
         />
       </div>

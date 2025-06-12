@@ -40,6 +40,7 @@ const AboutPage = () => {
           title={"ABOUT VINOIR"} 
           backgroundImage={heroImage} 
           buttonText={"CONTACT"} 
+          buttonLink={"../Pages/contact/ContactPage"}
           videoSrc={heroVideo}
         />
       </div>

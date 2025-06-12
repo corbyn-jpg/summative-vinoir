@@ -1,22 +1,21 @@
 /* Shop Section Container */
 .dior-shop-section {
-  padding: 8rem 2rem;
-  max-width: 1800px;
-  margin: auto;
-  text-align: center;
+  padding: 80px 0;
   position: relative;
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Shop Title */
 .dior-shop-title {
-  font-size: 2.8rem;
-  font-weight: 300;
-  letter-spacing: 0.15em;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-align: center;
-  margin-bottom: 5rem;
-  text-transform: uppercase;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: #b4b9b9;
+  position: relative;
+  padding-bottom: 1.5rem;
 }
 
 /* Product Grid */
