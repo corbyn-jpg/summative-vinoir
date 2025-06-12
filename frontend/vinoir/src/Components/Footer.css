@@ -1,8 +1,8 @@
 .luxury-footer {
   background-color: #000;
-  color: #BAB9B9;
+  color: #bab9b9;
   padding: 60px 0 20px;
-  font-family: 'Cambria', Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: "Cambria", Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 .footer-content {
@@ -29,7 +29,7 @@
 
 .footer-link {
   display: block;
-  color: #BAB9B9 !important;
+  color: #bab9b9 !important;
   margin-bottom: 12px;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -64,7 +64,7 @@
     align-items: center;
     text-align: center;
   }
-  
+
   .footer-section {
     margin-bottom: 30px;
   }

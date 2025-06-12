@@ -1,6 +1,6 @@
 // src/Components/Founder/Founder.js
-import React from 'react';
-import './Founder.css';
+import React from "react";
+import "./Founder.css";
 
 const Founder = ({ name, role, bio, image }) => {
   return (

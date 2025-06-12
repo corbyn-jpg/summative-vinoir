@@ -62,14 +62,19 @@ const PromoSection = () => {
 
   // Get 3 visible items for the carousel
   const getVisibleItems = () => {
-    return Array.from({ length: 3 }, (_, i) =>
-      promoItems[(activeIndex + i) % promoItems.length]
+    return Array.from(
+      { length: 3 },
+      (_, i) => promoItems[(activeIndex + i) % promoItems.length]
     );
   };
 
   return (
     <Box className="promo-container">
-      <Typography variant="h2" className="promo-title" sx={{fontFamily: 'serif'}}>
+      <Typography
+        variant="h2"
+        className="promo-title"
+        sx={{ fontFamily: "serif" }}
+      >
         PRODUCT PROMO
       </Typography>
 
@@ -108,9 +113,7 @@ const PromoSection = () => {
           <IconButton
             key={index}
             onClick={() => setActiveIndex(index)}
-            className={`indicator-dot ${
-              activeIndex === index ? "active" : ""
-            }`}
+            className={`indicator-dot ${activeIndex === index ? "active" : ""}`}
           />
         ))}
       </Box>

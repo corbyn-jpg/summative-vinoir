@@ -1,59 +1,59 @@
-import React, { useState } from 'react';
-import HeroSection from '../../Components/HeroSection';
-import emailjs from 'emailjs-com';
-import './Contact.css';
+import React, { useState } from "react";
+import HeroSection from "../../Components/HeroSection";
+import emailjs from "emailjs-com";
+import "./Contact.css";
 
 // Static image imports
-import contactHeroImage from '../../assets/spritz.jpeg';
-import contactHeroVideo from '../../assets/scents.mp4';
+import contactHeroImage from "../../assets/spritz.jpeg";
+import contactHeroVideo from "../../assets/scents.mp4";
 
 // Initialize EmailJS with your User ID
-emailjs.init('_QatdQkHx_mavwiI-');
+emailjs.init("_QatdQkHx_mavwiI-");
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
       // Send email using EmailJS
       await emailjs.send(
-        'service_jtead7u',     // EmailJS Service ID
-        'template_63xglp9',    // EmailJS Template ID
+        "service_jtead7u", // EmailJS Service ID
+        "template_63xglp9", // EmailJS Template ID
         {
-          to_email: '241040@virtualwindow.co.za',
+          to_email: "241040@virtualwindow.co.za",
           from_name: formData.name,
           from_email: formData.email,
           subject: formData.subject,
-          message: formData.message
+          message: formData.message,
         }
       );
 
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
-      console.error('Email sending failed:', err);
-      setError('Failed to send message. Please try again later.');
+      console.error("Email sending failed:", err);
+      setError("Failed to send message. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -63,10 +63,11 @@ const ContactPage = () => {
     <div className="contact-container">
       {/* Hero Section */}
       <div className="contact-hero-wrapper">
-        <HeroSection 
-          title={"CONTACT VINOIR"} 
-          backgroundImage={contactHeroImage} 
+        <HeroSection
+          title={"CONTACT VINOIR"}
+          backgroundImage={contactHeroImage}
           buttonText={"EXPLORE"}
+          buttonLink={"/shop"}
           videoSrc={contactHeroVideo}
         />
       </div>
@@ -80,7 +81,7 @@ const ContactPage = () => {
             <div className="success-message">
               <h3>Thank you for your message!</h3>
               <p>We've received your inquiry and will respond shortly.</p>
-              <button 
+              <button
                 onClick={() => setIsSubmitted(false)}
                 className="submit-button"
               >
@@ -90,32 +91,32 @@ const ContactPage = () => {
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <input 
-                  type="text" 
-                  id="name" 
+                <input
+                  type="text"
+                  id="name"
                   name="name"
-                  placeholder="Full Name" 
+                  placeholder="Full Name"
                   value={formData.name}
                   onChange={handleChange}
                   required
                 />
               </div>
-              
+
               <div className="form-group">
-                <input 
-                  type="email" 
-                  id="email" 
+                <input
+                  type="email"
+                  id="email"
                   name="email"
-                  placeholder="Email Address" 
+                  placeholder="Email Address"
                   value={formData.email}
                   onChange={handleChange}
                   required
                 />
               </div>
-              
+
               <div className="form-group">
-                <select 
-                  id="subject" 
+                <select
+                  id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
@@ -125,29 +126,31 @@ const ContactPage = () => {
                   <option value="Product Inquiry">Product Inquiry</option>
                   <option value="Order Support">Order Support</option>
                   <option value="Press Inquiry">Press Inquiry</option>
-                  <option value="Partnership Opportunity">Partnership Opportunity</option>
+                  <option value="Partnership Opportunity">
+                    Partnership Opportunity
+                  </option>
                   <option value="Other">Other</option>
                 </select>
               </div>
-              
+
               <div className="form-group">
-                <textarea 
-                  id="message" 
+                <textarea
+                  id="message"
                   name="message"
-                  rows="5" 
+                  rows="5"
                   placeholder="Your message"
                   value={formData.message}
                   onChange={handleChange}
                   required
                 ></textarea>
               </div>
-              
-              <button 
-                type="submit" 
+
+              <button
+                type="submit"
                 className="submit-button"
                 disabled={isLoading}
               >
-                {isLoading ? 'Sending...' : 'Send Message'}
+                {isLoading ? "Sending..." : "Send Message"}
               </button>
             </form>
           )}
@@ -168,7 +171,7 @@ const ContactPage = () => {
               </p>
               <p>+27 12 345 6789</p>
             </div>
-            
+
             <div className="contact-method">
               <h3>Visit Us</h3>
               <p>Open Window - Centurion</p>

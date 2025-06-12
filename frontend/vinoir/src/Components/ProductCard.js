@@ -4,7 +4,7 @@ import "./ProductCard.css";
 
 function ProductCard({ product }) {
   return (
-    <div className="vinoir-product-card" >
+    <div className="vinoir-product-card">
       <div className="vinoir-product-image-container">
         <img
           src={product.image}
@@ -14,7 +14,9 @@ function ProductCard({ product }) {
       </div>
       <div className="vinoir-product-details">
         <h3 className="vinoir-product-name">{product.name}</h3>
-        {product.years && <p className="vinoir-product-years">{product.years}</p>}
+        {product.years && (
+          <p className="vinoir-product-years">{product.years}</p>
+        )}
       </div>
     </div>
   );
