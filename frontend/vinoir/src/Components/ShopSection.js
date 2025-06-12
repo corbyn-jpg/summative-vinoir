@@ -15,7 +15,7 @@ function ShopSection() {
   return (
     <Box className="dior-shop-section" style={{ padding: "6rem 1rem" }}>
 
-      <Typography variant="h1" className="dior-shop-title">
+      <Typography variant="h1" className="dior-shop-title" sx={{ textAlign: 'center', color: ' white', fontFamily: 'serif'}}>
         SHOP
       </Typography>
       
