@@ -8,7 +8,7 @@ import contactHeroImage from '../../assets/spritz.jpeg';
 import contactHeroVideo from '../../assets/scents.mp4';
 
 // Initialize EmailJS with your User ID
-emailjs.init('YOUR_EMAILJS_USER_ID');
+emailjs.init('_QatdQkHx_mavwiI-');
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -38,8 +38,8 @@ const ContactPage = () => {
     try {
       // Send email using EmailJS
       await emailjs.send(
-        'YOUR_SERVICE_ID',     // EmailJS Service ID
-        'YOUR_TEMPLATE_ID',    // EmailJS Template ID
+        'service_jtead7u',     // EmailJS Service ID
+        'template_63xglp9',    // EmailJS Template ID
         {
           to_email: '241040@virtualwindow.co.za',
           from_name: formData.name,
