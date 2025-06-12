@@ -84,8 +84,8 @@ export default function Navbar() {
           boxShadow: 'none',
           color: 'white',
           zIndex: 1200,
-          height: scrolled ? '80px' : '160px',
-          transition: 'height 0.4s ease',
+          height: scrolled ? '80px' : '200px',
+          transition: 'height 0.3s ease',
         }}
       >
         <Toolbar
@@ -104,16 +104,16 @@ export default function Navbar() {
 
           <Stack direction="row" spacing={3} sx={{ alignItems: 'center', zIndex: 1400 }}>
             <IconButton color="inherit" onClick={toggleDrawer('search')}>
-              <Search sx={{ fontSize: '1.25rem' }} />
+              <Search sx={{ fontSize: '1.5rem' }} />
             </IconButton>
             <IconButton color="inherit" onClick={toggleDrawer('account')}>
-              <PersonOutline sx={{ fontSize: '1.25rem' }} />
+              <PersonOutline sx={{ fontSize: '1.5rem' }} />
             </IconButton>
             <IconButton color="inherit" onClick={toggleDrawer('wishlist')}>
-              <FavoriteBorder sx={{ fontSize: '1.25rem' }} />
+              <FavoriteBorder sx={{ fontSize: '1.5rem' }} />
             </IconButton>
             <IconButton color="inherit" onClick={toggleDrawer('cart')}>
-              <ShoppingBagOutlined sx={{ fontSize: '1.3rem' }} />
+              <ShoppingBagOutlined sx={{ fontSize: '1.45rem' }} />
             </IconButton>
           </Stack>
         </Toolbar>

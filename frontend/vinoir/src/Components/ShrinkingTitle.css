@@ -5,7 +5,7 @@
   top: 120px; /* below navbar */
   left: 50%;
   transform: translateX(-50%);
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 600;
   color: black;
   letter-spacing: 0.12em;
@@ -16,7 +16,7 @@
 }
 
 .title-wrapper.shrink {
-  top: 20px; /* move inside the navbar */
+  top: 25px; /* move inside the navbar */
   font-size: 1.5rem;
   color: white;
 }
