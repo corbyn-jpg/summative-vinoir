@@ -69,7 +69,7 @@ const PromoSection = () => {
 
   return (
     <Box className="promo-container">
-      <Typography variant="h2" className="promo-title">
+      <Typography variant="h2" className="promo-title" sx={{fontFamily: 'serif'}}>
         PRODUCT PROMO
       </Typography>
 

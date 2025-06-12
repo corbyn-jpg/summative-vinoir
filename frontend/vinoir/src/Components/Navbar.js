@@ -86,6 +86,7 @@ export default function Navbar() {
           zIndex: 1200,
           height: scrolled ? '80px' : '200px',
           transition: 'height 0.3s ease',
+          fontFamily: 'serif',
         }}
       >
         <Toolbar
@@ -94,6 +95,7 @@ export default function Navbar() {
             position: 'relative',
             justifyContent: 'space-between',
             px: 3,
+            fontFamily: 'serif',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', zIndex: 1400 }}>
@@ -137,7 +139,7 @@ export default function Navbar() {
 
           {isLoggedIn ? (
             <>
-              <Typography variant="body1" sx={{ mb: 3 }}>
+              <Typography variant="body1" sx={{ mb: 3, fontFamily: ' serif'}}>
                 You are logged in.
               </Typography>
               <Button variant="outlined" fullWidth onClick={handleLogout}
@@ -165,9 +167,9 @@ export default function Navbar() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, fontFamily: ' serif'}}
               />
-              <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold',  }}>
+              <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold', fontFamily: ' serif' }}>
                 Select your emoji password:
               </Typography>
               <EmojiSelector
@@ -176,7 +178,7 @@ export default function Navbar() {
                 maxLength={5}
               />
               {loginError && (
-                <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                <Typography color="error" variant="body2" sx={{ mt: 1, fontFamily: ' serif'}}>
                   {loginError}
                 </Typography>
               )}
@@ -227,12 +229,12 @@ export default function Navbar() {
             fullWidth
             placeholder="Search Vinoir collection..."
             variant="outlined"
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, fontFamily: ' serif'}}
           />
           <Button
             variant="contained"
             fullWidth
-            sx={{ backgroundColor: '#146e3a', '&:hover': { backgroundColor: '#0d5a2c' } }}
+            sx={{ backgroundColor: '#146e3a', '&:hover': { backgroundColor: '#0d5a2c', fontFamily: ' serif' } }}
           >
             Search
           </Button>

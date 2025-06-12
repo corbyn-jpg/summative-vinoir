@@ -24,6 +24,7 @@
   padding: 100px;
   color: #BAB9B9;
   text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   margin-bottom: 50px;
 }
 
@@ -45,6 +46,7 @@
   align-content: center;
   padding: 40px;
   text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .section-title {
@@ -68,6 +70,7 @@
   padding: 80px 20px;
   text-align: center;
   margin: 50px 0;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .process-steps {
@@ -112,6 +115,7 @@
   color: #BAB9B9;
   padding: 100px 20px;
   margin-bottom: 50px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .philosophy-content {

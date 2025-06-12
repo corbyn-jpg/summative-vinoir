@@ -4,7 +4,7 @@ import "./ProductCard.css";
 
 function ProductCard({ product }) {
   return (
-    <div className="vinoir-product-card">
+    <div className="vinoir-product-card" >
       <div className="vinoir-product-image-container">
         <img
           src={product.image}

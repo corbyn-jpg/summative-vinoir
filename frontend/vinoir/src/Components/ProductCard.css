@@ -48,6 +48,7 @@
   height: 25%;
   padding-top: 1rem;
   text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,6 +57,7 @@
 .vinoir-product-name {
   font-size: 1.6rem;
   font-weight: 700;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   color: #1a1a1a;
   margin-bottom: 0.3rem;
   text-transform: uppercase;
