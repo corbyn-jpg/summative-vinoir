@@ -1,34 +1,26 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin like Postman or curl
-    if (!origin) return callback(null, true);
-    // Allow any localhost origin
-    if (origin.startsWith('http://localhost')) {
-      return callback(null, true);
-    }
-    // Otherwise block
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-}));
-
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-app.use('/api/users', userRoutes);
+// Routes
+app.use('/api/products', productRoutes); // Ensure this line is present
 
-mongoose.connect(process.env.MONGO_URI)
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('MongoDB connected');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

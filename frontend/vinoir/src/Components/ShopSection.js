@@ -1,33 +1,25 @@
-// src/Pages/ShopSection.js
-import React from "react";
-import { Box, Typography } from "@mui/material";
-import ProductCard from "../Components/ProductCard";
-import "./ShopSection.css";
-
-const productData = [
-  { id: 1, name: "BRIAN HALE & JOHN", years: "1980-2005", image: "/images/dior1.jpg" },
-  { id: 2, name: "WINTERVILLE, INC.", years: "1996-2012", image: "/images/dior2.jpg" },
-  { id: 3, name: "DENNIS WHITE & CHRISTOPHER PAUL", years: "1978", image: "/images/dior3.jpg" },
-  { id: 4, name: "BENNIE FERGUSON & BOB", image: "/images/dior4.jpg" },
-];
+import React, { useEffect, useState } from 'react';
+import ProductService from '../services/ProductService';
+import ProductCard from './ProductCard';
 
 function ShopSection() {
-  return (
-    <Box className="dior-shop-section" style={{ padding: "6rem 1rem" }}>
+  const [products, setProducts] = useState([]);
 
-      <Typography variant="h1" className="dior-shop-title">
-        SHOP
-      </Typography>
-      
-      <Box className="vinoir-product-grid">
-        {productData.map((product) => (
-          <ProductCard 
-            product={product} 
-            key={product.id}
-          />
+  useEffect(() => {
+    ProductService.getAllProducts()
+      .then((data) => setProducts(data))
+      .catch((error) => console.error('Error fetching products:', error));
+  }, []);
+
+  return (
+    <div className="shop-section">
+      <h1>Shop</h1>
+      <div className="product-grid">
+        {products.map((product) => (
+          <ProductCard key={product._id} product={product} />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }
 

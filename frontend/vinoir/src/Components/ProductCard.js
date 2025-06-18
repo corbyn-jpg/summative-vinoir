@@ -1,21 +1,12 @@
-// src/Components/ProductCard.js
-import React from "react";
-import "./ProductCard.css";
+import React from 'react';
 
 function ProductCard({ product }) {
   return (
-    <div className="vinoir-product-card">
-      <div className="vinoir-product-image-container">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="vinoir-product-image"
-        />
-      </div>
-      <div className="vinoir-product-details">
-        <h3 className="vinoir-product-name">{product.name}</h3>
-        {product.years && <p className="vinoir-product-years">{product.years}</p>}
-      </div>
+    <div className="product-card">
+      <img src={product.image} alt={product.name} />
+      <h3>{product.name}</h3>
+      <p>{product.description}</p>
+      <p>Price: R {product.price}</p>
     </div>
   );
 }
