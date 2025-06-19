@@ -1,57 +1,89 @@
-const express = require('express');
-const router = express.Router();
 const Product = require('../models/Product');
 
-router.get('/', async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching products' });
-  }
-});
-
-router.get('/:id', async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+class ProductController {
+  /**
+   * Get all products
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async getAllProducts(req, res) {
+    try {
+      const products = await Product.find();
+      return products; // Return products to be sent by the route
+    } catch (err) {
+      throw new Error('Error fetching products');
     }
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching product' });
   }
-});
 
-router.post('/', async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(400).json({ message: 'Error creating product' });
-  }
-});
-
-router.put('/:id', async (req, res) => {
-  try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+  /**
+   * Get a single product by ID
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async getProductById(req, res) {
+    try {
+      const product = await Product.findById(req.params.id);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return product; // Return product to be sent by the route
+    } catch (err) {
+      throw new Error('Error fetching product');
     }
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating product' });
   }
-});
 
-router.delete('/:id', async (req, res) => {
-  try {
-    await Product.findByIdAndRemove(req.params.id);
-    res.status(204).json({ message: 'Product deleted' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting product' });
+  /**
+   * Create a new product
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async createProduct(req, res) {
+    try {
+      const product = new Product(req.body);
+      await product.save();
+      return product; // Return created product to be sent by the route
+    } catch (err) {
+      throw new Error('Error creating product: ' + err.message);
+    }
   }
-});
 
-module.exports = router;
+  /**
+   * Update a product
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async updateProduct(req, res) {
+    try {
+      const product = await Product.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return product; // Return updated product to be sent by the route
+    } catch (err) {
+      throw new Error('Error updating product: ' + err.message);
+    }
+  }
+
+  /**
+   * Delete a product
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   */
+  async deleteProduct(req, res) {
+    try {
+      const product = await Product.findByIdAndDelete(req.params.id);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return; // Return nothing (204 No Content)
+    } catch (err) {
+      throw new Error('Error deleting product: ' + err.message);
+    }
+  }
+}
+
+module.exports = new ProductController();
