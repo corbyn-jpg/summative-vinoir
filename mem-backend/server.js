@@ -13,16 +13,17 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/products', productRoutes); // Ensure this line is present
-
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// MongoDB connection and start server only after successful connection
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   })
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+  });
+
+// Routes
+app.use('/api/products', productRoutes);

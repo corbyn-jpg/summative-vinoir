@@ -24,14 +24,14 @@ import PersonalDataPage from './Pages/account/PersonalDataPage';
 import OrdersPage from './Pages/account/OrdersPage';
 import WishlistPage from './Pages/Shop/WishlistPage';
 
-// Shop Page
+// Shop Pages
 import ShopPage from './Pages/Shop/ShopPage';
+import FragranceDetail from './Pages/Fragrance/FragranceDetail'; 
 
 function App() {
   return (
     <Router>
       <CssBaseline />
-      {/* Wrap entire app with all context providers */}
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
@@ -52,10 +52,11 @@ function App() {
                   <Route path="/account/orders" element={<OrdersPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
 
-                  {/* Shop Route */}
+                  {/* Shop Routes */}
                   <Route path="/shop" element={<ShopPage />} />
+                  <Route path="/fragrance/:id" element={<FragranceDetail />} /> {/* ✅ NEW */}
 
-                  {/* Fallback Route */}
+                  {/* Fallback */}
                   <Route
                     path="*"
                     element={
