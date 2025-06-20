@@ -22,10 +22,10 @@ import ContactPage from './Pages/contact/contact';
 import AccountPage from './Pages/account/AccountPage';
 import PersonalDataPage from './Pages/account/PersonalDataPage';
 import OrdersPage from './Pages/account/OrdersPage';
-import WishlistPage from './Pages/Shop/WishlistPage';
+import WishlistPage from './Pages/shop/WishlistPage';
 
 // Shop Pages
-import ShopPage from './Pages/Shop/ShopPage';
+import ShopPage from './Pages/shop/ShopPage';
 import FragranceDetail from './Pages/Fragrance/FragranceDetail'; 
 
 function App() {

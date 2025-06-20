@@ -1,116 +1,100 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  IconButton,
-  Card,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
+import { Box, Typography, IconButton, Card, CardMedia } from "@mui/material";
 import "./PromoSection.css";
 
-// PromoItem "class-like" data model
-const promoItems = [
-  {
-    id: 1,
-    title: "Élégance Noir",
-    subtitle: "A mysterious oriental blend",
-    image: "/images/promo1.jpg",
-  },
-  {
-    id: 2,
-    title: "Lumière d'Or",
-    subtitle: "Golden citrus top notes",
-    image: "/images/promo2.jpg",
-  },
-  {
-    id: 3,
-    title: "Velvet Rose",
-    subtitle: "Luxurious floral bouquet",
-    image: "/images/promo3.jpg",
-  },
-  {
-    id: 4,
-    title: "Oud Royal",
-    subtitle: "Regal woody intensity",
-    image: "/images/promo4.jpg",
-  },
-  {
-    id: 5,
-    title: "Jardin Secret",
-    subtitle: "Fresh green accords",
-    image: "/images/promo5.jpg",
-  },
-];
-
-const PromoSection = () => {
+const PromoSection = ({ products = [] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const featuredProducts = products.filter(p => p.featured).slice(0, 5); // Get top 5 featured products
 
-  // Auto-advance every 5 seconds with smooth animation
+  // Auto-advance every 5 seconds
   useEffect(() => {
+    if (featuredProducts.length < 2) return;
     const interval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setActiveIndex((prev) => (prev + 1) % promoItems.length);
-        setIsTransitioning(false);
-      }, 500); // match with animation duration
+      setActiveIndex(prev => (prev + 1) % featuredProducts.length);
     }, 5000);
-
     return () => clearInterval(interval);
-  }, []);
+  }, [featuredProducts.length]);
 
-  // Get 3 visible items for the carousel
-  const getVisibleItems = () => {
-    return Array.from({ length: 3 }, (_, i) =>
-      promoItems[(activeIndex + i) % promoItems.length]
-    );
-  };
+  if (featuredProducts.length === 0) return null;
 
   return (
-    <Box className="promo-container">
-      <Typography variant="h2" className="promo-title">
-        PRODUCT PROMO
+    <Box sx={{ 
+      px: 2, 
+      py: 4,
+      maxWidth: 'xl',
+      mx: 'auto'
+    }}>
+      <Typography variant="h5" sx={{ 
+        mb: 2, 
+        textAlign: 'center',
+        fontWeight: 'bold',
+        letterSpacing: 1
+      }}>
+        FEATURED FRAGRANCES
       </Typography>
 
-      <Box
-        className={`promo-carousel-container ${
-          isTransitioning ? "transitioning" : ""
-        }`}
-      >
-        <Box className="promo-carousel">
-          {getVisibleItems().map((item, index) => (
-            <Card
-              key={item.id}
-              className={`promo-card ${index === 1 ? "active-card" : ""}`}
-            >
-              <CardMedia
-                component="img"
-                image={item.image}
-                alt={item.title}
-                className="promo-image"
-              />
-              <CardContent className="promo-content">
-                <Typography className="promo-item-title">
-                  {item.title}
-                </Typography>
-                <Typography className="promo-item-subtitle">
-                  {item.subtitle}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
+      <Box sx={{
+        position: 'relative',
+        height: { xs: 300, sm: 400 },
+        overflow: 'hidden'
+      }}>
+        {featuredProducts.map((product, index) => (
+          <Card key={product._id} sx={{
+            position: 'absolute',
+            width: '70%',
+            left: '15%',
+            height: '100%',
+            transition: 'transform 0.5s ease, opacity 0.5s ease, z-index 0.5s ease',
+            transform: `translateX(${(index - activeIndex) * 110}%)`,
+            opacity: Math.abs(index - activeIndex) > 1 ? 0 : 1,
+            zIndex: index === activeIndex ? 2 : 1
+          }}>
+            <CardMedia
+              component="img"
+              image={product.images?.[0]?.url || '/placeholder.jpg'}
+              alt={product.name}
+              sx={{
+                height: '70%',
+                objectFit: 'cover'
+              }}
+            />
+            <Box sx={{ 
+              p: 1.5,
+              textAlign: 'center'
+            }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                {product.name}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {product.category}
+              </Typography>
+            </Box>
+          </Card>
+        ))}
       </Box>
 
-      <Box className="promo-indicators">
-        {promoItems.map((_, index) => (
+      <Box sx={{ 
+        display: 'flex',
+        justifyContent: 'center',
+        mt: 2,
+        gap: 1
+      }}>
+        {featuredProducts.map((_, index) => (
           <IconButton
             key={index}
+            size="small"
             onClick={() => setActiveIndex(index)}
-            className={`indicator-dot ${
-              activeIndex === index ? "active" : ""
-            }`}
+            sx={{
+              p: 0,
+              '&:before': {
+                content: '""',
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                bgcolor: activeIndex === index ? 'primary.main' : 'grey.400',
+                transition: 'all 0.3s'
+              }
+            }}
           />
         ))}
       </Box>
