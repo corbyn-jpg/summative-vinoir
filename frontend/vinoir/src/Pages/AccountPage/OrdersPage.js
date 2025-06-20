@@ -1,79 +1,47 @@
-// src/Pages/AccountPage/OrdersPage.js
-import React, { useState, useEffect } from 'react';
-import { 
-  Box, Typography, Button, List, ListItem, 
-  ListItemText, Divider, Paper 
-} from '@mui/material';
-import { ArrowBack, ShoppingBag } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
+import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
 
 function OrdersPage() {
-  const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          navigate('/login');
-          return;
-        }
-
-        const response = await axios.get('http://localhost:5000/api/orders', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setOrders(response.data);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, [navigate]);
+  const orders = [
+    { id: 1, date: '2025-06-01', total: '$120.00', status: 'Delivered' },
+    { id: 2, date: '2025-06-10', total: '$150.00', status: 'Processing' },
+    { id: 3, date: '2025-06-15', total: '$200.00', status: 'Shipped' },
+  ];
 
   return (
-    <Box className="account-page-container">
-      <Button 
-        startIcon={<ArrowBack />} 
-        onClick={() => navigate('/account')}
-        sx={{ mb: 3 }}
+    <Box
+      sx={{
+        maxWidth: '800px',
+        margin: '3rem auto',
+        padding: '2rem',
+        borderRadius: '12px',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+        background: 'linear-gradient(145deg, #ffffff, #f3f3f3)',
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          fontFamily: 'Playfair Display, serif',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginBottom: '1.5rem',
+          color: '#222',
+        }}
       >
-        Back to Account
-      </Button>
-
-      <Typography variant="h4" className="account-page-heading">
         My Orders
       </Typography>
 
-      {isLoading ? (
-        <Typography variant="h6">Loading...</Typography>
-      ) : orders.length > 0 ? (
-        <Paper elevation={0}>
-          <List>
-            {orders.map((order) => (
-              <React.Fragment key={order.id}>
-                <ListItem>
-                  <ListItemText
-                    primary={`Order #${order.id}`}
-                    secondary={`${order.date} • $${order.total}`}
-                  />
-                  <ShoppingBag color="primary" />
-                </ListItem>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
-        </Paper>
-      ) : (
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          You haven't placed any orders yet
-        </Typography>
-      )}
+      <List>
+        {orders.map((order) => (
+          <ListItem key={order.id} sx={{ borderBottom: '1px solid #ddd' }}>
+            <ListItemText
+              primary={`Order #${order.id} - ${order.date}`}
+              secondary={`Total: ${order.total} | Status: ${order.status}`}
+            />
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 }

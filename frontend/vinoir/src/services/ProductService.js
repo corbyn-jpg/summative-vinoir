@@ -1,21 +1,35 @@
 // src/services/ProductService.js
 class ProductService {
-  constructor(productRepository) {
-    this.productRepository = productRepository;
+  constructor() {
+    this.baseUrl = '/api/products'; // Now uses the proxy
   }
 
-  getFeaturedProducts() {
-    return this.productRepository.getProducts().filter(p => p.featured);
+  async getAllProducts() {
+    try {
+      const response = await fetch(this.baseUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+      throw error;
+    }
   }
 
-  getProductById(id) {
-    return this.productRepository.getProducts().find(p => p.id === id);
-  }
-
-  getProductsByCategory(category) {
-    if (category === 'all') return this.productRepository.getProducts();
-    return this.productRepository.getProducts().filter(p => p.category === category);
+  async getProductById(id) {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error(`Failed to fetch product ${id}:`, error);
+      throw error;
+    }
   }
 }
 
-export default ProductService;
+const productServiceInstance = new ProductService();
+export default productServiceInstance;
