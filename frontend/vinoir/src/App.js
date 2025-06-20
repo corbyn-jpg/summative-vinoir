@@ -16,7 +16,7 @@ import Home from './Pages/Home';
 import CreateUser from './Pages/AccountPage/CreateUser';
 import Login from './Pages/AccountPage/Login';
 import AboutPage from './Pages/about/about';
-import ContactPage from './Pages/contact/contact';
+import ContactPage from './Pages/contact/ContactPage';
 
 // Account-related Pages
 import AccountPage from './Pages/AccountPage/AccountPage';
