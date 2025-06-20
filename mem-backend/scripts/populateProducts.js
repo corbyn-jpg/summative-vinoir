@@ -36,7 +36,7 @@ const products = [
     stock: 20,
     featured: true,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior2_m7ncex.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750284849/dior2_g5aq9q.jpg',
       altText: 'Lumière d\'Or bottle'
     }]
   },
@@ -54,7 +54,7 @@ const products = [
     stock: 12,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior3_afxqzp.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750284849/dior4_jdxryd.jpg',
       altText: 'Velvet Rose bottle'
     }]
   },
@@ -72,7 +72,7 @@ const products = [
     stock: 10,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior4_ku7phk.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750338278/dior6_trw6e5.jpg',
       altText: 'Oud Royal bottle'
     }]
   },
@@ -90,7 +90,7 @@ const products = [
     stock: 8,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior5_qckhrn.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750442464/dior13_zxe3sn.jpg',
       altText: 'Amber Mystique bottle'
     }]
   },
@@ -108,7 +108,7 @@ const products = [
     stock: 18,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior6_foxdkt.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750442354/dior12_moclfw.jpg',
       altText: 'Citrus Bloom bottle'
     }]
   },
@@ -126,7 +126,7 @@ const products = [
     stock: 14,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior7_b3tefl.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750338252/dior8_vgcqgi.jpg',
       altText: 'Sandalwood Whisper bottle'
     }]
   },
@@ -144,7 +144,7 @@ const products = [
     stock: 9,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior8_ikcq9v.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750441791/dior0_hs7dgd.jpg',
       altText: 'Patchouli Dream bottle'
     }]
   },
@@ -162,7 +162,7 @@ const products = [
     stock: 16,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior9_fwzjdf.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750338252/dior9_oqxucs.jpg',
       altText: 'Vanilla Sky bottle'
     }]
   },
@@ -180,7 +180,7 @@ const products = [
     stock: 13,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior10_b2mwpk.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750338252/dior10_wclljh.jpg',
       altText: 'Jardin Secret bottle'
     }]
   }
