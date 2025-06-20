@@ -13,20 +13,22 @@ import Footer from './Components/Footer';
 
 // General Pages
 import Home from './Pages/Home';
-import CreateUser from './Pages/account/CreateUser';
-import Login from './Pages/account/Login';
+import CreateUser from './Pages/AccountPage/CreateUser';
+import Login from './Pages/AccountPage/Login';
 import AboutPage from './Pages/about/about';
 import ContactPage from './Pages/contact/contact';
 
 // Account-related Pages
-import AccountPage from './Pages/account/AccountPage';
-import PersonalDataPage from './Pages/account/PersonalDataPage';
-import OrdersPage from './Pages/account/OrdersPage';
-import WishlistPage from './Pages/Shop/WishlistPage';
+import AccountPage from './Pages/AccountPage/AccountPage';
+import PersonalDataPage from './Pages/AccountPage/PersonalDataPage';
+import OrdersPage from './Pages/AccountPage/OrdersPage';
+import WishlistPage from './Pages/WishlistPage/WishlistPage';
 
 // Shop Pages
-import ShopPage from './Pages/Shop/ShopPage';
+import ShopPage from './Pages/shop/ShopPage';
 import FragranceDetail from './Pages/Fragrance/FragranceDetail'; 
+
+
 
 function App() {
   return (
