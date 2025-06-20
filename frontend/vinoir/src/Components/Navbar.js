@@ -1,397 +1,266 @@
 import React, { useState, useEffect } from "react";
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Stack,
-  Drawer,
-  Box,
-  Typography,
-  Button,
-  Divider,
-  TextField,
-} from "@mui/material";
+  AppBar, Toolbar, IconButton, Stack, Drawer, Box, Typography,
+  Button, TextField
+} from '@mui/material';
 import {
-  Search,
-  PersonOutline,
-  ShoppingBagOutlined,
-  FavoriteBorder,
-} from "@mui/icons-material";
-import axios from "axios";
-import ShrinkingTitle from "./ShrinkingTitle";
-import HamburgerMenu from "./HamburgerMenu";
-import EmojiSelector from "./EmojiSelector";
-import "./Navbar.css";
+  Search, PersonOutline, ShoppingBagOutlined, FavoriteBorder
+} from '@mui/icons-material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// Components
+import HamburgerMenu from './HamburgerMenu';
+import EmojiSelector from './EmojiSelector';
+import ShrinkingTitle from './ShrinkingTitle';
+
+// Context
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(null);
-  const [email, setEmail] = useState("");
+  const [drawer, setDrawer] = useState(null);
+  const [email, setEmail] = useState('');
   const [emojiPassword, setEmojiPassword] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginError, setLoginError] = useState("");
+  const [loginError, setLoginError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 60);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { isLoggedIn, login, logout } = useAuth();
+  const { cart, addToCart, removeFromCart, updateCartItem } = useCart();
+  const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
+    const token = localStorage.getItem('vinoir_token');
+    if (token) login();
+  }, [login]);
 
-  const toggleDrawer = (drawerName) => (event) => {
-    if (
-      event?.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    )
-      return;
-    setOpenDrawer(drawerName);
-    setLoginError("");
+  const toggleDrawer = (type) => () => {
+    setDrawer(type);
+    setLoginError('');
     setEmojiPassword([]);
   };
 
   const closeDrawer = () => {
-    setOpenDrawer(null);
-    setLoginError("");
+    setDrawer(null);
+    setLoginError('');
     setEmojiPassword([]);
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
     setLoginError("");
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/users/login",
-        {
-          email: email.trim(),
-          password: emojiPassword.join(""),
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      localStorage.setItem("token", response.data.token);
-      setIsLoggedIn(true);
+      const res = await axios.post('/api/users/login', {
+        email: email.trim(),
+        password: emojiPassword.join('')
+      });
+      localStorage.setItem('vinoir_token', res.data.token);
+      login();
       closeDrawer();
-    } catch (error) {
-      console.error("Login error:", error);
-      setLoginError("Invalid email or emoji password");
+    } catch (err) {
+      setLoginError(err.response?.data?.message || 'Login failed.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    logout();
     closeDrawer();
   };
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        sx={{
-          backgroundColor: "#02361e",
-          boxShadow: "none",
-          color: "white",
-          zIndex: 1200,
-          height: scrolled ? "80px" : "200px",
-          transition: "height 0.3s ease",
-          fontFamily: "serif",
-        }}
-      >
-        <Toolbar
-          sx={{
-            height: "100%",
-            position: "relative",
-            justifyContent: "space-between",
-            px: 3,
-            fontFamily: "serif",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", zIndex: 1400 }}>
-            <HamburgerMenu />
-          </div>
-
-          <ShrinkingTitle scrolled={scrolled} />
-
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ alignItems: "center", zIndex: 1400 }}
-          >
-            <IconButton color="inherit" onClick={toggleDrawer("search")}>
-              <Search sx={{ fontSize: "1.5rem" }} />
-            </IconButton>
-            <IconButton color="inherit" onClick={toggleDrawer("account")}>
-              <PersonOutline sx={{ fontSize: "1.5rem" }} />
-            </IconButton>
-            <IconButton color="inherit" onClick={toggleDrawer("wishlist")}>
-              <FavoriteBorder sx={{ fontSize: "1.5rem" }} />
-            </IconButton>
-            <IconButton color="inherit" onClick={toggleDrawer("cart")}>
-              <ShoppingBagOutlined sx={{ fontSize: "1.45rem" }} />
+      <AppBar position="fixed" sx={{
+        backgroundColor: '#146e3a',
+        boxShadow: 'none',
+        zIndex: 1200,
+        height: '80px',
+      }}>
+        <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
+          <HamburgerMenu />
+          {location.pathname === '/' && <ShrinkingTitle />}
+          <Stack direction="row" spacing={3} alignItems="center">
+            <IconButton onClick={toggleDrawer('search')}><Search /></IconButton>
+            <IconButton onClick={toggleDrawer('account')}><PersonOutline /></IconButton>
+            <IconButton onClick={toggleDrawer('wishlist')}><FavoriteBorder /></IconButton>
+            <IconButton onClick={toggleDrawer('cart')}>
+              <ShoppingBagOutlined />
+              {cart.length > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: 5,
+                  right: 5,
+                  backgroundColor: 'red',
+                  borderRadius: '50%',
+                  width: 18,
+                  height: 18,
+                  fontSize: 12,
+                  color: 'white',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>{cart.length}</span>
+              )}
             </IconButton>
           </Stack>
         </Toolbar>
       </AppBar>
 
       {/* === Account Drawer === */}
-      <Drawer
-        anchor="right"
-        open={openDrawer === "account"}
-        onClose={closeDrawer}
-        PaperProps={{
-          sx: { width: 350, backgroundColor: "#f8f8f8" },
-        }}
-      >
-        <Box sx={{ padding: 3 }}>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: "bold",
-              mb: 2,
-              fontFamily: " serif",
-            }}
-          >
-            {isLoggedIn ? "My Account" : "Welcome Back"}
+      <Drawer anchor="right" open={drawer === 'account'} onClose={closeDrawer}>
+        <Box sx={{ p: 3, width: 350 }}>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            {isLoggedIn ? 'My Account' : 'Welcome Back'}
           </Typography>
 
           {isLoggedIn ? (
             <>
-              <Typography variant="body1" sx={{ mb: 3, fontFamily: " serif" }}>
-                You are logged in.
-              </Typography>
-              <Button
-                variant="outlined"
-                fullWidth
-                onClick={handleLogout}
-                sx={{
-                  color: "#333",
-                  borderColor: "#333",
-                  "&:hover": {
-                    backgroundColor: "#ffebee",
-                    borderColor: "#c62828",
-                    color: "#c62828",
-                  },
-                }}
-              >
+              <Typography sx={{ mb: 2 }}>You are logged in.</Typography>
+              <Button variant="outlined" fullWidth onClick={handleLogout}>
                 Logout
-              </Button>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  mt: 2,
-                  backgroundColor: "#333",
-                  "&:hover": { backgroundColor: "#555" },
-                }}
-                href="/account"
-              >
-                Account Settings
               </Button>
             </>
           ) : (
-            <form onSubmit={handleLogin}>
-              <TextField
-                label="Email Address"
-                type="email"
-                fullWidth
-                margin="normal"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                sx={{ mb: 2, fontFamily: " serif" }}
-              />
-              <Typography
-                variant="body2"
-                sx={{ mb: 1, fontWeight: "bold", fontFamily: " serif" }}
-              >
-                Select your emoji password:
-              </Typography>
-              <EmojiSelector
-                selectedEmojis={emojiPassword}
-                setSelectedEmojis={setEmojiPassword}
-                maxLength={5}
-              />
-              {loginError && (
-                <Typography
-                  color="error"
-                  variant="body2"
-                  sx={{ mt: 1, fontFamily: " serif" }}
-                >
-                  {loginError}
+            <>
+              <form onSubmit={handleLogin}>
+                <TextField
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  margin="normal"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
+                  Select your emoji password:
                 </Typography>
-              )}
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={isLoading || emojiPassword.length < 3}
-                sx={{
-                  mt: 3,
-                  padding: "12px",
-                  backgroundColor: "#146e3a",
-                  "&:hover": { backgroundColor: "#0d5a2c" },
-                  "&:disabled": { backgroundColor: "#e0e0e0" },
-                }}
-              >
-                {isLoading ? "Logging in..." : "Login"}
-              </Button>
-              <Divider sx={{ my: 3 }} />
-              <Typography
-                variant="body2"
-                sx={{ textAlign: "center", fontFamily: "serif" }}
-              >
-                Don't have an account?{" "}
-                <a
-                  href="/register"
-                  style={{
-                    color: "#146e3a",
-                    fontWeight: "bold",
-                    textDecoration: "none",
+                <EmojiSelector
+                  selectedEmojis={emojiPassword}
+                  setSelectedEmojis={setEmojiPassword}
+                  maxLength={5}
+                />
+                {loginError && (
+                  <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                    {loginError}
+                  </Typography>
+                )}
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={isLoading || emojiPassword.length === 0}
+                  sx={{
+                    mt: 3,
+                    backgroundColor: '#146e3a',
+                    '&:hover': { backgroundColor: '#0d5a2c' }
                   }}
                 >
-                  Register here
-                </a>
-              </Typography>
-            </form>
+                  {isLoading ? 'Logging in...' : 'Login'}
+                </Button>
+              </form>
+              {/* ✅ Register Button */}
+              <Button
+                variant="outlined"
+                fullWidth
+                href="/register"
+                sx={{
+                  mt: 2,
+                  color: '#146e3a',
+                  borderColor: '#146e3a',
+                  '&:hover': {
+                    backgroundColor: '#146e3a',
+                    color: 'white'
+                  }
+                }}
+              >
+                Register
+              </Button>
+            </>
           )}
         </Box>
       </Drawer>
 
-      {/* === Search Drawer === */}
-      <Drawer
-        anchor="right"
-        open={openDrawer === "search"}
-        onClose={closeDrawer}
-        PaperProps={{
-          sx: { width: 350, backgroundColor: "#f8f8f8", padding: 3 },
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: "bold",
-              mb: 2,
-              fontFamily: "serif",
-            }}
-          >
-            Search Products
-          </Typography>
-          <TextField
-            fullWidth
-            placeholder="Search Vinoir collection..."
-            variant="outlined"
-            sx={{ mb: 2, fontFamily: " serif" }}
-          />
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              backgroundColor: "#146e3a",
-              "&:hover": { backgroundColor: "#0d5a2c", fontFamily: " serif" },
-            }}
-          >
-            Search
-          </Button>
-        </Box>
-      </Drawer>
-
       {/* === Wishlist Drawer === */}
-      <Drawer
-        anchor="right"
-        open={openDrawer === "wishlist"}
-        onClose={closeDrawer}
-        PaperProps={{
-          sx: { width: 350, backgroundColor: "#f8f8f8", padding: 3 },
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: "bold",
-              mb: 2,
-              fontFamily: "serif",
-            }}
-          >
-            Your Wishlist
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ textAlign: "center", color: "#777" }}
-          >
-            {isLoggedIn
-              ? "Your saved items will appear here"
-              : "Sign in to view your wishlist"}
-          </Typography>
-          {!isLoggedIn && (
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{ mt: 2 }}
-              onClick={() => {
-                closeDrawer();
-                toggleDrawer("account")();
-              }}
-            >
-              Sign In
-            </Button>
+      <Drawer anchor="right" open={drawer === 'wishlist'} onClose={closeDrawer}>
+        <Box sx={{ p: 3, width: 350 }}>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Your Wishlist</Typography>
+          {isLoggedIn ? (
+            wishlist.length === 0 ? (
+              <Typography>No items in wishlist</Typography>
+            ) : (
+              wishlist.map(item => (
+                <Box key={item.id} display="flex" alignItems="center" mb={2}>
+                  <img src={item.image} width={60} height={60} alt={item.name} style={{ objectFit: "cover" }} />
+                  <Box ml={2}>
+                    <Typography>{item.name}</Typography>
+                    <Button size="small" onClick={() => removeFromWishlist(item.id)}>Remove</Button>
+                  </Box>
+                </Box>
+              ))
+            )
+          ) : (
+            <>
+              <Typography sx={{ mb: 2 }}>Sign in to view your wishlist</Typography>
+              <Button fullWidth variant="outlined" onClick={toggleDrawer('account')}>Sign In</Button>
+            </>
           )}
         </Box>
       </Drawer>
 
       {/* === Cart Drawer === */}
-      <Drawer
-        anchor="right"
-        open={openDrawer === "cart"}
-        onClose={closeDrawer}
-        PaperProps={{
-          sx: { width: 350, backgroundColor: "#f8f8f8", padding: 3 },
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: "bold",
-              mb: 2,
-              fontFamily: "serif",
-            }}
-          >
-            Your Cart
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ textAlign: "center", color: "#777", fontFamily: "serif" }}
-          >
-            {isLoggedIn
-              ? "Your cart items will appear here"
-              : "Sign in to view your cart"}
-          </Typography>
-          {!isLoggedIn && (
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{ mt: 2 }}
-              onClick={() => {
-                closeDrawer();
-                toggleDrawer("account")();
-              }}
-            >
-              Sign In
-            </Button>
+      <Drawer anchor="right" open={drawer === 'cart'} onClose={closeDrawer}>
+        <Box sx={{ p: 3, width: 350 }}>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Your Cart ({cart.length})</Typography>
+          {cart.length === 0 ? (
+            <Typography>Your cart is empty</Typography>
+          ) : (
+            <>
+              {cart.map(item => (
+                <Box key={item.id} display="flex" mb={2}>
+                  <img src={item.image} width={60} height={60} alt={item.name} style={{ objectFit: "cover" }} />
+                  <Box ml={2} flexGrow={1}>
+                    <Typography>{item.name}</Typography>
+                    <Typography>${item.price} × {item.quantity}</Typography>
+                    <Stack direction="row" spacing={1} mt={1}>
+                      <Button size="small" onClick={() => updateCartItem(item.id, item.quantity + 1)}>+</Button>
+                      <Button size="small" disabled={item.quantity <= 1} onClick={() => updateCartItem(item.id, item.quantity - 1)}>-</Button>
+                    </Stack>
+                  </Box>
+                  <Button size="small" color="error" onClick={() => removeFromCart(item.id)}>Remove</Button>
+                </Box>
+              ))}
+              <Typography variant="h6" mt={2}>
+                Total: ${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+              </Typography>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => {
+                  navigate('/checkout');
+                  closeDrawer();
+                }}
+                sx={{ mt: 2, backgroundColor: '#146e3a', '&:hover': { backgroundColor: '#0d5a2c' } }}
+              >
+                Checkout
+              </Button>
+            </>
           )}
+        </Box>
+      </Drawer>
+
+      {/* === Search Drawer (Optional Placeholder) === */}
+      <Drawer anchor="right" open={drawer === 'search'} onClose={closeDrawer}>
+        <Box sx={{ p: 3, width: 350 }}>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Search</Typography>
+          <TextField fullWidth placeholder="Search our collection..." variant="outlined" sx={{ mb: 2 }} />
+          <Button fullWidth variant="contained" sx={{ backgroundColor: '#146e3a' }}>Search</Button>
         </Box>
       </Drawer>
     </>
