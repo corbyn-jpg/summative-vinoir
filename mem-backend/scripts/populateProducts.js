@@ -54,7 +54,7 @@ const products = [
     stock: 12,
     featured: false,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750284849/dior4_jdxryd.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750441644/dior4_sejvq4.jpg',
       altText: 'Velvet Rose bottle'
     }]
   },
@@ -182,6 +182,78 @@ const products = [
     images: [{
       url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750338252/dior10_wclljh.jpg',
       altText: 'Jardin Secret bottle'
+    }]
+  },
+  {
+    name: 'Éclat de Lune',
+    price: 1750,
+    description: 'A luminous blend of white florals and creamy woods, capturing the essence of moonlit elegance.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Pear Blossom', 'Pink Pepper'],
+      middleNotes: ['Tuberose', 'Gardenia'],
+      baseNotes: ['Cashmere Wood', 'White Musk']
+    },
+    size: '100ml',
+    stock: 11,
+    featured: true,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750456344/dior16_q0cggn.jpg',
+      altText: 'Éclat de Lune bottle'
+    }]
+  },
+  {
+    name: 'Aqua Serein',
+    price: 1350,
+    description: 'A crisp aquatic fragrance with cool marine breezes and a zest of citrus.',
+    category: 'Eau de Toilette',
+    fragranceNotes: {
+      topNotes: ['Sea Salt', 'Lime'],
+      middleNotes: ['Driftwood', 'Ivy Leaf'],
+      baseNotes: ['Ambergris', 'Vetiver']
+    },
+    size: '100ml',
+    stock: 20,
+    featured: false,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750455925/dior15_cnsu0o.jpg',
+      altText: 'Aqua Serein bottle'
+    }]
+  },
+  {
+    name: 'Crimson Noir',
+    price: 1850,
+    description: 'An intense, seductive blend of spice, leather, and smoky woods.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Cinnamon', 'Black Pepper'],
+      middleNotes: ['Leather', 'Incense'],
+      baseNotes: ['Oud', 'Smoked Vanilla']
+    },
+    size: '100ml',
+    stock: 7,
+    featured: true,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750455782/dior14_kyhrtm.jpg',
+      altText: 'Crimson Noir bottle'
+    }]
+  },
+  {
+    name: 'Fleur Blanche',
+    price: 1500,
+    description: 'Delicate purple petals layered with soft musks and powdery iris.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Aldehydes', 'Lily of the Valley'],
+      middleNotes: ['White Rose', 'Iris'],
+      baseNotes: ['Powder Musk', 'Benzoin']
+    },
+    size: '100ml',
+    stock: 14,
+    featured: false,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750456775/dior17_srhldq.jpg',
+      altText: 'Fleur Blanche bottle'
     }]
   }
 ];
