@@ -1,37 +1,140 @@
-.promo-container {
+/* Luxury Container */
+.promo-luxury-container {
   width: 100%;
-  margin: 3rem 0;
-  padding: 0 1rem;
+  margin: 4rem 0;
+  position: relative;
 }
 
-.promo-slider {
+/* Title Styling */
+.promo-luxury-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #333;
+  margin-bottom: 2rem;
   position: relative;
-  height: 60vh;
-  max-height: 600px;
+}
+
+.promo-luxury-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: #b8860b;
+  margin: 1rem auto 0;
+}
+
+/* Carousel Container */
+.promo-carousel-container {
+  position: relative;
+  width: 100%;
+  padding: 0 2rem;
   overflow: hidden;
 }
 
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1s ease;
+.promo-carousel {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  transition: transform 0.5s ease;
 }
 
-.slide.active {
+/* Card Styling */
+.promo-luxury-card {
+  width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  transform: scale(0.9);
+}
+
+.promo-luxury-card.active-card {
   opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  z-index: 2;
 }
 
-.slide-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 2rem;
+.promo-luxury-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.promo-luxury-content {
+  background: white;
+  padding: 1.5rem;
   text-align: center;
+}
+
+.promo-item-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.promo-item-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Indicators */
+.promo-luxury-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.luxury-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.luxury-dot.active {
+  background: #b8860b;
+  transform: scale(1.3);
+}
+
+/* Animations */
+.promo-carousel-container.transitioning .promo-carousel {
+  transition: transform 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .promo-carousel {
+    gap: 1rem;
+  }
+  
+  .promo-luxury-card {
+    width: 250px;
+  }
+  
+  .promo-luxury-image {
+    height: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .promo-luxury-title {
+    font-size: 1.8rem;
+  }
+  
+  .promo-luxury-card {
+    width: 200px;
+  }
+  
+  .promo-luxury-image {
+    height: 200px;
+  }
 }
