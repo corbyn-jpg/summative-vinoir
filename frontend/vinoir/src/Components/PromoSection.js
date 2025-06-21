@@ -3,6 +3,7 @@ import { Box, Typography, IconButton, Card, CardMedia, CardContent } from "@mui/
 import "./PromoSection.css";
 import "./ProductCard.css";
 
+
 const PromoSection = ({ products = [] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);

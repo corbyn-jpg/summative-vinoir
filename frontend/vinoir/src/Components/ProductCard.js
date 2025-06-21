@@ -1,32 +1,34 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { useCart } from "../context/CartContext";
 import "./ProductCard.css";
 
-function ProductCard({ product }) {
+const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
 
   return (
-    <div className="vinoir-product-card">
-      <div className="vinoir-product-image-container">
+    <Box className="vinoir-product-card">
+      <Box className="vinoir-product-image-container">
         <img
-          src={product.images?.[0]?.url || "/images/fallback.jpg"}
-          alt={product.images?.[0]?.altText || product.name}
+          src={product.images?.[0]?.url || '/images/fallback.jpg'}
+          alt={product.name}
           className="vinoir-product-image"
+          onError={(e) => {
+            e.target.src = '/images/fallback.jpg';
+          }}
         />
-      </div>
-
-      <div className="vinoir-product-details">
-        <h3 className="vinoir-product-name">{product.name}</h3>
-
-        {product.price && (
-          <p className="vinoir-product-price">R {product.price}</p>
-        )}
-
-        {product.description && (
-          <p className="vinoir-product-description">{product.description}</p>
-        )}
-
+      </Box>
+      
+      <Box className="vinoir-product-details">
+        <Typography className="vinoir-product-name">
+          {product.name}
+        </Typography>
+        <Typography className="vinoir-product-category">
+          {product.category}
+        </Typography>
+        <Typography className="vinoir-product-price">
+          R {product.price.toFixed(2)}
+        </Typography>
         <Button
           variant="outlined"
           className="add-to-cart-btn"
@@ -37,16 +39,15 @@ function ProductCard({ product }) {
             borderColor: "#146e3a",
             "&:hover": {
               backgroundColor: "#146e3a",
-              color: "white",
-              borderColor: "#146e3a",
-            },
+              color: "white"
+            }
           }}
         >
-          Add to Cart
+          ADD TO CART
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
-}
+};
 
 export default ProductCard;

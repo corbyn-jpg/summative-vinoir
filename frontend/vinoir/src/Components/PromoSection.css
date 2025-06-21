@@ -101,7 +101,7 @@
 }
 
 .luxury-dot.active {
-  background: #b8860b;
+  background: #000000;
   transform: scale(1.3);
 }
 
