@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Typography, Button } from '@mui/material';
 import ProductCard from '../../Components/ProductCard';
-import './ShopPage.css'; // Import ShopPage.css for the shop page
+import './ShopPage.css'; 
 
 class WishlistPage extends Component {
   constructor(props) {
