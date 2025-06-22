@@ -26,39 +26,34 @@ function Home() {
     fetchProducts();
   }, []);
 
-  if (loading) return (
-    <Box display="flex" justifyContent="center" mt={4}>
-      <CircularProgress />
-    </Box>
-  );
-
-  if (error) return (
-    <Box textAlign="center" mt={4}>
-      Error: {error}
-    </Box>
-  );
-
   return (
-    <Box component="main" sx={{
-      pt: { xs: '130px', sm: '180px' },
-      px: { xs: 2, sm: 3 },
-      pb: 4
-    }}>
-      {/* Hero Section */}
-      <HeroSection
-        title="Welcome to Vinoir"
-        subtitle="An Invitation to Venture Away"
-        buttonText="Discover"
-        backgroundImage="/images/dummy-image.jpg"
-      />
+    <Box component="main" sx={{ pt: { xs: '130px', sm: '180px' }, px: { xs: 2, sm: 3 }, pb: 4 }}>
+      {loading ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Box textAlign="center" mt={4}>
+          Error: {error}
+        </Box>
+      ) : (
+        <>
+          {/* Hero Section */}
+          <HeroSection
+            title="Welcome to Vinoir"
+            subtitle="An Invitation to Venture Away"
+            buttonText="Discover"
+            backgroundImage="/images/dummy-image.jpg"
+          />
 
-      {/* Promo Section */}
-      <PromoSection products={products} />
+          {/* Promo Section */}
+          <PromoSection products={products} />
 
-      {/* Shop Section */}
-      <ShopSection products={products} />
+          {/* Shop Section */}
+          <ShopSection products={products} />
+        </>
+      )}
     </Box>
   );
 }
-
 export default Home;
