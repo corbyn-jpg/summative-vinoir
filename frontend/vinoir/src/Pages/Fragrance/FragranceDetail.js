@@ -1,111 +1,159 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import ProductService from '../../services/ProductService';
-import { Box, Typography, Button, CircularProgress } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { Box, Typography, Button, CircularProgress, Tabs, Tab, Grid } from '@mui/material';
 import { useCart } from '../../context/CartContext';
+import ProductCard from '../../Components/ProductCard';
 
-function FragranceDetail() {
+function ProductPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { addToCart } = useCart();
-
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [recommended, setRecommended] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const productData = await ProductService.getProductById(id);
-        if (!productData) {
-          setError('Product not found');
-        } else {
-          setProduct(productData);
-        }
+        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        if (!response.ok) throw new Error('Product not found');
+        const data = await response.json();
+        setProduct(data);
+
+        const recommendedRes = await fetch('http://localhost:5000/api/products');
+        const allProducts = await recommendedRes.json();
+        const filtered = allProducts.filter(p => p._id !== id).slice(0, 3); // 3 recommended
+        setRecommended(filtered);
       } catch (err) {
         setError(err.message);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProduct();
   }, [id]);
 
-  if (loading) {
-    return (
-      <Box sx={{ textAlign: 'center', mt: 6 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  if (loading) return (
+    <Box sx={{ textAlign: 'center', mt: 6 }}>
+      <CircularProgress />
+    </Box>
+  );
 
-  if (error) {
-    return (
-      <Box sx={{ textAlign: 'center', mt: 6 }}>
-        <Typography variant="h6" color="error">{error}</Typography>
-        <Button sx={{ mt: 2 }} onClick={() => navigate('/')}>
-          Return Home
-        </Button>
-      </Box>
-    );
-  }
+  if (error || !product || !product._id) return (
+    <Box sx={{ textAlign: 'center', mt: 6 }}>
+      <Typography variant="h4" sx={{ color: '#c62828', fontWeight: 'bold' }}>
+        {error || 'Product not found'}
+      </Typography>
+    </Box>
+  );
 
   return (
-    <Box
-      sx={{
-        maxWidth: '800px',
-        margin: '3rem auto',
-        padding: '2rem',
-        borderRadius: '12px',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-        background: 'linear-gradient(145deg, #fff, #f3f3f3)',
-      }}
-    >
-      <img
-        src={product.images[0]?.url}
-        alt={product.images[0]?.altText || product.name}
-        style={{ width: '100%', borderRadius: '12px', marginBottom: '1.5rem' }}
-      />
+    <Box sx={{ maxWidth: 1400, mx: '0', px: 3, py: 6 }}> {/* wider container, aligned left */}
+      {/* Product Detail Grid */}
+      <Grid container spacing={6} alignItems="flex-start">
+        <Grid item xs={12} md={6}>
+          <Box
+            sx={{
+              backgroundColor: '#f8f5f2',
+              borderRadius: 2,
+              overflow: 'hidden',
+              height: { xs: 350, md: 500 },
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <img
+              src={product.images?.[0]?.url || '/images/fallback.jpg'}
+              alt={product.name}
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+            />
+          </Box>
+        </Grid>
 
-      <Typography
-        variant="h4"
-        sx={{
-          fontFamily: 'Playfair Display, serif',
-          fontWeight: 'bold',
-          textAlign: 'center',
-          color: '#222',
-          mb: 2,
-        }}
-      >
-        {product.name}
-      </Typography>
+        <Grid item xs={12} md={6}>
+          <Box sx={{ ml: { md: 2 }, mr: { md: 6 } }}> {/* keeps content next to image */}
+            <Typography
+              variant="h4"
+              sx={{ fontFamily: 'Playfair Display, serif', fontWeight: 'bold', mb: 1, color: '#222' }}
+            >
+              {product.name}
+            </Typography>
 
-      <Typography variant="h6" sx={{ textAlign: 'center', color: '#555', mb: 1 }}>
-        ${product.price}
-      </Typography>
+            <Typography variant="subtitle1" sx={{ color: '#222', mb: 1 }}>
+              {product.category} • {product.size || 'Standard'}
+            </Typography>
 
-      <Typography sx={{ textAlign: 'center', color: '#333', mb: 3 }}>
-        {product.description}
-      </Typography>
+            <Typography variant="h5" sx={{ mb: 3, color: '#222' }}>
+              ${product.price.toFixed(2)}
+            </Typography>
 
-      <Button
-        variant="contained"
-        onClick={() => addToCart(product)}
-        sx={{
-          display: 'block',
-          mx: 'auto',
-          backgroundColor: '#146e3a',
-          fontWeight: 'bold',
-          '&:hover': {
-            backgroundColor: '#0d5a2c',
-          },
-        }}
-      >
-        Add to Cart
-      </Button>
+            <Button
+              variant="contained"
+              onClick={() => addToCart(product)}
+              size="large"
+              sx={{ backgroundColor: '#146e3a', py: 1.5, width: '100%', mb: 3, '&:hover': { backgroundColor: '#0d5a2c' } }}
+            >
+              Add to Bag
+            </Button>
+
+            <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} centered sx={{ mb: 3 }}>
+              <Tab label="Description" />
+              <Tab label="Ingredients" />
+            </Tabs>
+
+            <Box>
+              {tabIndex === 0 && (
+                <Typography sx={{ color: '#333', mb: 3 }}>{product.description}</Typography>
+              )}
+              {tabIndex === 1 && (
+                <Typography sx={{ color: '#333', mb: 3 }}>
+                  {[
+                    ...(product.fragranceNotes?.topNotes || []),
+                    ...(product.fragranceNotes?.middleNotes || []),
+                    ...(product.fragranceNotes?.baseNotes || []),
+                  ].join(', ')}
+                </Typography>
+              )}
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+
+      {/* Recommended Products */}
+      <Box sx={{ mt: 8 }} className="dior-shop-section">
+  <Typography 
+    variant="h4" 
+    className="dior-shop-title"
+    sx={{ mb: 4, color: '#222' }}
+  >
+    You may also like
+  </Typography>
+  
+  <Box className="dior-product-grid">
+    {recommended.map((rec) => (
+      <Box key={rec._id} className="dior-product-item">
+        <Box className="dior-product-image-container">
+          <img
+            src={rec.images?.[0]?.url || '/images/fallback.jpg'}
+            alt={rec.name}
+            className="dior-product-image"
+          />
+        </Box>
+        <Typography className="dior-product-title">{rec.name}</Typography>
+        <Typography className="dior-product-subtitle">{rec.category}</Typography>
+        <Typography className="dior-product-subtitle">${rec.price.toFixed(2)}</Typography>
+      </Box>
+    ))}
+  </Box>
+</Box>
+
     </Box>
   );
 }
 
-export default FragranceDetail;
+export default ProductPage;
