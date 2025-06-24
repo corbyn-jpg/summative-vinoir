@@ -1,19 +1,19 @@
-// src/services/ProductService.js
 class ProductService {
-  constructor() {
-    this.baseUrl = 'api/products'; 
+  async getAllProducts() {
+    const response = await fetch('http://localhost:5000/api/products');
+    if (!response.ok) {
+      throw new Error('Failed to fetch products');
+    }
+    return response.json();
   }
 
-  async getAllProducts() {
-    try {
-      const response = await fetch(this.baseUrl);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-      throw error;
-    }
+  async getProductById(id) {
+    const response = await fetch(`http://localhost:5000/api/products/${id}`);
+    if (response.status === 404) return null;
+    if (!response.ok) throw new Error('Failed to fetch product');
+    return response.json();
   }
 }
 
-export default new ProductService();
+const productService = new ProductService();
+export default productService;

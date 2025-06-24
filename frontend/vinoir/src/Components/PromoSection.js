@@ -8,72 +8,67 @@ const PromoSection = ({ products = [] }) => {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
 
-  // Generate promo items or use sample data
-  const promoItems = products.length > 0
-    ? products.filter(p => p.featured).slice(0, 5)
-    : Array(5).fill().map((_, i) => ({
-        id: i + 1,
-        name: `Sample Product ${i + 1}`,
-        description: "Premium fragrance collection",
-        images: [{ url: `/images/promo${i + 1}.jpg` }]
-      }));
+  // Use only real, featured products (avoid fallback)
+  const promoItems = products.filter(p => p.featured && p._id).slice(0, 5);
 
-  // Auto-rotate functionality
+  // Auto-rotate logic
   useEffect(() => {
     if (promoItems.length <= 1) return;
-    
+
     const rotate = () => {
       if (!isHovered) {
         setActiveIndex(prev => (prev + 1) % promoItems.length);
       }
     };
-    
+
     intervalRef.current = setInterval(rotate, 3000);
     return () => clearInterval(intervalRef.current);
   }, [promoItems.length, isHovered]);
 
-  // Calculate card positions
+  // Card position style
   const getCardStyle = (index) => {
     const total = promoItems.length;
     const position = (index - activeIndex + total) % total;
-    
+
     if (position === 0) {
-      return { // Center card
+      return {
         transform: 'translateX(0) scale(1)',
         zIndex: 5,
         opacity: 1,
         filter: 'none'
       };
     } else if (position === 1) {
-      return { // Right card
+      return {
         transform: 'translateX(50%) scale(0.9)',
         zIndex: 4,
         opacity: 0.9,
         filter: 'brightness(0.95)'
       };
     } else if (position === total - 1) {
-      return { // Left card
+      return {
         transform: 'translateX(-50%) scale(0.9)',
         zIndex: 4,
         opacity: 0.9,
         filter: 'brightness(0.95)'
       };
     } else {
-      return { // Hidden cards
-        transform: position < total/2 
+      return {
+        transform: position < total / 2 
           ? 'translateX(-90%) scale(0.8)' 
           : 'translateX(90%) scale(0.8)',
-        zIndex: 3 - Math.abs(position - total/2),
+        zIndex: 3 - Math.abs(position - total / 2),
         opacity: 0,
         pointerEvents: 'none'
       };
     }
   };
 
+  if (promoItems.length === 0) return null;
+
   return (
     <Box 
       sx={{
-        py: 14, // Increased vertical padding
+        py: 14,
         backgroundColor: "#f8f5f2",
         width: "100%",
         overflow: "hidden",
@@ -84,20 +79,20 @@ const PromoSection = ({ products = [] }) => {
     >
       <Typography variant="h2" sx={{
         fontWeight: 700,
-        letterSpacing: 2, // Slightly more letter spacing
+        letterSpacing: 2,
         textAlign: "center",
         color: "#731d8d",
-        mb: 10, // Increased bottom margin
-        fontSize: "2.5rem", // Larger title
+        mb: 10,
+        fontSize: "2.5rem",
         textTransform: "uppercase",
         position: "relative",
         '&::after': {
           content: '""',
           display: "block",
-          width: 120, // Wider underline
-          height: 5, // Thicker underline
+          width: 120,
+          height: 5,
           backgroundColor: "#146e3a",
-          margin: "30px auto 0", // More spacing
+          margin: "30px auto 0",
           borderRadius: 3,
         }
       }}>
@@ -106,7 +101,7 @@ const PromoSection = ({ products = [] }) => {
 
       <Box sx={{
         width: "100%",
-        height: "700px", // Taller container
+        height: "700px",
         position: "relative",
         display: "flex",
         justifyContent: "center",
@@ -114,18 +109,18 @@ const PromoSection = ({ products = [] }) => {
       }}>
         {promoItems.map((item, index) => {
           const style = getCardStyle(index);
-          
+
           return (
             <Card
-              key={item.id || item._id}
-              onClick={() => navigate(`/fragrance/${item._id || item.id}`)}
+              key={item._id}
+              onClick={() => navigate(`/fragrance/${item._id}`)}
               sx={{
                 position: "absolute",
-                width: "450px", // Wider cards (from 400px)
-                height: "600px", // Taller cards (from 520px)
-                borderRadius: "24px", // More rounded
+                width: "450px",
+                height: "600px",
+                borderRadius: "24px",
                 backgroundColor: "#fff",
-                boxShadow: "0 20px 50px rgba(0,0,0,0.15)", // Deeper shadow
+                boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
                 cursor: "pointer",
                 transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                 overflow: "hidden",
@@ -142,11 +137,11 @@ const PromoSection = ({ products = [] }) => {
                 alt={item.name}
                 sx={{
                   width: "100%",
-                  height: "72%", // Slightly more image space
+                  height: "72%",
                   objectFit: "cover",
                   transition: "transform 0.3s ease",
                   '&:hover': {
-                    transform: "scale(1.07)" // More pronounced hover
+                    transform: "scale(1.07)"
                   }
                 }}
               />
@@ -157,13 +152,13 @@ const PromoSection = ({ products = [] }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 textAlign: "center",
-                px: 5 // More padding
+                px: 5
               }}>
                 <Typography variant="h5" sx={{ 
                   fontWeight: 600, 
-                  mb: 2, // More spacing
+                  mb: 2,
                   color: "#333",
-                  fontSize: "1.5rem", // Larger text
+                  fontSize: "1.5rem",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -174,7 +169,7 @@ const PromoSection = ({ products = [] }) => {
                 <Typography variant="body1" sx={{ 
                   color: "#666", 
                   lineHeight: 1.6,
-                  fontSize: "1.1rem", // Slightly larger
+                  fontSize: "1.1rem",
                   display: "-webkit-box",
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: "vertical",
@@ -188,26 +183,25 @@ const PromoSection = ({ products = [] }) => {
         })}
       </Box>
 
-      {/* Navigation dots */}
       <Box sx={{
         display: "flex",
         justifyContent: "center",
-        gap: 2, // More space between dots
-        mt: 10 // More top margin
+        gap: 2,
+        mt: 10
       }}>
         {promoItems.map((_, index) => (
           <Box
             key={index}
             onClick={() => setActiveIndex(index)}
             sx={{
-              width: "16px", // Larger dots
-              height: "16px", // Larger dots
+              width: "16px",
+              height: "16px",
               borderRadius: "50%",
               backgroundColor: activeIndex === index ? "#731d8d" : "#ddd",
               cursor: "pointer",
               transition: "all 0.3s ease",
               '&:hover': {
-                transform: "scale(1.4)", // More dramatic hover
+                transform: "scale(1.4)",
                 backgroundColor: activeIndex === index ? "#5a166f" : "#ccc"
               }
             }}

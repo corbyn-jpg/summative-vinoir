@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import ProductService from '../../services/ProductService';
+import { useParams } from 'react-router-dom';
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { useCart } from '../../context/CartContext';
 
-function FragranceDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+function ProductPage() {
+  const { id } = useParams(); // Get product ID from URL
   const { addToCart } = useCart();
-
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const productData = await ProductService.getProductById(id);
-        if (!productData) {
-          setError('Product not found');
-        } else {
-          setProduct(productData);
+        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        if (!response.ok) {
+          throw new Error('Product not found');
         }
+        const data = await response.json();
+        setProduct(data);
       } catch (err) {
         setError(err.message);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
@@ -40,13 +40,12 @@ function FragranceDetail() {
     );
   }
 
-  if (error) {
+  if (error || !product || !product._id) {
     return (
       <Box sx={{ textAlign: 'center', mt: 6 }}>
-        <Typography variant="h6" color="error">{error}</Typography>
-        <Button sx={{ mt: 2 }} onClick={() => navigate('/')}>
-          Return Home
-        </Button>
+        <Typography variant="h4" sx={{ color: '#c62828', fontWeight: 'bold' }}>
+          {error || 'Product not found'}
+        </Typography>
       </Box>
     );
   }
@@ -58,48 +57,43 @@ function FragranceDetail() {
         margin: '3rem auto',
         padding: '2rem',
         borderRadius: '12px',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-        background: 'linear-gradient(145deg, #fff, #f3f3f3)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+        background: 'linear-gradient(145deg, #ffffff, #f3f3f3)',
       }}
     >
       <img
-        src={product.images[0]?.url}
-        alt={product.images[0]?.altText || product.name}
-        style={{ width: '100%', borderRadius: '12px', marginBottom: '1.5rem' }}
+        src={product.images?.[0]?.url || '/images/fallback.jpg'}
+        alt={product.images?.[0]?.altText || product.name}
+        style={{ width: '100%', height: 'auto', borderRadius: '12px', marginBottom: '1.5rem' }}
       />
-
       <Typography
         variant="h4"
         sx={{
           fontFamily: 'Playfair Display, serif',
           fontWeight: 'bold',
           textAlign: 'center',
+          marginBottom: '1rem',
           color: '#222',
-          mb: 2,
         }}
       >
         {product.name}
       </Typography>
-
-      <Typography variant="h6" sx={{ textAlign: 'center', color: '#555', mb: 1 }}>
+      <Typography variant="h6" sx={{ textAlign: 'center', color: '#555', marginBottom: '1rem' }}>
         ${product.price}
       </Typography>
-
-      <Typography sx={{ textAlign: 'center', color: '#333', mb: 3 }}>
+      <Typography sx={{ textAlign: 'center', color: '#333', marginBottom: '2rem' }}>
         {product.description}
       </Typography>
-
       <Button
         variant="contained"
         onClick={() => addToCart(product)}
         sx={{
           display: 'block',
-          mx: 'auto',
+          margin: '0 auto',
           backgroundColor: '#146e3a',
+          color: '#fff',
           fontWeight: 'bold',
-          '&:hover': {
-            backgroundColor: '#0d5a2c',
-          },
+          '&:hover': { backgroundColor: '#0d5a2c' },
         }}
       >
         Add to Cart
@@ -108,4 +102,4 @@ function FragranceDetail() {
   );
 }
 
-export default FragranceDetail;
+export default ProductPage;

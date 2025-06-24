@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { CssBaseline, Typography, Button } from '@mui/material';
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext';
@@ -10,6 +10,7 @@ import { WishlistProvider } from './context/WishlistContext';
 // Global Components
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
+import HamburgerMenu from './Components/HamburgerMenu';
 
 // General Pages
 import Home from './Pages/Home';
@@ -26,7 +27,24 @@ import WishlistPage from './Pages/Shop/WishlistPage';
 
 // Shop Pages
 import ShopPage from './Pages/Shop/ShopPage';
-import FragranceDetail from './Pages/Fragrance/FragranceDetail'; 
+import FragranceDetail from './Pages/Fragrance/FragranceDetail';
+
+// 404 Fallback as a nested component to use useNavigate
+function NotFoundFallback() {
+  const navigate = useNavigate();
+  return (
+    <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <Typography variant="h4">404 - Page Not Found</Typography>
+      <Button 
+        variant="contained" 
+        sx={{ mt: 2 }}
+        onClick={() => navigate('/')}
+      >
+        Return Home
+      </Button>
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -37,7 +55,8 @@ function App() {
           <WishlistProvider>
             <div className="App">
               <Navbar />
-              <main>
+              <HamburgerMenu />
+              <main style={{ minHeight: '80vh' }}>
                 <Routes>
                   {/* General Routes */}
                   <Route path="/" element={<Home />} />
@@ -54,17 +73,10 @@ function App() {
 
                   {/* Shop Routes */}
                   <Route path="/shop" element={<ShopPage />} />
-                  <Route path="/fragrance/:id" element={<FragranceDetail />} /> {/* ✅ NEW */}
+                  <Route path="/fragrance/:id" element={<FragranceDetail />} />
 
                   {/* Fallback */}
-                  <Route
-                    path="*"
-                    element={
-                      <div style={{ padding: '2rem', textAlign: 'center' }}>
-                        Page Not Found
-                      </div>
-                    }
-                  />
+                  <Route path="*" element={<NotFoundFallback />} />
                 </Routes>
               </main>
               <Footer />
