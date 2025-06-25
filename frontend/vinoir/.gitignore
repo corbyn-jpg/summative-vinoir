@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 [pP]ack/
 [Oo]ld/
+.pack
+.old
