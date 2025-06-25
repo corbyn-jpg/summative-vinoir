@@ -1,10 +1,13 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  background-color: #272727;
-  color: #a5a9b4;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #146e3a;
+  color: white;
   scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 html {
@@ -12,17 +15,17 @@ html {
 }
 
 .App {
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+
 }
 
 /* Main content spacing after hero */
 main {
-  background-color: #2a4936;
-  z-index: 1;
+  background-color: #2A4936;;
   position: relative;
+  flex: 1
 }
 
 @media (max-width: 900px) {
