@@ -1,137 +1,161 @@
-import React, { useEffect, useState } from 'react'; 
-import { Box, Typography, TextField, Select, MenuItem, CircularProgress, Tabs, Tab, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import { 
+  TextField, 
+  Select, 
+  MenuItem, 
+  Typography,
+  CircularProgress,
+  Alert,
+  Grid,
+  Box
+} from '@mui/material';
+import ProductCard from '../../Components/ProductCard';
 import ProductService from '../../services/ProductService';
+import { Link } from 'react-router-dom';
 import './ShopPage.css';
 
-function ShopPage() {
-  const [products, setProducts] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [category, setCategory] = useState('all');
-  const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState(0);
+class ShopPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      filter: '',
+      category: 'all',
+      isLoading: true,
+      error: null
+    };
+  }
 
-  // Format price as "R1,200.00"
-  const formatRand = (num) =>
-    'R' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  componentDidMount() {
+    this.fetchProducts();
+  }
 
-  useEffect(() => {
-    ProductService.getAllProducts()
-      .then((data) => {
-        setProducts(data);
-        setFiltered(data);
-      })
-      .catch(() => {
-        setFiltered([]);
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  fetchProducts = async () => {
+    try {
+      console.log('[ShopPage] Fetching products...');
+      const products = await ProductService.getAllProducts();
+      console.log('[ShopPage] Products received:', products);
+      this.setState({ 
+        products,
+        isLoading: false,
+        error: null
+      });
+    } catch (error) {
+      console.error('[ShopPage] Error fetching products:', error);
+      this.setState({ 
+        isLoading: false,
+        error: 'Failed to load products. Please try again later.'
+      });
+    }
+  };
 
-  useEffect(() => {
-    const filteredProducts = products.filter((p) => {
-      const matchCategory = category === 'all' || p.category === category;
-      const matchFilter =
-        p.name.toLowerCase().includes(filter.toLowerCase()) ||
-        p.description.toLowerCase().includes(filter.toLowerCase());
-      return matchCategory && matchFilter;
+  handleFilterChange = (e) => {
+    this.setState({ filter: e.target.value });
+  };
+
+  handleCategoryChange = (e) => {
+    this.setState({ category: e.target.value });
+  };
+
+  getFilteredProducts() {
+    const { products, filter, category } = this.state;
+    return products.filter((product) => {
+      const matchesSearch = product.name.toLowerCase().includes(filter.toLowerCase()) ||
+                           product.description.toLowerCase().includes(filter.toLowerCase());
+      const matchesCategory = category === 'all' || product.category === category;
+      return matchesSearch && matchesCategory;
     });
-    setFiltered(filteredProducts);
-  }, [filter, category, products]);
+  }
 
-  if (loading) {
+  render() {
+    const { filter, category, isLoading, error } = this.state;
+    const filteredProducts = this.getFilteredProducts();
+
+    if (isLoading) {
+      return (
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          height: '50vh'
+        }}>
+          <CircularProgress size={60} />
+          <Typography variant="h6" sx={{ ml: 2 }}>Loading fragrances...</Typography>
+        </Box>
+      );
+    }
+
+    if (error) {
+      return (
+        <Alert severity="error" sx={{ m: 3 }}>
+          {error}
+        </Alert>
+      );
+    }
+
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <CircularProgress size={60} />
-        <Typography variant="h6" sx={{ ml: 2 }}>Loading fragrances...</Typography>
+      <Box sx={{ p: 3 }}>
+        {/* Header Section */}
+        <Box sx={{ mb: 4, textAlign: 'center' }}>
+          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 2 }}>
+            Our Luxury Fragrances
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary">
+            Discover our exquisite collection of premium perfumes
+          </Typography>
+        </Box>
+
+        {/* Filter Controls */}
+        <Grid container spacing={2} sx={{ mb: 4 }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              fullWidth
+              label="Search fragrances"
+              variant="outlined"
+              value={filter}
+              onChange={this.handleFilterChange}
+              size="small"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Select
+              fullWidth
+              value={category}
+              onChange={this.handleCategoryChange}
+              size="small"
+            >
+              <MenuItem value="all">All Categories</MenuItem>
+              <MenuItem value="Eau de Parfum">Eau de Parfum</MenuItem>
+              <MenuItem value="Eau de Toilette">Eau de Toilette</MenuItem>
+            </Select>
+          </Grid>
+        </Grid>
+
+        {/* Products Grid */}
+        {filteredProducts.length === 0 ? (
+          <Typography variant="h6" sx={{ textAlign: 'center', my: 4 }}>
+            No fragrances found matching your criteria
+          </Typography>
+        ) : (
+          <Grid container spacing={4}>
+            {filteredProducts.map((product) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+                <Link
+                  to={`/fragrance/${product._id}`}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <ProductCard 
+                    product={product}
+                    sx={{ height: '100%' }}
+                  />
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     );
   }
-
-  return (
-    <Box sx={{ p: { xs: 2, md: 6 } }}>
-      {/* Header */}
-      <Typography variant="h3" sx={{ fontWeight: 'bold', textAlign: 'center', mb: 3 }}>
-        Shop Luxury Fragrances
-      </Typography>
-      <Typography variant="subtitle1" sx={{ textAlign: 'center', color: 'gray', mb: 5 }}>
-        Explore our signature scents
-      </Typography>
-
-      {/* Filters */}
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={4}>
-          <TextField
-            label="Search by name or description"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            fullWidth
-          >
-            <MenuItem value="all">All Categories</MenuItem>
-            <MenuItem value="Eau de Parfum">Eau de Parfum</MenuItem>
-            <MenuItem value="Eau de Toilette">Eau de Toilette</MenuItem>
-          </Select>
-        </Grid>
-      </Grid>
-
-      {/* Tabs Section */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-        <Tabs value={tab} onChange={(e, v) => setTab(v)} centered>
-          <Tab label="All Products" />
-          <Tab label="Recommended" />
-        </Tabs>
-      </Box>
-
-      {/* Product Grid */}
-      <Box className="product-grid">
-        {(tab === 0 ? filtered : products.slice(0, 4)).map((product) => (
-          <Box key={product._id} className="product-item">
-            <Link to={`/fragrance/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Box 
-                sx={{ 
-                  backgroundColor: '#f8f5f2',
-                  borderRadius: 2,
-                  overflow: 'hidden',
-                  height: 300,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  mb: 2
-                }}
-              >
-                <img
-                  src={product.images?.[0]?.url || '/images/fallback.jpg'}
-                  alt={product.name}
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    objectFit: 'contain',
-                    width: 'auto',
-                    height: 'auto'
-                  }}
-                />
-              </Box>
-              <Box sx={{ p: 1.5 }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  {product.name}
-                </Typography>
-                <Typography variant="body1" sx={{ color: '#000000', fontWeight: 'bold' }}>
-                  {formatRand(product.price)}
-                </Typography>
-              </Box>
-            </Link>
-          </Box>
-        ))}
-      </Box>
-    </Box>
-  );
 }
 
 export default ShopPage;

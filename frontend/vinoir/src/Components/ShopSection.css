@@ -1,92 +1,133 @@
-/* ShopSection.css */
-.shop-teaser {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.shop-teaser-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.shop-teaser-title {
-  font-family: 'Georgia', serif;
-  font-size: 2rem;
-  color: #333;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
-}
-
-.shop-teaser-subtitle {
-  color: #666;
-  font-size: 1rem;
-}
-
-.shop-teaser-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.product-card {
-  background: white;
-  border-radius: 8px;
+/* Shop Section Container */
+.dior-shop-section {
+  padding: 80px 0;
+  position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
-
-.product-image-container {
-  aspect-ratio: 1/1;
-  overflow: hidden;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.product-card:hover .product-image {
-  transform: scale(1.05);
-}
-
-.product-info {
-  padding: 1.25rem;
-  text-align: center;
-}
-
-.product-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 0.25rem;
-}
-
-.product-category {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.product-price {
+/* Shop Title */
+.dior-shop-title {
   font-weight: 700;
-  color: #146e3a;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #b4b9b9;
+  position: relative;
+  padding-bottom: 1.5rem;
 }
 
-@media (max-width: 768px) {
-  .shop-teaser {
-    padding: 1.5rem 1rem;
+/* Product Grid */
+.dior-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Product Card Styling (matches PromoSection) */
+.dior-product-item {
+  width: 30vw;
+  min-width: 400px;
+  height: 55vh;
+  min-height: 500px;
+  border-radius: 16px;
+  background: linear-gradient(to bottom, #fff, #f9f9f9);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.dior-product-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Image Container */
+.dior-product-image-container {
+  background-color: #f8f8f8;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: hidden;
+}
+
+.dior-product-image {
+  max-width: 90%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Text Styles (matched to PromoSection) */
+.dior-product-title {
+  font-size: 1.8vw;
+  font-weight: 600;
+  margin-top: 1.5vh;
+  color: #333;
+  text-align: center;
+}
+
+.dior-product-subtitle {
+  font-size: 1.1vw;
+  color: #666;
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .dior-shop-section {
+    padding: 6rem 1.5rem;
   }
-  
-  .shop-teaser-title {
+
+  .dior-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .dior-shop-title {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .dior-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dior-shop-section {
+    padding: 4rem 1rem;
+  }
+
+  .dior-shop-title {
     font-size: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .dior-product-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dior-product-title {
+    font-size: 5vw;
+  }
+
+  .dior-product-subtitle {
+    font-size: 4vw;
   }
 }

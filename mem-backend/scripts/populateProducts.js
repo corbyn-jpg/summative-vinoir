@@ -18,7 +18,7 @@ const products = [
     stock: 15,
     featured: true,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750284849/dior1_wwhfkp.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior1_s2qxso.jpg',
       altText: 'Noir Essence bottle'
     }]
   },
@@ -255,116 +255,7 @@ const products = [
       url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750456775/dior17_srhldq.jpg',
       altText: 'Fleur Blanche bottle'
     }]
-  },
-  {
-  name: 'Obsidian Nuit',
-  price: 2100,
-  description: 'A dark, sensual elixir with smoky undertones and midnight florals.',
-  category: 'Eau de Parfum',
-  fragranceNotes: {
-    topNotes: ['Incense', 'Blackcurrant'],
-    middleNotes: ['Black Orchid', 'Myrrh'],
-    baseNotes: ['Smoked Wood', 'Vetiver']
-  },
-  size: '100ml',
-  stock: 10,
-  featured: true,
-  images: [{
-    url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750858463/dior0000_sblb1l.jpg',
-    altText: 'Obsidian Nuit bottle'
-  }]
-},
-{
-  name: 'Rose Élixir',
-  price: 1450,
-  description: 'A romantic infusion of Bulgarian rose and golden saffron.',
-  category: 'Eau de Parfum',
-  fragranceNotes: {
-    topNotes: ['Saffron', 'Mandarin'],
-    middleNotes: ['Rose', 'Peach'],
-    baseNotes: ['Ambergris', 'Musk']
-  },
-  size: '100ml',
-  stock: 18,
-  featured: false,
-  images: [{
-    url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750858951/dior000000_zlcmo2.jpg',
-    altText: 'Rose Élixir bottle'
-  }]
-},
-{
-  name: 'Bois Blanc',
-  price: 1650,
-  description: 'A creamy blend of white woods and sandalwood wrapped in powder.',
-  category: 'Eau de Parfum',
-  fragranceNotes: {
-    topNotes: ['White Tea', 'Iris'],
-    middleNotes: ['Sandalwood', 'Heliotrope'],
-    baseNotes: ['Cashmere', 'Musk']
-  },
-  size: '100ml',
-  stock: 12,
-  featured: false,
-  images: [{
-    url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750858707/dior00000_fggwc5.jpg',
-    altText: 'Bois Blanc bottle'
-  }]
-},
-{
-  name: 'Verde Silken',
-  price: 1400,
-  description: 'A breezy green tea scent with herbal notes and dew-kissed petals.',
-  category: 'Eau de Toilette',
-  fragranceNotes: {
-    topNotes: ['Green Tea', 'Mint'],
-    middleNotes: ['Bamboo', 'Peony'],
-    baseNotes: ['White Cedar', 'Musk']
-  },
-  size: '100ml',
-  stock: 20,
-  featured: false,
-  images: [{
-    url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750858269/dior000_gb9vfb.jpg',
-    altText: 'Verde Silken bottle'
-  }]
-},
-{
-  name: 'Soleil Ardent',
-  price: 1550,
-  description: 'Sun-drenched mandarin and neroli wrapped in golden amber.',
-  category: 'Eau de Parfum',
-  fragranceNotes: {
-    topNotes: ['Mandarin', 'Petitgrain'],
-    middleNotes: ['Neroli', 'Ylang Ylang'],
-    baseNotes: ['Amber', 'Musk']
-  },
-  size: '100ml',
-  stock: 15,
-  featured: false,
-  images: [{
-    url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750858112/dior00_cogvxx.jpg',
-    altText: 'Soleil Ardent bottle'
-  }]
-},
-{
-  name: 'Cuir Vanillé',
-  price: 1750,
-  description: 'Smooth leather and creamy vanilla create a timeless, bold signature.',
-  category: 'Eau de Parfum',
-  fragranceNotes: {
-    topNotes: ['Cardamom', 'Leather'],
-    middleNotes: ['Tonka Bean', 'Cinnamon'],
-    baseNotes: ['Vanilla', 'Balsam']
-  },
-  size: '100ml',
-  stock: 11,
-  featured: false,
-  images: [{
-    url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750859536/dior0000000_znnbo5.jpg',
-    altText: 'Cuir Vanillé bottle'
-  }]
-}
-
+  }
 ];
 
 async function populateProducts() {

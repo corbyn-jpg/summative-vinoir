@@ -1,26 +1,31 @@
-/* Main Card Container */
+/* VINOIR Product Card — Large, Long Hero Panel Style */
 .vinoir-product-card {
   width: 100%;
   height: 60vh;
-  min-height: 400px;
+  min-height: 240px;
   border-radius: 10px;
   background: linear-gradient(to bottom, #fff, #f6f6f6);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .vinoir-product-card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.025);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
 }
 
-/* Image Container */
+/* Hero Image Container */
 .vinoir-product-image-container {
-  flex: 1;
   background-color: #f0f0f0;
+  width: 100%;
+  height: 200%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -28,10 +33,9 @@
 }
 
 .vinoir-product-image {
-  width: 100%;
-  height: 100%;
+  max-width: 90%;
+  max-height: 100%;
   object-fit: cover;
-  object-position: center;
   transition: transform 0.4s ease;
 }
 
@@ -41,65 +45,42 @@
 
 /* Details Section */
 .vinoir-product-details {
-  padding: 1.5rem;
+  height: 25%;
+  padding-top: 1rem;
   text-align: center;
-  height: 30%;
+  font-family: Georgia, "Times New Roman", Times, serif;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .vinoir-product-name {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 700;
+  font-family: Georgia, "Times New Roman", Times, serif;
   color: #1a1a1a;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'Playfair Display', serif;
 }
 
-.vinoir-product-category {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 0.5rem;
-}
-
-.vinoir-product-price {
+.vinoir-product-years {
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #146e3a;
-  margin-bottom: 1rem;
+  color: #666;
+  margin: 0;
 }
 
-/* Grid Layout */
+/* BIG Responsive Grid Layout */
 .vinoir-product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 1rem;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   padding: 0 1rem;
 }
 
-.section-title {
-  text-align: center;
-  margin-bottom: 3rem;
-  font-family: 'Playfair Display', serif;
-  position: relative;
-}
-
-.section-title:after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 2px;
-  background: #b8860b;
-  margin: 1rem auto 0;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .vinoir-product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -108,23 +89,35 @@
 @media (max-width: 900px) {
   .vinoir-product-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
   }
-  
-  .vinoir-product-card {
-    height: 50vh;
+
+  .vinoir-product-name {
+    font-size: 1.3rem;
+  }
+
+  .vinoir-product-years {
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 600px) {
   .vinoir-product-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  
+
   .vinoir-product-card {
-    height: 60vh;
+    height: 75vh;
+    min-height: 520px;
+    padding: 1.5rem;
   }
-  
+
   .vinoir-product-name {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+
+  .vinoir-product-years {
+    font-size: 1rem;
   }
 }
