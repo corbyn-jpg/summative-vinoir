@@ -11,9 +11,9 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Search,
   PersonOutline,
@@ -44,7 +44,13 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { isLoggedIn, login, logout } = useAuth();
-  const { cart, addToCart, removeFromCart, updateCartItem } = useCart();
+  const { 
+  cart, 
+  addToCart, 
+  removeFromCart, 
+  updateCartItem, 
+  cartCount  // Add this to the destructured values
+} = useCart();
   const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
@@ -323,25 +329,28 @@ export default function Navbar() {
                         R {item.price.toFixed(2)} × {item.quantity}
                       </Typography>
                       <Box sx={{ display: "flex", mt: 1 }}>
-                        <IconButton
-                          size="small"
-                          onClick={() =>
-                            updateCartItem(item._id, item.quantity - 1)
-                          }
-                          disabled={item.quantity <= 1}
-                        >
-                          <RemoveIcon fontSize="small" />
-                        </IconButton>
-                        <Typography sx={{ mx: 1, alignSelf: "center" }}>
-                          {item.quantity}
-                        </Typography>
-                        <IconButton
-                          size="small"
-                          onClick={() =>
-                            updateCartItem(item._id, item.quantity + 1)
-                          }
-                        >
-                          <AddIcon fontSize="small" />
+                        <IconButton onClick={toggleDrawer("cart")}>
+                          <ShoppingBagOutlined />
+                          {cartCount > 0 && (
+                            <span
+                              style={{
+                                position: "absolute",
+                                top: 5,
+                                right: 5,
+                                backgroundColor: "red",
+                                borderRadius: "50%",
+                                width: 18,
+                                height: 18,
+                                fontSize: 12,
+                                color: "white",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              {cartCount}
+                            </span>
+                          )}
                         </IconButton>
                       </Box>
                     </Box>
