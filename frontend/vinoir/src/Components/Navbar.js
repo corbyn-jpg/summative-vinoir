@@ -328,31 +328,6 @@ export default function Navbar() {
                       <Typography variant="body2" color="text.secondary">
                         R {item.price.toFixed(2)} × {item.quantity}
                       </Typography>
-                      <Box sx={{ display: "flex", mt: 1 }}>
-                        <IconButton onClick={toggleDrawer("cart")}>
-                          <ShoppingBagOutlined />
-                          {cartCount > 0 && (
-                            <span
-                              style={{
-                                position: "absolute",
-                                top: 5,
-                                right: 5,
-                                backgroundColor: "red",
-                                borderRadius: "50%",
-                                width: 18,
-                                height: 18,
-                                fontSize: 12,
-                                color: "white",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                              }}
-                            >
-                              {cartCount}
-                            </span>
-                          )}
-                        </IconButton>
-                      </Box>
                     </Box>
                     <IconButton
                       onClick={() => removeFromCart(item._id)}
