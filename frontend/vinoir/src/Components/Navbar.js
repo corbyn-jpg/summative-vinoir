@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
-  AppBar, Toolbar, IconButton, Stack, Drawer, Box, Typography,
-  Button, TextField
-} from '@mui/material';
+  AppBar,
+  Toolbar,
+  IconButton,
+  Stack,
+  Drawer,
+  Box,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Search,
   PersonOutline,
@@ -255,38 +266,34 @@ export default function Navbar() {
         </Box>
       </Drawer>
       {/* === Cart Drawer === */}
-      <Drawer anchor="right" open={drawer === 'cart'} onClose={closeDrawer}>
-        <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Your Cart ({cart.length})</Typography>
+      <Drawer
+        anchor="right"
+        open={drawer === "cart"}
+        onClose={closeDrawer}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: { xs: "100%", sm: 400 },
+            backgroundColor: "#f9f9f9",
+          },
+        }}
+      >
+        <Box sx={{ p: 3 }}>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Your Cart ({cart.length})
+          </Typography>
+
           {cart.length === 0 ? (
-            <Typography>Your cart is empty</Typography>
-          ) : (
-            <>
-              {cart.map(item => (
-                <Box key={item.id} display="flex" mb={2}>
-                  <img src={item.image} width={60} height={60} alt={item.name} style={{ objectFit: "cover" }} />
-                  <Box ml={2} flexGrow={1}>
-                    <Typography>{item.name}</Typography>
-                    <Typography>${item.price} × {item.quantity}</Typography>
-                    <Stack direction="row" spacing={1} mt={1}>
-                      <Button size="small" onClick={() => updateCartItem(item.id, item.quantity + 1)}>+</Button>
-                      <Button size="small" disabled={item.quantity <= 1} onClick={() => updateCartItem(item.id, item.quantity - 1)}>-</Button>
-                    </Stack>
-                  </Box>
-                  <Button size="small" color="error" onClick={() => removeFromCart(item.id)}>Remove</Button>
-                </Box>
-              ))}
-              <Typography variant="h6" mt={2}>
-                Total: ${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+            <Box sx={{ textAlign: "center", py: 4 }}>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                Your cart is empty
               </Typography>
               <Button
                 variant="contained"
-                fullWidth
-                onClick={() => {
-                  navigate('/checkout');
-                  closeDrawer();
+                onClick={closeDrawer}
+                sx={{
+                  backgroundColor: "#146e3a",
+                  "&:hover": { backgroundColor: "#0d5a2c" },
                 }}
-                sx={{ mt: 2, backgroundColor: '#146e3a', '&:hover': { backgroundColor: '#0d5a2c' } }}
               >
                 Continue Shopping
               </Button>
@@ -381,9 +388,22 @@ export default function Navbar() {
       {/* === Search Drawer (Optional Placeholder) === */}
       <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Search</Typography>
-          <TextField fullWidth placeholder="Search our collection..." variant="outlined" sx={{ mb: 2 }} />
-          <Button fullWidth variant="contained" sx={{ backgroundColor: '#146e3a' }}>Search</Button>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Search
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder="Search our collection..."
+            variant="outlined"
+            sx={{ mb: 2 }}
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ backgroundColor: "#146e3a" }}
+          >
+            Search
+          </Button>
         </Box>
       </Drawer>
     </>
