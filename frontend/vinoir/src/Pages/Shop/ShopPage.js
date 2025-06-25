@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, TextField, Select, MenuItem, Grid, CircularProgress, Tabs, Tab } from '@mui/material';
-import ProductCard from '../../Components/ProductCard';
+import React, { useEffect, useState } from 'react'; 
+import { Box, Typography, TextField, Select, MenuItem, CircularProgress, Tabs, Tab, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ProductService from '../../services/ProductService';
+import './ShopPage.css';
 
 function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -11,6 +11,10 @@ function ShopPage() {
   const [category, setCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState(0);
+
+  // Format price as "R1,200.00"
+  const formatRand = (num) =>
+    'R' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   useEffect(() => {
     ProductService.getAllProducts()
@@ -27,7 +31,9 @@ function ShopPage() {
   useEffect(() => {
     const filteredProducts = products.filter((p) => {
       const matchCategory = category === 'all' || p.category === category;
-      const matchFilter = p.name.toLowerCase().includes(filter.toLowerCase()) || p.description.toLowerCase().includes(filter.toLowerCase());
+      const matchFilter =
+        p.name.toLowerCase().includes(filter.toLowerCase()) ||
+        p.description.toLowerCase().includes(filter.toLowerCase());
       return matchCategory && matchFilter;
     });
     setFiltered(filteredProducts);
@@ -84,15 +90,46 @@ function ShopPage() {
       </Box>
 
       {/* Product Grid */}
-      <Grid container spacing={4}>
+      <Box className="product-grid">
         {(tab === 0 ? filtered : products.slice(0, 4)).map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-            <Link to={`/fragrance/${product._id}`} style={{ textDecoration: 'none' }}>
-              <ProductCard product={product} />
+          <Box key={product._id} className="product-item">
+            <Link to={`/fragrance/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Box 
+                sx={{ 
+                  backgroundColor: '#f8f5f2',
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  height: 300,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2
+                }}
+              >
+                <img
+                  src={product.images?.[0]?.url || '/images/fallback.jpg'}
+                  alt={product.name}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain',
+                    width: 'auto',
+                    height: 'auto'
+                  }}
+                />
+              </Box>
+              <Box sx={{ p: 1.5 }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  {product.name}
+                </Typography>
+                <Typography variant="body1" sx={{ color: '#000000', fontWeight: 'bold' }}>
+                  {formatRand(product.price)}
+                </Typography>
+              </Box>
             </Link>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }
