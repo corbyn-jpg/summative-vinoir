@@ -60,8 +60,8 @@ export function CartProvider({ children }) {
   };
 
   const clearCart = () => {
-    setCart([]); // This should empty the cart array
-    localStorage.removeItem("vinoir_cart"); // Optional: clear localStorage too
+    setCart([]);
+    localStorage.removeItem("vinoir_cart");
   };
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);

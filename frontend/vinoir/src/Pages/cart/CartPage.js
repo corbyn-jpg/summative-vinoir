@@ -39,9 +39,14 @@ const CartPage = () => {
     return isNaN(num) ? '0.00' : num.toFixed(2);
   };
 
+  // Calculate order summary values
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const shipping = 50; // Shipping is never free
+  const total = subtotal + shipping;
+
   const handleClearCart = () => {
-    clearCart(); // This should now work with the updated context
-    navigate('/shop'); // Redirect after clearing
+    clearCart();
+    navigate('/shop');
   };
 
   const handleCheckout = () => {
@@ -153,19 +158,19 @@ const CartPage = () => {
             
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
               <Typography>Subtotal</Typography>
-              <Typography>R {formatPrice(cartTotal)}</Typography>
+              <Typography>R {formatPrice(subtotal)}</Typography>
             </Box>
             
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
               <Typography>Shipping</Typography>
-              <Typography>Free</Typography>
+              <Typography>R {formatPrice(shipping)}</Typography>
             </Box>
             
             <Divider sx={{ my: 2 }} />
             
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
               <Typography variant="h6">Total</Typography>
-              <Typography variant="h6">R {formatPrice(cartTotal)}</Typography>
+              <Typography variant="h6">R {formatPrice(total)}</Typography>
             </Box>
             
             <Button 
