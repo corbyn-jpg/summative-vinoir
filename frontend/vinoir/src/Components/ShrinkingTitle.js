@@ -1,6 +1,6 @@
 // ShrinkingTitle.js
-import React, { useEffect, useState } from "react";
-import "./ShrinkingTitle.css";
+import React, { useEffect, useState } from 'react';
+import './ShrinkingTitle.css';
 
 export default function ShrinkingTitle() {
   const [scrolled, setScrolled] = useState(false);
@@ -10,11 +10,13 @@ export default function ShrinkingTitle() {
       setScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className={`title-wrapper ${scrolled ? "shrink" : ""}`}>VINOIR</div>
+    <div className={`title-wrapper ${scrolled ? 'shrink' : ''}`}>
+      VINOIR
+    </div>
   );
 }

@@ -5,19 +5,18 @@
   top: 120px; /* below navbar */
   left: 50%;
   transform: translateX(-50%);
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 600;
-  color: #731d8d;
+  color: black;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   z-index: 999;
   transition: all 0.4s ease;
   pointer-events: none;
-  font-family: "serif";
 }
 
 .title-wrapper.shrink {
-  top: 25px; /* move inside the navbar */
+  top: 20px; /* move inside the navbar */
   font-size: 1.5rem;
   color: white;
 }

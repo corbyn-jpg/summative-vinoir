@@ -1,5 +1,5 @@
 .navbar {
-  background-color: #02361e;
+  background-color: #146e3a;
   box-shadow: none;
   height: 80px; /* Fixed height */
   transition: all 0.3s ease-in-out;
@@ -19,7 +19,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   pointer-events: none;
@@ -52,7 +52,7 @@
 }
 
 .account-drawer .MuiTypography-h5 {
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: 'Playfair Display', serif;
   font-weight: 700;
   color: #333;
 }
@@ -102,14 +102,14 @@
 }
 
 .account-drawer .register-link {
-  color: #02361e;
+  color: #146e3a;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .account-drawer .register-link:hover {
-  color: #02361e;
+  color: #0d5a2c;
   text-decoration: underline;
 }
 /* Add to Navbar.css */
