@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Stack,
-  Drawer,
-  Box,
-  Typography,
-  Button,
-  TextField,
-} from "@mui/material";
+  AppBar, Toolbar, IconButton, Stack, Drawer, Box, Typography,
+  Button, TextField
+} from '@mui/material';
 import {
   Search,
   PersonOutline,
@@ -40,7 +33,13 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { isLoggedIn, login, logout } = useAuth();
-  const { cart, addToCart, removeFromCart, updateCartItem } = useCart();
+  const { 
+  cart, 
+  addToCart, 
+  removeFromCart, 
+  updateCartItem, 
+  cartCount  // Add this to the destructured values
+} = useCart();
   const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
@@ -134,7 +133,6 @@ export default function Navbar() {
           </Stack>
         </Toolbar>
       </AppBar>
-
       {/* === Account Drawer === */}
       <Drawer anchor="right" open={drawer === "account"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
@@ -209,7 +207,6 @@ export default function Navbar() {
           )}
         </Box>
       </Drawer>
-
       {/* === Wishlist Drawer === */}
       <Drawer anchor="right" open={drawer === "wishlist"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
@@ -257,130 +254,136 @@ export default function Navbar() {
           )}
         </Box>
       </Drawer>
-
       {/* === Cart Drawer === */}
-      <Drawer anchor="right" open={drawer === "cart"} onClose={closeDrawer}>
+      <Drawer anchor="right" open={drawer === 'cart'} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            Your Cart ({cart.length})
-          </Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Your Cart ({cart.length})</Typography>
           {cart.length === 0 ? (
             <Typography>Your cart is empty</Typography>
           ) : (
             <>
-              {cart.map((item) => (
+              {cart.map(item => (
                 <Box key={item.id} display="flex" mb={2}>
-                  <img
-                    src={item.image}
-                    width={60}
-                    height={60}
-                    alt={item.name}
-                    style={{ objectFit: "cover" }}
-                  />
+                  <img src={item.image} width={60} height={60} alt={item.name} style={{ objectFit: "cover" }} />
                   <Box ml={2} flexGrow={1}>
                     <Typography>{item.name}</Typography>
-                    <Typography>
-                      ${item.price} × {item.quantity}
-                    </Typography>
+                    <Typography>${item.price} × {item.quantity}</Typography>
                     <Stack direction="row" spacing={1} mt={1}>
-                      <Button
-                        size="small"
-                        onClick={() =>
-                          updateCartItem(item.id, item.quantity + 1)
-                        }
-                      >
-                        +
-                      </Button>
-                      <Button
-                        size="small"
-                        disabled={item.quantity <= 1}
-                        onClick={() =>
-                          updateCartItem(item.id, item.quantity - 1)
-                        }
-                      >
-                        -
-                      </Button>
+                      <Button size="small" onClick={() => updateCartItem(item.id, item.quantity + 1)}>+</Button>
+                      <Button size="small" disabled={item.quantity <= 1} onClick={() => updateCartItem(item.id, item.quantity - 1)}>-</Button>
                     </Stack>
                   </Box>
-                  <Button
-                    size="small"
-                    color="error"
-                    onClick={() => removeFromCart(item.id)}
-                  >
-                    Remove
-                  </Button>
+                  <Button size="small" color="error" onClick={() => removeFromCart(item.id)}>Remove</Button>
                 </Box>
               ))}
               <Typography variant="h6" mt={2}>
-                Total: $
-                {cart
-                  .reduce((sum, item) => sum + item.price * item.quantity, 0)
-                  .toFixed(2)}
+                Total: ${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
               </Typography>
               <Button
                 variant="contained"
                 fullWidth
                 onClick={() => {
-                  navigate("/checkout");
+                  navigate('/checkout');
                   closeDrawer();
                 }}
+                sx={{ mt: 2, backgroundColor: '#146e3a', '&:hover': { backgroundColor: '#0d5a2c' } }}
+              >
+                Continue Shopping
+              </Button>
+            </Box>
+          ) : (
+            <>
+              <Box sx={{ maxHeight: "60vh", overflowY: "auto", mb: 2 }}>
+                {cart.map((item) => (
+                  <Box
+                    key={item._id}
+                    sx={{
+                      display: "flex",
+                      mb: 2,
+                      p: 2,
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                    }}
+                  >
+                    <img
+                      src={item.images?.[0]?.url || "/images/fallback.jpg"}
+                      alt={item.name}
+                      style={{
+                        width: 80,
+                        height: 80,
+                        objectFit: "cover",
+                        borderRadius: "4px",
+                      }}
+                    />
+                    <Box sx={{ ml: 2, flexGrow: 1 }}>
+                      <Typography variant="subtitle1">{item.name}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        R {item.price.toFixed(2)} × {item.quantity}
+                      </Typography>
+                    </Box>
+                    <IconButton
+                      onClick={() => removeFromCart(item._id)}
+                      color="error"
+                      sx={{ alignSelf: "flex-start" }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
+              </Box>
+
+              <Box
                 sx={{
-                  mt: 2,
-                  backgroundColor: "#146e3a",
-                  "&:hover": { backgroundColor: "#0d5a2c" },
+                  backgroundColor: "white",
+                  p: 2,
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                 }}
               >
-                Checkout
-              </Button>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Typography>Subtotal:</Typography>
+                  <Typography fontWeight="bold">
+                    R{" "}
+                    {cart
+                      .reduce(
+                        (sum, item) => sum + item.price * item.quantity,
+                        0
+                      )
+                      .toFixed(2)}
+                  </Typography>
+                </Box>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={Link}
+                  to="/cart"
+                  onClick={closeDrawer}
+                  sx={{
+                    mt: 1,
+                    backgroundColor: "#146e3a",
+                    "&:hover": { backgroundColor: "#0d5a2c" },
+                  }}
+                >
+                  View Full Cart
+                </Button>
+              </Box>
             </>
           )}
         </Box>
       </Drawer>
-
       {/* === Search Drawer (Optional Placeholder) === */}
       <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            Search Fragrances
-          </Typography>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const searchQuery = e.target.search.value.trim();
-              if (searchQuery) {
-                if (location.pathname === "/shop") {
-                  // If already on shop page, just update the URL
-                  navigate(`/shop?q=${encodeURIComponent(searchQuery)}`, {
-                    replace: true,
-                  });
-                  window.location.reload(); // Force refresh to update the products
-                } else {
-                  // Otherwise navigate to shop page with search query
-                  navigate(`/shop?q=${encodeURIComponent(searchQuery)}`);
-                }
-                closeDrawer();
-              }
-            }}
-          >
-            <TextField
-              fullWidth
-              name="search"
-              placeholder="Search our collection..."
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                backgroundColor: "#146e3a",
-                "&:hover": { backgroundColor: "#0d5a2c" },
-              }}
-            >
-              Search
-            </Button>
-          </form>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Search</Typography>
+          <TextField fullWidth placeholder="Search our collection..." variant="outlined" sx={{ mb: 2 }} />
+          <Button fullWidth variant="contained" sx={{ backgroundColor: '#146e3a' }}>Search</Button>
         </Box>
       </Drawer>
     </>
