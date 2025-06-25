@@ -4,17 +4,18 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
-    try {
-      const savedCart = localStorage.getItem("vinoir_cart");
-      return savedCart ? JSON.parse(savedCart) : [];
-    } catch {
-      return [];
-    }
+    const savedCart = localStorage.getItem('vinoir_cart');
+    return savedCart ? JSON.parse(savedCart) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem("vinoir_cart", JSON.stringify(cart));
+    localStorage.setItem('vinoir_cart', JSON.stringify(cart));
   }, [cart]);
+
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem('vinoir_cart');
+  };
 
   const safeProduct = (product) => ({
     _id:
@@ -59,11 +60,6 @@ export function CartProvider({ children }) {
     );
   };
 
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("vinoir_cart");
-  };
-
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce(
   (total, item) => total + (item.price * item.quantity),
@@ -71,14 +67,15 @@ export function CartProvider({ children }) {
 );
 
   return (
-    <CartContext.Provider
-      value={{
+    <CartContext.Provider 
+      value={{ 
         cart,
         addToCart,
         removeFromCart,
         updateCartItem,
+        clearCart, 
         cartCount,
-        cartTotal: Number(cartTotal) || 0,
+        cartTotal
       }}
     >
       {children}
@@ -89,7 +86,7 @@ export function CartProvider({ children }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
+    throw new Error('useCart must be used within a CartProvider');
   }
   return context;
 }
