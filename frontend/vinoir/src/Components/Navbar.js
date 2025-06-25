@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-  AppBar, Toolbar, IconButton, Stack, Drawer, Box, Typography,
-  Button, TextField
-} from '@mui/material';
+  AppBar,
+  Toolbar,
+  IconButton,
+  Stack,
+  Drawer,
+  Box,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
 import {
-  Search, PersonOutline, ShoppingBagOutlined, FavoriteBorder
-} from '@mui/icons-material';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+  Search,
+  PersonOutline,
+  ShoppingBagOutlined,
+  FavoriteBorder,
+} from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Components
-import HamburgerMenu from './HamburgerMenu';
-import EmojiSelector from './EmojiSelector';
-import ShrinkingTitle from './ShrinkingTitle';
+import HamburgerMenu from "./HamburgerMenu";
+import EmojiSelector from "./EmojiSelector";
+import ShrinkingTitle from "./ShrinkingTitle";
 
 // Context
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
-import { useAuth } from '../context/AuthContext';
+import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const [drawer, setDrawer] = useState(null);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [emojiPassword, setEmojiPassword] = useState([]);
-  const [loginError, setLoginError] = useState('');
+  const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
@@ -34,36 +44,36 @@ export default function Navbar() {
   const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
-    const token = localStorage.getItem('vinoir_token');
+    const token = localStorage.getItem("vinoir_token");
     if (token) login();
   }, [login]);
 
   const toggleDrawer = (type) => () => {
     setDrawer(type);
-    setLoginError('');
+    setLoginError("");
     setEmojiPassword([]);
   };
 
   const closeDrawer = () => {
     setDrawer(null);
-    setLoginError('');
+    setLoginError("");
     setEmojiPassword([]);
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setLoginError('');
+    setLoginError("");
     try {
-      const res = await axios.post('/api/users/login', {
+      const res = await axios.post("/api/users/login", {
         email: email.trim(),
-        password: emojiPassword.join('')
+        password: emojiPassword.join(""),
       });
-      localStorage.setItem('vinoir_token', res.data.token);
+      localStorage.setItem("vinoir_token", res.data.token);
       login();
       closeDrawer();
     } catch (err) {
-      setLoginError(err.response?.data?.message || 'Login failed.');
+      setLoginError(err.response?.data?.message || "Login failed.");
     } finally {
       setIsLoading(false);
     }
@@ -76,36 +86,49 @@ export default function Navbar() {
 
   return (
     <>
-      <AppBar position="fixed" sx={{
-        backgroundColor: '#146e3a',
-        boxShadow: 'none',
-        zIndex: 1200,
-        height: '80px',
-      }}>
-        <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#146e3a",
+          boxShadow: "none",
+          zIndex: 1200,
+          height: "80px",
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between", px: 3 }}>
           <HamburgerMenu />
-          {location.pathname === '/' && <ShrinkingTitle />}
+          {location.pathname === "/" && <ShrinkingTitle />}
           <Stack direction="row" spacing={3} alignItems="center">
-            <IconButton onClick={toggleDrawer('search')}><Search /></IconButton>
-            <IconButton onClick={toggleDrawer('account')}><PersonOutline /></IconButton>
-            <IconButton onClick={toggleDrawer('wishlist')}><FavoriteBorder /></IconButton>
-            <IconButton onClick={toggleDrawer('cart')}>
+            <IconButton onClick={toggleDrawer("search")}>
+              <Search />
+            </IconButton>
+            <IconButton onClick={toggleDrawer("account")}>
+              <PersonOutline />
+            </IconButton>
+            <IconButton onClick={toggleDrawer("wishlist")}>
+              <FavoriteBorder />
+            </IconButton>
+            <IconButton onClick={toggleDrawer("cart")}>
               <ShoppingBagOutlined />
               {cart.length > 0 && (
-                <span style={{
-                  position: 'absolute',
-                  top: 5,
-                  right: 5,
-                  backgroundColor: 'red',
-                  borderRadius: '50%',
-                  width: 18,
-                  height: 18,
-                  fontSize: 12,
-                  color: 'white',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>{cart.length}</span>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                    backgroundColor: "red",
+                    borderRadius: "50%",
+                    width: 18,
+                    height: 18,
+                    fontSize: 12,
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {cart.length}
+                </span>
               )}
             </IconButton>
           </Stack>
@@ -113,10 +136,10 @@ export default function Navbar() {
       </AppBar>
 
       {/* === Account Drawer === */}
-      <Drawer anchor="right" open={drawer === 'account'} onClose={closeDrawer}>
+      <Drawer anchor="right" open={drawer === "account"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
           <Typography variant="h5" fontWeight="bold" mb={2}>
-            {isLoggedIn ? 'My Account' : 'Welcome Back'}
+            {isLoggedIn ? "My Account" : "Welcome Back"}
           </Typography>
 
           {isLoggedIn ? (
@@ -138,7 +161,7 @@ export default function Navbar() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold" }}>
                   Select your emoji password:
                 </Typography>
                 <EmojiSelector
@@ -158,11 +181,11 @@ export default function Navbar() {
                   disabled={isLoading || emojiPassword.length === 0}
                   sx={{
                     mt: 3,
-                    backgroundColor: '#146e3a',
-                    '&:hover': { backgroundColor: '#0d5a2c' }
+                    backgroundColor: "#146e3a",
+                    "&:hover": { backgroundColor: "#0d5a2c" },
                   }}
                 >
-                  {isLoading ? 'Logging in...' : 'Login'}
+                  {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
               {/* ✅ Register Button */}
@@ -172,12 +195,12 @@ export default function Navbar() {
                 href="/register"
                 sx={{
                   mt: 2,
-                  color: '#146e3a',
-                  borderColor: '#146e3a',
-                  '&:hover': {
-                    backgroundColor: '#146e3a',
-                    color: 'white'
-                  }
+                  color: "#146e3a",
+                  borderColor: "#146e3a",
+                  "&:hover": {
+                    backgroundColor: "#146e3a",
+                    color: "white",
+                  },
                 }}
               >
                 Register
@@ -188,65 +211,124 @@ export default function Navbar() {
       </Drawer>
 
       {/* === Wishlist Drawer === */}
-      <Drawer anchor="right" open={drawer === 'wishlist'} onClose={closeDrawer}>
+      <Drawer anchor="right" open={drawer === "wishlist"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Your Wishlist</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Your Wishlist
+          </Typography>
           {isLoggedIn ? (
             wishlist.length === 0 ? (
               <Typography>No items in wishlist</Typography>
             ) : (
-              wishlist.map(item => (
+              wishlist.map((item) => (
                 <Box key={item.id} display="flex" alignItems="center" mb={2}>
-                  <img src={item.image} width={60} height={60} alt={item.name} style={{ objectFit: "cover" }} />
+                  <img
+                    src={item.image}
+                    width={60}
+                    height={60}
+                    alt={item.name}
+                    style={{ objectFit: "cover" }}
+                  />
                   <Box ml={2}>
                     <Typography>{item.name}</Typography>
-                    <Button size="small" onClick={() => removeFromWishlist(item.id)}>Remove</Button>
+                    <Button
+                      size="small"
+                      onClick={() => removeFromWishlist(item.id)}
+                    >
+                      Remove
+                    </Button>
                   </Box>
                 </Box>
               ))
             )
           ) : (
             <>
-              <Typography sx={{ mb: 2 }}>Sign in to view your wishlist</Typography>
-              <Button fullWidth variant="outlined" onClick={toggleDrawer('account')}>Sign In</Button>
+              <Typography sx={{ mb: 2 }}>
+                Sign in to view your wishlist
+              </Typography>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={toggleDrawer("account")}
+              >
+                Sign In
+              </Button>
             </>
           )}
         </Box>
       </Drawer>
 
       {/* === Cart Drawer === */}
-      <Drawer anchor="right" open={drawer === 'cart'} onClose={closeDrawer}>
+      <Drawer anchor="right" open={drawer === "cart"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Your Cart ({cart.length})</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Your Cart ({cart.length})
+          </Typography>
           {cart.length === 0 ? (
             <Typography>Your cart is empty</Typography>
           ) : (
             <>
-              {cart.map(item => (
+              {cart.map((item) => (
                 <Box key={item.id} display="flex" mb={2}>
-                  <img src={item.image} width={60} height={60} alt={item.name} style={{ objectFit: "cover" }} />
+                  <img
+                    src={item.image}
+                    width={60}
+                    height={60}
+                    alt={item.name}
+                    style={{ objectFit: "cover" }}
+                  />
                   <Box ml={2} flexGrow={1}>
                     <Typography>{item.name}</Typography>
-                    <Typography>${item.price} × {item.quantity}</Typography>
+                    <Typography>
+                      ${item.price} × {item.quantity}
+                    </Typography>
                     <Stack direction="row" spacing={1} mt={1}>
-                      <Button size="small" onClick={() => updateCartItem(item.id, item.quantity + 1)}>+</Button>
-                      <Button size="small" disabled={item.quantity <= 1} onClick={() => updateCartItem(item.id, item.quantity - 1)}>-</Button>
+                      <Button
+                        size="small"
+                        onClick={() =>
+                          updateCartItem(item.id, item.quantity + 1)
+                        }
+                      >
+                        +
+                      </Button>
+                      <Button
+                        size="small"
+                        disabled={item.quantity <= 1}
+                        onClick={() =>
+                          updateCartItem(item.id, item.quantity - 1)
+                        }
+                      >
+                        -
+                      </Button>
                     </Stack>
                   </Box>
-                  <Button size="small" color="error" onClick={() => removeFromCart(item.id)}>Remove</Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => removeFromCart(item.id)}
+                  >
+                    Remove
+                  </Button>
                 </Box>
               ))}
               <Typography variant="h6" mt={2}>
-                Total: ${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}
+                Total: $
+                {cart
+                  .reduce((sum, item) => sum + item.price * item.quantity, 0)
+                  .toFixed(2)}
               </Typography>
               <Button
                 variant="contained"
                 fullWidth
                 onClick={() => {
-                  navigate('/checkout');
+                  navigate("/checkout");
                   closeDrawer();
                 }}
-                sx={{ mt: 2, backgroundColor: '#146e3a', '&:hover': { backgroundColor: '#0d5a2c' } }}
+                sx={{
+                  mt: 2,
+                  backgroundColor: "#146e3a",
+                  "&:hover": { backgroundColor: "#0d5a2c" },
+                }}
               >
                 Checkout
               </Button>
@@ -256,11 +338,49 @@ export default function Navbar() {
       </Drawer>
 
       {/* === Search Drawer (Optional Placeholder) === */}
-      <Drawer anchor="right" open={drawer === 'search'} onClose={closeDrawer}>
+      <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Search</Typography>
-          <TextField fullWidth placeholder="Search our collection..." variant="outlined" sx={{ mb: 2 }} />
-          <Button fullWidth variant="contained" sx={{ backgroundColor: '#146e3a' }}>Search</Button>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Search Fragrances
+          </Typography>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const searchQuery = e.target.search.value.trim();
+              if (searchQuery) {
+                if (location.pathname === "/shop") {
+                  // If already on shop page, just update the URL
+                  navigate(`/shop?q=${encodeURIComponent(searchQuery)}`, {
+                    replace: true,
+                  });
+                  window.location.reload(); // Force refresh to update the products
+                } else {
+                  // Otherwise navigate to shop page with search query
+                  navigate(`/shop?q=${encodeURIComponent(searchQuery)}`);
+                }
+                closeDrawer();
+              }
+            }}
+          >
+            <TextField
+              fullWidth
+              name="search"
+              placeholder="Search our collection..."
+              variant="outlined"
+              sx={{ mb: 2 }}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                backgroundColor: "#146e3a",
+                "&:hover": { backgroundColor: "#0d5a2c" },
+              }}
+            >
+              Search
+            </Button>
+          </form>
         </Box>
       </Drawer>
     </>
