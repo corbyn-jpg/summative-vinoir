@@ -10,7 +10,7 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
-import { useCart } from "../../services/CartContext";
+import { useCart } from "../../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
