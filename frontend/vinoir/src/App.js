@@ -28,8 +28,8 @@ import WishlistPage from "./Pages/Shop/WishlistPage";
 import ShopPage from "./Pages/Shop/ShopPage";
 import FragranceDetail from "./Pages/Fragrance/FragranceDetail";
 import CartPage from "./Pages/cart/CartPage";
-import CheckoutPage from "./Pages/Checkout/CheckoutPage"; 
-import OrderConfirmation from "./Pages/Checkout/OrderConfirmation";
+import CheckoutPage from './Pages/Checkout/CheckoutPage';
+import OrderConfirmation from './Pages/Checkout/OrderConfirmation';
 
 
 function App() {
