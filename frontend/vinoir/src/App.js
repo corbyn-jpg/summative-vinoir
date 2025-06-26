@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { CssBaseline, Typography, Button } from '@mui/material';
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext';
@@ -10,13 +10,14 @@ import { WishlistProvider } from './context/WishlistContext';
 // Global Components
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
+import HamburgerMenu from './Components/HamburgerMenu';
 
 // General Pages
 import Home from './Pages/Home';
 import CreateUser from './Pages/AccountPage/CreateUser';
 import Login from './Pages/AccountPage/Login';
 import AboutPage from './Pages/about/about';
-import ContactPage from './Pages/contact/contact';
+import ContactPage from './Pages/contact/ContactPage';
 
 // Account-related Pages
 import AccountPage from './Pages/AccountPage/AccountPage';
@@ -39,7 +40,8 @@ function App() {
           <WishlistProvider>
             <div className="App">
               <Navbar />
-              <main>
+              <HamburgerMenu />
+              <main style={{ minHeight: '80vh' }}>
                 <Routes>
                   {/* General Routes */}
                   <Route path="/" element={<Home />} />
@@ -56,17 +58,10 @@ function App() {
 
                   {/* Shop Routes */}
                   <Route path="/shop" element={<ShopPage />} />
-                  <Route path="/fragrance/:id" element={<FragranceDetail />} /> {/* ✅ NEW */}
+                  <Route path="/fragrance/:id" element={<FragranceDetail />} />
 
                   {/* Fallback */}
-                  <Route
-                    path="*"
-                    element={
-                      <div style={{ padding: '2rem', textAlign: 'center' }}>
-                        Page Not Found
-                      </div>
-                    }
-                  />
+                  <Route path="*" element={<NotFoundFallback />} />
                 </Routes>
               </main>
               <Footer />

@@ -5,9 +5,6 @@ body {
   background-color: #272727;
   color: #a5a9b4;
   scroll-behavior: smooth;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 html {
@@ -15,17 +12,17 @@ html {
 }
 
 .App {
-  flex: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-
+  overflow-x: hidden;
 }
 
 /* Main content spacing after hero */
 main {
-  background-color: #2A4936;;
+  background-color: #2a4936;
+  z-index: 1;
   position: relative;
-  flex: 1
 }
 
 @media (max-width: 900px) {
@@ -55,4 +52,14 @@ main {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #1fa055;
+}
+
+/* --- Page Fade Animation for Product Transitions --- */
+.fade-container {
+  opacity: 1;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Dior-like smooth fade */
+}
+
+.fade-out {
+  opacity: 0;
 }
