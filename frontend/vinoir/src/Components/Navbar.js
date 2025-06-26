@@ -1,32 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Stack,
-  Drawer,
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Divider,
-  Badge
+import { 
+  AppBar, Toolbar, IconButton, Stack, Drawer, Box, 
+  Typography, Button, TextField, Divider, Badge, 
+  Tooltip, Snackbar, Alert 
 } from '@mui/material';
 import {
-  Search,
-  PersonOutline,
-  ShoppingBagOutlined,
-  FavoriteBorder,
-  Close,
-  ArrowForward
+  Search, PersonOutline, ShoppingBagOutlined, 
+  FavoriteBorder, Close, ArrowForward, Favorite
 } from '@mui/icons-material';
 import axios from 'axios';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 // Components
 import HamburgerMenu from './HamburgerMenu';
 import EmojiSelector from './EmojiSelector';
-import ShrinkingTitle from './ShrinkingTitle';
 
 // Context
 import { useCart } from '../context/CartContext';
@@ -41,6 +31,8 @@ export default function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [userName, setUserName] = useState('');
+  const [notification, setNotification] = useState(null);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -52,7 +44,6 @@ export default function Navbar() {
   useEffect(() => {
     const token = localStorage.getItem('vinoir_token');
     if (token) {
-      // Fetch user data if token exists
       fetchUserData();
     }
   }, [isLoggedIn]);
@@ -71,6 +62,11 @@ export default function Navbar() {
     }
   };
 
+  const showNotification = (message, severity = 'success') => {
+    setNotification({ message, severity });
+    setTimeout(() => setNotification(null), 3000);
+  };
+
   const toggleDrawer = (type) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -82,6 +78,7 @@ export default function Navbar() {
 
   const closeDrawer = () => {
     setDrawer(null);
+    setLoginSuccess(false);
   };
 
   const handleLogin = async (e) => {
@@ -95,9 +92,41 @@ export default function Navbar() {
       });
       localStorage.setItem('vinoir_token', res.data.token);
       await fetchUserData();
-      closeDrawer();
+      setLoginSuccess(true);
+      showNotification(`Welcome back, ${res.data.user.name || email.split('@')[0]}!`);
+      
+      setTimeout(() => {
+        closeDrawer();
+        navigate('/');
+      }, 1500);
     } catch (err) {
       setLoginError(err.response?.data?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setLoginError('');
+    try {
+      const res = await axios.post('/api/users/register', {
+        name: userName,
+        email: email.trim(),
+        password: emojiPassword.join('')
+      });
+      localStorage.setItem('vinoir_token', res.data.token);
+      await fetchUserData();
+      setLoginSuccess(true);
+      showNotification(`Welcome ${userName}! Account created successfully`);
+      
+      setTimeout(() => {
+        closeDrawer();
+        navigate('/');
+      }, 1500);
+    } catch (err) {
+      setLoginError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -108,6 +137,7 @@ export default function Navbar() {
     setUserName('');
     closeDrawer();
     navigate('/');
+    showNotification('Logged out successfully');
   };
 
   const handleSearch = (e) => {
@@ -124,40 +154,97 @@ export default function Navbar() {
       return;
     }
     addToWishlist(product);
+    showNotification('Added to wishlist!');
+  };
+
+  const handleRemoveFromWishlist = (productId) => {
+    removeFromWishlist(productId);
+    showNotification('Removed from wishlist', 'info');
   };
 
   const renderAccountDrawer = () => (
     <Box sx={{ width: 350, p: 3 }} role="presentation">
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" fontWeight="bold">
-          {isLoggedIn ? 'My Account' : 'Welcome Back'}
+          {isLoggedIn ? 'My Account' : loginSuccess ? 'Success!' : 'Welcome'}
         </Typography>
         <IconButton onClick={closeDrawer}>
           <Close />
         </IconButton>
       </Box>
 
-      {isLoggedIn ? (
-        <>
-          <Typography variant="h6" mb={2}>Hello, {userName}!</Typography>
+      {loginSuccess ? (
+        <Box textAlign="center">
+          <Typography variant="h6" color="success.main" mb={2}>
+            {isLoggedIn ? `Welcome back, ${userName}!` : `Welcome ${userName}!`}
+          </Typography>
+          <Typography variant="body1" mb={3}>
+            {isLoggedIn 
+              ? 'You have successfully logged in' 
+              : 'Your account has been created'}
+          </Typography>
           <Button
             fullWidth
             variant="contained"
-            onClick={handleLogout}
+            onClick={closeDrawer}
             sx={{
               backgroundColor: '#146e3a',
               '&:hover': { backgroundColor: '#0d5a2c' }
             }}
           >
-            Logout
+            Continue Shopping
           </Button>
+        </Box>
+      ) : isLoggedIn ? (
+        <>
+          <Typography variant="h6" mb={2}>Hello, {userName}!</Typography>
+          <Stack spacing={2}>
+            <Button
+              fullWidth
+              variant="outlined"
+              component={Link}
+              to="/account"
+              onClick={closeDrawer}
+              sx={{
+                color: '#146e3a',
+                borderColor: '#146e3a',
+                '&:hover': {
+                  backgroundColor: '#146e3a',
+                  color: 'white'
+                }
+              }}
+            >
+              Manage Account
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={handleLogout}
+              sx={{
+                backgroundColor: '#146e3a',
+                '&:hover': { backgroundColor: '#0d5a2c' }
+              }}
+            >
+              Logout
+            </Button>
+          </Stack>
         </>
       ) : (
         <>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleRegister}>
+            <TextField
+              label="Full Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              required
+            />
             <TextField
               label="Email Address"
               type="email"
+              variant="outlined"
               fullWidth
               margin="normal"
               value={email}
@@ -165,7 +252,7 @@ export default function Navbar() {
               required
             />
             <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
-              Select your emoji password:
+              Create your emoji password:
             </Typography>
             <EmojiSelector
               selectedEmojis={emojiPassword}
@@ -181,26 +268,27 @@ export default function Navbar() {
               type="submit"
               variant="contained"
               fullWidth
-              disabled={isLoading || emojiPassword.length === 0}
+              disabled={isLoading || emojiPassword.length < 3 || !userName}
               sx={{
                 mt: 3,
                 backgroundColor: '#146e3a',
                 '&:hover': { backgroundColor: '#0d5a2c' }
               }}
             >
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? 'Creating account...' : 'Create Account'}
             </Button>
           </form>
           <Divider sx={{ my: 3 }} />
           <Typography variant="body2" textAlign="center" mb={2}>
-            Don't have an account?
+            Already have an account?
           </Typography>
           <Button
             fullWidth
             variant="outlined"
-            component={Link}
-            to="/register"
-            onClick={closeDrawer}
+            onClick={() => {
+              setLoginSuccess(false);
+              setLoginError('');
+            }}
             sx={{
               color: '#146e3a',
               borderColor: '#146e3a',
@@ -210,7 +298,7 @@ export default function Navbar() {
               }
             }}
           >
-            Create Account
+            Login Instead
           </Button>
         </>
       )}
@@ -229,7 +317,7 @@ export default function Navbar() {
       </Box>
 
       {!isLoggedIn ? (
-        <>
+        <Box textAlign="center">
           <Typography variant="body1" mb={3}>
             Sign in to view and manage your wishlist
           </Typography>
@@ -244,9 +332,9 @@ export default function Navbar() {
           >
             Sign In
           </Button>
-        </>
+        </Box>
       ) : wishlist.length === 0 ? (
-        <>
+        <Box textAlign="center">
           <Typography variant="body1" mb={3}>
             Your wishlist is empty
           </Typography>
@@ -265,56 +353,81 @@ export default function Navbar() {
           >
             Continue Shopping
           </Button>
-        </>
-      ) : (
-        <Box sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
-          {wishlist.map((item) => (
-            <Box
-              key={item._id}
-              sx={{
-                display: 'flex',
-                mb: 2,
-                p: 2,
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              }}
-            >
-              <img
-                src={item.images?.[0]?.url || '/images/fallback.jpg'}
-                alt={item.name}
-                style={{
-                  width: 80,
-                  height: 80,
-                  objectFit: 'cover',
-                  borderRadius: '4px',
-                }}
-              />
-              <Box sx={{ ml: 2, flexGrow: 1 }}>
-                <Typography variant="subtitle1">{item.name}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  R {item.price.toFixed(2)}
-                </Typography>
-              </Box>
-              <Stack direction="column" spacing={1}>
-                <IconButton
-                  onClick={() => addToCart({ ...item, quantity: 1 })}
-                  size="small"
-                  color="primary"
-                >
-                  <ShoppingBagOutlined fontSize="small" />
-                </IconButton>
-                <IconButton
-                  onClick={() => removeFromWishlist(item._id)}
-                  size="small"
-                  color="error"
-                >
-                  <Close fontSize="small" />
-                </IconButton>
-              </Stack>
-            </Box>
-          ))}
         </Box>
+      ) : (
+        <>
+          <Box sx={{ maxHeight: '60vh', overflowY: 'auto', mb: 2 }}>
+            {wishlist.map((item) => (
+              <Box
+                key={item._id}
+                sx={{
+                  display: 'flex',
+                  mb: 2,
+                  p: 2,
+                  backgroundColor: 'white',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  alignItems: 'center'
+                }}
+              >
+                <img
+                  src={item.images?.[0]?.url || '/images/fallback.jpg'}
+                  alt={item.name}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    objectFit: 'cover',
+                    borderRadius: '4px',
+                  }}
+                />
+                <Box sx={{ ml: 2, flexGrow: 1 }}>
+                  <Typography variant="subtitle1">{item.name}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    R {item.price.toFixed(2)}
+                  </Typography>
+                </Box>
+                <Stack direction="row" spacing={0.5}>
+                  <Tooltip title="Add to cart">
+                    <IconButton
+                      onClick={() => addToCart({ ...item, quantity: 1 })}
+                      size="small"
+                      color="primary"
+                    >
+                      <ShoppingBagOutlined fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Remove">
+                    <IconButton
+                      onClick={() => handleRemoveFromWishlist(item._id)}
+                      size="small"
+                      color="error"
+                    >
+                      <Close fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
+              </Box>
+            ))}
+          </Box>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{
+              color: '#146e3a',
+              borderColor: '#146e3a',
+              '&:hover': {
+                backgroundColor: '#146e3a',
+                color: 'white'
+              }
+            }}
+            onClick={() => {
+              closeDrawer();
+              navigate('/wishlist');
+            }}
+          >
+            View Full Wishlist
+          </Button>
+        </>
       )}
     </Box>
   );
@@ -331,8 +444,8 @@ export default function Navbar() {
       </Box>
 
       {cart.length === 0 ? (
-        <>
-          <Typography variant="body1" mb={3} textAlign="center">
+        <Box textAlign="center">
+          <Typography variant="body1" mb={3}>
             Your cart is empty
           </Typography>
           <Button
@@ -350,7 +463,7 @@ export default function Navbar() {
           >
             Continue Shopping
           </Button>
-        </>
+        </Box>
       ) : (
         <>
           <Box sx={{ maxHeight: '60vh', overflowY: 'auto', mb: 3 }}>
@@ -364,14 +477,15 @@ export default function Navbar() {
                   backgroundColor: 'white',
                   borderRadius: '8px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  alignItems: 'center'
                 }}
               >
                 <img
                   src={item.images?.[0]?.url || '/images/fallback.jpg'}
                   alt={item.name}
                   style={{
-                    width: 80,
-                    height: 80,
+                    width: 60,
+                    height: 60,
                     objectFit: 'cover',
                     borderRadius: '4px',
                   }}
@@ -381,7 +495,7 @@ export default function Navbar() {
                   <Typography variant="body2" color="text.secondary">
                     R {item.price.toFixed(2)} × {item.quantity}
                   </Typography>
-                  <Stack direction="row" spacing={1} mt={1}>
+                  <Stack direction="row" spacing={1} mt={1} alignItems="center">
                     <IconButton
                       size="small"
                       onClick={() => updateCartItem(item._id, item.quantity - 1)}
@@ -492,24 +606,54 @@ export default function Navbar() {
       >
         <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
           <HamburgerMenu />
-          {location.pathname === '/' && <ShrinkingTitle />}
+          
+          <Box sx={{ 
+            position: 'absolute', 
+            left: '50%', 
+            transform: 'translateX(-50%)',
+            display: { xs: 'none', md: 'block' } 
+          }}>
+            {location.pathname === '/' && (
+              <Typography variant="h6" component={Link} to="/" sx={{ 
+                color: 'white', 
+                textDecoration: 'none',
+                fontFamily: 'Playfair Display, serif',
+                fontWeight: 'bold',
+                letterSpacing: '1px'
+              }}>
+                Vinoir
+              </Typography>
+            )}
+          </Box>
+          
           <Stack direction="row" spacing={3} alignItems="center">
-            <IconButton onClick={toggleDrawer('search')} color="inherit">
-              <Search />
-            </IconButton>
-            <IconButton onClick={toggleDrawer('account')} color="inherit">
-              <PersonOutline />
-            </IconButton>
-            <IconButton onClick={toggleDrawer('wishlist')} color="inherit">
-              <Badge badgeContent={wishlistCount} color="error">
-                <FavoriteBorder />
-              </Badge>
-            </IconButton>
-            <IconButton onClick={toggleDrawer('cart')} color="inherit">
-              <Badge badgeContent={cartCount} color="error">
-                <ShoppingBagOutlined />
-              </Badge>
-            </IconButton>
+            <Tooltip title="Search">
+              <IconButton onClick={toggleDrawer('search')} color="inherit">
+                <Search />
+              </IconButton>
+            </Tooltip>
+            
+            <Tooltip title={isLoggedIn ? userName : "Account"}>
+              <IconButton onClick={toggleDrawer('account')} color="inherit">
+                <PersonOutline />
+              </IconButton>
+            </Tooltip>
+            
+            <Tooltip title="Wishlist">
+              <IconButton onClick={toggleDrawer('wishlist')} color="inherit">
+                <Badge badgeContent={wishlistCount} color="error">
+                  <FavoriteBorder />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+            
+            <Tooltip title="Cart">
+              <IconButton onClick={toggleDrawer('cart')} color="inherit">
+                <Badge badgeContent={cartCount} color="error">
+                  <ShoppingBagOutlined />
+                </Badge>
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Toolbar>
       </AppBar>
@@ -552,6 +696,22 @@ export default function Navbar() {
       >
         {renderSearchDrawer()}
       </Drawer>
+      
+      {/* Notification System */}
+      <Snackbar
+        open={!!notification}
+        autoHideDuration={3000}
+        onClose={() => setNotification(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert 
+          onClose={() => setNotification(null)} 
+          severity={notification?.severity || 'success'}
+          sx={{ width: '100%' }}
+        >
+          {notification?.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
