@@ -14,37 +14,22 @@ import HamburgerMenu from './Components/HamburgerMenu';
 
 // General Pages
 import Home from './Pages/Home';
-import CreateUser from './Pages/account/CreateUser';
-import Login from './Pages/account/Login';
+import CreateUser from './Pages/AccountPage/CreateUser';
+import Login from './Pages/AccountPage/Login';
 import AboutPage from './Pages/about/about';
 import ContactPage from './Pages/contact/ContactPage';
 
 // Account-related Pages
-import AccountPage from './Pages/account/AccountPage';
-import PersonalDataPage from './Pages/account/PersonalDataPage';
-import OrdersPage from './Pages/account/OrdersPage';
-import WishlistPage from './Pages/Shop/WishlistPage';
+import AccountPage from './Pages/AccountPage/AccountPage';
+import PersonalDataPage from './Pages/AccountPage/PersonalDataPage';
+import OrdersPage from './Pages/AccountPage/OrdersPage';
+import WishlistPage from './Pages/WishlistPage/WishlistPage';
 
 // Shop Pages
-import ShopPage from './Pages/Shop/ShopPage';
-import FragranceDetail from './Pages/Fragrance/FragranceDetail';
+import ShopPage from './Pages/shop/ShopPage';
+import FragranceDetail from './Pages/Fragrance/FragranceDetail'; 
 
-// 404 Fallback as a nested component to use useNavigate
-function NotFoundFallback() {
-  const navigate = useNavigate();
-  return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <Typography variant="h4">404 - Page Not Found</Typography>
-      <Button 
-        variant="contained" 
-        sx={{ mt: 2 }}
-        onClick={() => navigate('/')}
-      >
-        Return Home
-      </Button>
-    </div>
-  );
-}
+
 
 function App() {
   return (

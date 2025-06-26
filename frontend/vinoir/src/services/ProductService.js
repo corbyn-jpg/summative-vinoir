@@ -16,4 +16,5 @@ class ProductService {
   }
 }
 
-export default new ProductService();
+const productServiceInstance = new ProductService();
+export default productServiceInstance;
