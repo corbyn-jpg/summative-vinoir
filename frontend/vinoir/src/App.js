@@ -26,7 +26,7 @@ import WishlistPage from "./Pages/Shop/WishlistPage";
 
 // Shop Pages
 import ShopPage from "./Pages/Shop/ShopPage";
-<Route path="/fragrance/:id" element={<FragranceDetail />} />
+import FragranceDetail from "./Pages/Fragrance/FragranceDetail";
 import CartPage from "./Pages/cart/CartPage";
 
 function App() {

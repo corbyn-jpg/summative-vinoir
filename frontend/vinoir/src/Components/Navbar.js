@@ -385,7 +385,7 @@ export default function Navbar() {
           )}
         </Box>
       </Drawer>
-      {/* === Search Drawer  === */}
+      {/* === Search Drawer (Optional Placeholder) === */}
       <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
         <Box sx={{ p: 3, width: 350 }}>
           <Typography variant="h5" fontWeight="bold" mb={2}>
