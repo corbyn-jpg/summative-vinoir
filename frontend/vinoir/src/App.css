@@ -53,13 +53,3 @@ main {
 ::-webkit-scrollbar-thumb:hover {
   background: #1fa055;
 }
-
-/* --- Page Fade Animation for Product Transitions --- */
-.fade-container {
-  opacity: 1;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Dior-like smooth fade */
-}
-
-.fade-out {
-  opacity: 0;
-}

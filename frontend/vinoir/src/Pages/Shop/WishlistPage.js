@@ -1,76 +1,107 @@
-// src/Pages/shop/WishlistPage.js
-import React, { Component } from 'react';
-import { Typography, Button } from '@mui/material';
+import React, { useEffect } from 'react';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Grid, 
+  CircularProgress,
+  Alert
+} from '@mui/material';
 import ProductCard from '../../Components/ProductCard';
-import './ShopPage.css'; 
+import { useWishlist } from '../../context/WishlistContext';
+import { useAuth } from '../../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
-class WishlistPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      wishlistItems: [
-        // Mock data - in a real app, this would come from your backend
-        {
-          id: 1,
-          name: "Noir Essence",
-          price: 120,
-          image: "/images/fragrance1.jpg"
-        },
-        {
-          id: 2,
-          name: "Lumière d'Or",
-          price: 150,
-          image: "/images/fragrance2.jpg"
-        }
-      ]
-    };
+function WishlistPage() {
+  const { 
+    wishlist, 
+    removeFromWishlist, 
+    loading, 
+    error 
+  } = useWishlist();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login?redirect=/wishlist');
+    }
+  }, [isLoggedIn, navigate]);
+
+  if (!isLoggedIn) {
+    return null; // Redirect will happen
   }
 
-  handleRemoveFromWishlist = (productId) => {
-    this.setState(prevState => ({
-      wishlistItems: prevState.wishlistItems.filter(item => item.id !== productId)
-    }));
-  };
-
-  render() {
-    const { wishlistItems } = this.state;
-
+  if (loading) {
     return (
-      <div className="shop-container">
-        <Typography variant="h3" component="h1" gutterBottom>
-          My Wishlist
-        </Typography>
-
-        {wishlistItems.length === 0 ? (
-          <Typography variant="body1">
-            Your wishlist is empty
-          </Typography>
-        ) : (
-          <div className="products-grid">
-            {wishlistItems.map(product => (
-              <div key={product.id} style={{ position: 'relative' }}>
-                <ProductCard product={product} />
-                <Button
-                  variant="outlined"
-                  color="error"
-                  size="small"
-                  onClick={() => this.handleRemoveFromWishlist(product.id)}
-                  style={{ 
-                    position: 'absolute', 
-                    top: 10, 
-                    right: 10,
-                    zIndex: 1
-                  }}
-                >
-                  Remove
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
     );
   }
+
+  if (error) {
+    return (
+      <Alert severity="error" sx={{ m: 3 }}>
+        {error}
+      </Alert>
+    );
+  }
+
+  return (
+    <Box sx={{ 
+      maxWidth: '1200px', 
+      margin: '3rem auto', 
+      padding: '2rem',
+      borderRadius: '12px',
+      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+      background: 'linear-gradient(145deg, #ffffff, #f3f3f3)',
+    }}>
+      <Typography 
+        variant="h4" 
+        sx={{ 
+          fontFamily: 'Playfair Display, serif',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginBottom: '2rem',
+          color: '#222',
+        }}
+      >
+        My Wishlist
+      </Typography>
+
+      {wishlist.length === 0 ? (
+        <Box sx={{ textAlign: 'center', py: 4 }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Your wishlist is empty
+          </Typography>
+          <Button
+            variant="contained"
+            component={Link}
+            to="/shop"
+            sx={{
+              backgroundColor: '#146e3a',
+              '&:hover': { backgroundColor: '#0d5a2c' }
+            }}
+          >
+            Browse Products
+          </Button>
+        </Box>
+      ) : (
+        <Grid container spacing={4}>
+          {wishlist.map(product => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+              <ProductCard 
+                product={product} 
+                showRemoveButton 
+                onRemove={() => removeFromWishlist(product._id)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Box>
+  );
 }
 
 export default WishlistPage;
