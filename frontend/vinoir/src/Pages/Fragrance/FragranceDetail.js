@@ -1,6 +1,5 @@
-// src/Pages/Fragrance/FragranceDetail.js
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -17,6 +16,7 @@ import ProductService from "../../services/ProductService";
 
 function FragranceDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,10 +25,13 @@ function FragranceDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const product = await ProductService.getProductById(id);
-        setProduct(product);
+        setIsLoading(true);
+        setError(null);
+        const productData = await ProductService.getProductById(id);
+        setProduct(productData);
       } catch (error) {
-        setError(error.message || "Failed to load product details");
+        console.error('Error fetching product:', error);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -47,19 +50,38 @@ function FragranceDetail() {
 
   if (error) {
     return (
-      <Alert severity="error" sx={{ m: 3 }}>
-        {error}
-      </Alert>
+      <Box sx={{ maxWidth: 1200, margin: "4rem auto", padding: "2rem", textAlign: "center" }}>
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+        <Button 
+          variant="contained" 
+          onClick={() => navigate('/shop')}
+          sx={{ backgroundColor: "#146e3a" }}
+        >
+          Back to Shop
+        </Button>
+      </Box>
     );
   }
 
   if (!product) {
     return (
-      <Typography variant="h5" sx={{ textAlign: "center", mt: 4 }}>
-        Product not found
-      </Typography>
+      <Box sx={{ maxWidth: 1200, margin: "4rem auto", padding: "2rem", textAlign: "center" }}>
+        <Typography variant="h5" sx={{ mb: 3 }}>
+          Product not found
+        </Typography>
+        <Button 
+          variant="contained" 
+          onClick={() => navigate('/shop')}
+          sx={{ backgroundColor: "#146e3a" }}
+        >
+          Back to Shop
+        </Button>
+      </Box>
     );
   }
+
 
   return (
     <Box sx={{ maxWidth: 1200, margin: "4rem auto", padding: "2rem" }}>
