@@ -28,8 +28,7 @@ import WishlistPage from './Pages/Shop/WishlistPage';
 // Shop Pages
 import ShopPage from './Pages/Shop/ShopPage';
 import FragranceDetail from './Pages/Fragrance/FragranceDetail';
-import CheckoutPage from './Pages/Checkout/CheckoutPage';
-import OrderConfirmation from './Pages/Checkout/OrderConfirmation';
+
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -106,17 +105,8 @@ function App() {
                       <WishlistPage />
                     </ProtectedRoute>
                   } />
-                  <Route path="/checkout" element={
-                    <ProtectedRoute>
-                      <CheckoutPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/order-confirmation" element={
-                    <ProtectedRoute>
-                      <OrderConfirmation />
-                    </ProtectedRoute>
-                  } />
-
+                 
+                
                   {/* Fallback */}
                   <Route path="*" element={<NotFoundFallback />} />
                 </Routes>
