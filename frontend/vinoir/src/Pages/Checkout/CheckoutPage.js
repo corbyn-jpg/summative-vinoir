@@ -1,4 +1,3 @@
-// src/Pages/checkout/CheckoutPage.js
 import React, { useState } from "react";
 import {
   Box,
@@ -15,16 +14,14 @@ import {
   FormControlLabel,
   Checkbox,
   CircularProgress,
-  Alert,
 } from "@mui/material";
 import { useCart } from "../../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
-  const { cart, cartTotal, clearCart } = useCart();
+  const { cart, clearCart } = useCart(); // Make sure clearCart is properly destructured
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -43,8 +40,13 @@ const CheckoutPage = () => {
     return isNaN(num) ? "0.00" : num.toFixed(2);
   };
 
-  const shipping = 50;
-  const total = cartTotal + shipping;
+  // Calculate order summary values
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shipping = 50; // Fixed shipping cost
+  const total = subtotal + shipping;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -54,47 +56,31 @@ const CheckoutPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Clear cart and navigate to confirmation page
+      if (clearCart && typeof clearCart === 'function') {
+        clearCart();
+      }
+      navigate("/order-confirmation");
+    } catch (error) {
+      console.error("Checkout error:", error);
+    } finally {
       setLoading(false);
-      setOrderSuccess(true);
-      clearCart();
-    }, 2000);
+    }
   };
 
-  if (cart.length === 0 && !orderSuccess) {
+  if (cart.length === 0) {
     return (
       <Box sx={{ textAlign: "center", p: 4 }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Your cart is empty
-        </Typography>
-        <Button
-          variant="contained"
-          component={Link}
-          to="/shop"
-          sx={{
-            backgroundColor: "#146e3a",
-            "&:hover": { backgroundColor: "#0d5a2c" },
-          }}
-        >
-          Continue Shopping
-        </Button>
-      </Box>
-    );
-  }
-
-  if (orderSuccess) {
-    return (
-      <Box sx={{ textAlign: "center", p: 4 }}>
-        <Typography variant="h4" sx={{ mb: 2, color: "#146e3a" }}>
-          Thank you for your order!
-        </Typography>
-        <Typography variant="body1" sx={{ mb: 4 }}>
-          Your order has been placed successfully. We've sent a confirmation to your email.
         </Typography>
         <Button
           variant="contained"
@@ -271,82 +257,42 @@ const CheckoutPage = () => {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={5}>
+         <Grid item xs={12} md={5}>
             <Paper sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Order Summary
               </Typography>
-              
-              <Box sx={{ maxHeight: "300px", overflowY: "auto", mb: 2 }}>
-                {cart.map((item) => (
-                  <Box
-                    key={item._id}
-                    sx={{
-                      display: "flex",
-                      mb: 2,
-                      p: 1,
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src={item.images?.[0]?.url || "/images/fallback.jpg"}
-                      alt={item.name}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        objectFit: "cover",
-                        borderRadius: "4px",
-                        marginRight: "16px",
-                      }}
-                    />
-                    <Box sx={{ flexGrow: 1 }}>
-                      <Typography variant="subtitle1">{item.name}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.quantity} × R {item.price.toFixed(2)}
-                      </Typography>
-                    </Box>
-                    <Typography>
-                      R {(item.price * item.quantity).toFixed(2)}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-
               <Divider sx={{ my: 2 }} />
-
+  
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                 <Typography>Subtotal</Typography>
-                <Typography>R {formatPrice(cartTotal)}</Typography>
+                <Typography>R {formatPrice(subtotal)}</Typography>
               </Box>
-
+  
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                 <Typography>Shipping</Typography>
                 <Typography>R {formatPrice(shipping)}</Typography>
               </Box>
-
+  
               <Divider sx={{ my: 2 }} />
-
+  
               <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
                 <Typography variant="h6">Total</Typography>
                 <Typography variant="h6">R {formatPrice(total)}</Typography>
               </Box>
-
+  
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 size="large"
-                disabled={loading || !formData.termsAccepted}
+                disabled={loading}
                 sx={{
                   backgroundColor: "#146e3a",
                   "&:hover": { backgroundColor: "#0d5a2c" },
                 }}
               >
-                {loading ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  "Place Order"
-                )}
+                {loading ? <CircularProgress size={24} color="inherit" /> : "Place Order"}
               </Button>
             </Paper>
           </Grid>

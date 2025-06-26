@@ -29,6 +29,8 @@ import ShopPage from "./Pages/Shop/ShopPage";
 import FragranceDetail from "./Pages/Fragrance/FragranceDetail";
 import CartPage from "./Pages/cart/CartPage";
 import CheckoutPage from "./Pages/Checkout/CheckoutPage"; 
+import OrderConfirmation from "./Pages/Checkout/OrderConfirmation";
+
 
 function App() {
   return (
@@ -60,7 +62,8 @@ function App() {
                   <Route path="/fragrance/:id" element={<FragranceDetail />} />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/checkout" element={<CheckoutPage />} />{" "}
-                  {/* Add this route */}
+                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
                   {/* Fallback */}
                   <Route
                     path="*"
