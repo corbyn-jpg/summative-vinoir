@@ -28,6 +28,7 @@ import WishlistPage from "./Pages/Shop/WishlistPage";
 import ShopPage from "./Pages/Shop/ShopPage";
 import FragranceDetail from "./Pages/Fragrance/FragranceDetail";
 import CartPage from "./Pages/cart/CartPage";
+import CheckoutPage from "./Pages/Checkout/CheckoutPage"; 
 
 function App() {
   return (
@@ -46,7 +47,6 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
-
                   {/* Account Routes */}
                   <Route path="/account" element={<AccountPage />} />
                   <Route
@@ -55,12 +55,12 @@ function App() {
                   />
                   <Route path="/account/orders" element={<OrdersPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
-
                   {/* Shop Routes */}
                   <Route path="/shop" element={<ShopPage />} />
                   <Route path="/fragrance/:id" element={<FragranceDetail />} />
                   <Route path="/cart" element={<CartPage />} />
-
+                  <Route path="/checkout" element={<CheckoutPage />} />{" "}
+                  {/* Add this route */}
                   {/* Fallback */}
                   <Route
                     path="*"

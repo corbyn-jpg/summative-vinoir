@@ -17,8 +17,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateCartItem, clearCart, cartCount } =
-    useCart();
+  const { cart, removeFromCart, updateCartItem, clearCart, cartCount, cartTotal } = useCart();
   const navigate = useNavigate();
 
   const handleClearCart = () => {
@@ -46,9 +45,10 @@ const CartPage = () => {
   const total = subtotal + shipping;
 
   const handleCheckout = () => {
-    if (cartCount > 0) {
-      navigate("/checkout");
+    if (cart.length === 0) {
+      return; // Don't proceed if cart is empty
     }
+    navigate("/checkout");
   };
 
   if (loading) {
