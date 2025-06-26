@@ -17,12 +17,13 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateCartItem, clearCart, cartCount, cartTotal } = useCart();
+  const { cart, removeFromCart, updateCartItem, cartCount } = useCart();
   const navigate = useNavigate();
 
-  const handleClearCart = () => {
-  clearCart();
-};
+  // If your useCart doesn't provide clearCart, you can implement it like this:
+  const clearCart = () => {
+    cart.forEach((item) => removeFromCart(item._id));
+  };
 
   const [loading, setLoading] = React.useState(true);
 
@@ -49,6 +50,10 @@ const CartPage = () => {
       return; // Don't proceed if cart is empty
     }
     navigate("/checkout");
+  };
+
+  const handleClearCart = () => {
+    clearCart(); // Use the clearCart function from your context
   };
 
   if (loading) {

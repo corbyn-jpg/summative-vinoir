@@ -44,13 +44,13 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { isLoggedIn, login, logout } = useAuth();
-  const { 
-  cart, 
-  addToCart, 
-  removeFromCart, 
-  updateCartItem, 
-  cartCount  // Add this to the destructured values
-} = useCart();
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateCartItem,
+    cartCount, // Add this to the destructured values
+  } = useCart();
   const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
