@@ -1,175 +1,107 @@
 import React from "react";
-import { 
-  Box, 
-  Typography, 
-  Button, 
-  IconButton,
-  Badge,
-  Tooltip
-} from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Button, Box } from "@mui/material";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
-import { useAuth } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Favorite,
-  FavoriteBorder,
-  AddShoppingCart
-} from "@mui/icons-material";
-import "./ProductCard.css";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
-  const { 
-    wishlist, 
-    addToWishlist, 
-    removeFromWishlist,
-    loading: wishlistLoading
-  } = useWishlist();
-  const { isLoggedIn } = useAuth();
-  const navigate = useNavigate();
-
-  const isInWishlist = wishlist.some(item => item._id === product._id);
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart({ ...product, quantity: 1 });
-  };
-
-  const handleWishlistToggle = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (!isLoggedIn) {
-      navigate('/login?redirect=' + window.location.pathname);
-      return;
-    }
-
-    if (isInWishlist) {
-      removeFromWishlist(product._id);
-    } else {
-      addToWishlist(product);
-    }
-  };
 
   return (
-    <Box 
-      component={Link}
-      to={`/fragrance/${product._id}`}
-      sx={{
-        textDecoration: 'none',
-        color: 'inherit',
-        position: 'relative',
-        display: 'block',
-        height: '100%',
-        '&:hover': {
-          transform: 'translateY(-5px)',
-          transition: 'transform 0.3s ease',
-          '& .product-actions': {
-            opacity: 1
-          }
+    <Card sx={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      boxShadow: 'none',
+      border: '1px solid rgba(0,0,0,0.1)',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'translateY(-5px)',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+        '& .luxury-overlay': {
+          opacity: 1
         }
-      }}
-    >
-      {/* Wishlist Button */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: 8, 
-        right: 8,
-        zIndex: 1 
-      }}>
-        <Tooltip title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}>
-          <IconButton
-            onClick={handleWishlistToggle}
-            disabled={wishlistLoading}
-            sx={{
-              backgroundColor: 'rgba(255,255,255,0.8)',
-              '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.9)'
-              }
-            }}
-            color={isInWishlist ? "error" : "default"}
-          >
-            {isInWishlist ? <Favorite /> : <FavoriteBorder />}
-          </IconButton>
-        </Tooltip>
-      </Box>
-
-      {/* Product Image */}
-      <Box sx={{ 
-        height: '300px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f8f5f2',
-        borderRadius: '8px',
-        overflow: 'hidden',
-        mb: 2,
-        position: 'relative'
-      }}>
-        <img
-          src={product.images?.[0]?.url || '/images/fallback.jpg'}
+      }
+    }}>
+      <Box sx={{ position: 'relative' }}>
+        <CardMedia
+          component="img"
+          image={product.images?.[0]?.url || '/images/fallback.jpg'}
           alt={product.name}
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
-            objectFit: 'contain',
-            transition: 'transform 0.3s ease'
-          }}
-          onError={(e) => {
-            e.target.src = '/images/fallback.jpg';
+          sx={{
+            height: 280,
+            objectFit: 'cover',
+            filter: 'brightness(0.95)'
           }}
         />
-      </Box>
-      
-      {/* Product Details */}
-      <Box sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {product.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {product.category}
-        </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
-          R {product.price.toFixed(2)}
-        </Typography>
-        
-        {/* Add to Cart Button */}
-        <Button
-          variant="outlined"
-          startIcon={<AddShoppingCart />}
-          onClick={handleAddToCart}
-          fullWidth
-          sx={{
-            color: '#146e3a',
-            borderColor: '#146e3a',
-            '&:hover': {
-              backgroundColor: '#146e3a',
-              color: 'white'
-            }
-          }}
-        >
-          Add to Cart
-        </Button>
+        <Box className="luxury-overlay" sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3))',
+          opacity: 0,
+          transition: 'opacity 0.3s ease',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCart({
+                ...product,
+                id: product._id || product.id // Ensure we have a consistent ID
+              });
+            }}
+            sx={{
+              backgroundColor: 'rgba(20, 110, 58, 0.9)',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: 'rgba(15, 85, 45, 0.9)'
+              }
+            }}
+          >
+            Add to Cart
+          </Button>
+        </Box>
       </Box>
 
-      {/* Sale Badge (example) */}
-      {product.onSale && (
-        <Box sx={{
-          position: 'absolute',
-          top: 8,
-          left: 8,
-          backgroundColor: '#146e3a',
-          color: 'white',
-          px: 1,
-          borderRadius: '4px',
-          zIndex: 1
+      <CardContent sx={{ 
+        flexGrow: 1,
+        p: 2.5,
+        background: 'linear-gradient(to bottom, #f9f9f9, #f0f0f0)'
+      }}>
+        <Typography variant="h6" sx={{ 
+          fontWeight: 600,
+          mb: 0.5,
+          fontFamily: '"Playfair Display", serif',
+          color: '#333'
         }}>
-          <Typography variant="caption">SALE</Typography>
-        </Box>
-      )}
-    </Box>
+          {product.name}
+        </Typography>
+        <Typography variant="body2" sx={{ 
+          mb: 1,
+          color: '#666',
+          fontStyle: 'italic',
+          fontSize: '0.8rem'
+        }}>
+          {product.category}
+        </Typography>
+        <Typography variant="h6" sx={{ 
+          fontWeight: 700,
+          color: '#146e3a',
+          letterSpacing: '0.5px'
+        }}>
+          R {product.price.toFixed(2)}
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 

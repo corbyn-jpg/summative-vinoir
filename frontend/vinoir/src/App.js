@@ -1,66 +1,36 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-import { CssBaseline, CircularProgress, Box, Typography, Button } from '@mui/material'; 
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
 
 // Context Providers
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
-import { WishlistProvider } from './context/WishlistContext';
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import { WishlistProvider } from "./context/WishlistContext";
 
 // Global Components
-import Navbar from './Components/Navbar';
-import Footer from './Components/Footer';
-import HamburgerMenu from './Components/HamburgerMenu';
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 
 // General Pages
-import Home from './Pages/Home';
-import CreateUser from './Pages/account/CreateUser';
-import Login from './Pages/account/Login';
-import AboutPage from './Pages/about/about';
-import ContactPage from './Pages/contact/ContactPage';
+import Home from "./Pages/Home";
+import CreateUser from "./Pages/account/CreateUser";
+import Login from "./Pages/account/Login";
+import AboutPage from "./Pages/about/about";
+import ContactPage from "./Pages/contact/ContactPage";
 
 // Account-related Pages
-import AccountPage from './Pages/account/AccountPage';
-import PersonalDataPage from './Pages/account/PersonalDataPage';
-import OrdersPage from './Pages/account/OrdersPage';
-import WishlistPage from './Pages/Shop/WishlistPage';
+import AccountPage from "./Pages/account/AccountPage";
+import PersonalDataPage from "./Pages/account/PersonalDataPage";
+import OrdersPage from "./Pages/account/OrdersPage";
+import WishlistPage from "./Pages/Shop/WishlistPage";
 
 // Shop Pages
-import ShopPage from './Pages/Shop/ShopPage';
-import FragranceDetail from './Pages/Fragrance/FragranceDetail';
+import ShopPage from "./Pages/Shop/ShopPage";
+import FragranceDetail from "./Pages/Fragrance/FragranceDetail";
+import CartPage from "./Pages/cart/CartPage";
+import CheckoutPage from './Pages/Checkout/CheckoutPage';
+import OrderConfirmation from './Pages/Checkout/OrderConfirmation';
 
-
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn, isLoading } = useAuth();
-  
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
-        <CircularProgress size={60} />
-      </Box>
-    );
-  }
-
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
-};
-
-// 404 Fallback
-function NotFoundFallback() {
-  const navigate = useNavigate();
-  return (
-    <Box sx={{ padding: '2rem', textAlign: 'center', minHeight: '60vh' }}>
-      <Typography variant="h4" gutterBottom>404 - Page Not Found</Typography>
-      <Button 
-        variant="contained" 
-        sx={{ mt: 2 }}
-        onClick={() => navigate('/')}
-      >
-        Return Home
-      </Button>
-    </Box>
-  );
-}
 
 function App() {
   return (
@@ -69,51 +39,44 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
-            <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <div className="App">
               <Navbar />
-              <HamburgerMenu />
-              
-              <Box component="main" sx={{ flexGrow: 1, py: 4 }}>
+              <main>
                 <Routes>
-                  {/* Public Routes */}
+                  {/* General Routes */}
                   <Route path="/" element={<Home />} />
                   <Route path="/register" element={<CreateUser />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/contact" element={<ContactPage />} />
+                  {/* Account Routes */}
+                  <Route path="/account" element={<AccountPage />} />
+                  <Route
+                    path="/account/personal-data"
+                    element={<PersonalDataPage />}
+                  />
+                  <Route path="/account/orders" element={<OrdersPage />} />
+                  <Route path="/wishlist" element={<WishlistPage />} />
+                  {/* Shop Routes */}
                   <Route path="/shop" element={<ShopPage />} />
                   <Route path="/fragrance/:id" element={<FragranceDetail />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />{" "}
+                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-                  {/* Protected Routes */}
-                  <Route path="/account" element={
-                    <ProtectedRoute>
-                      <AccountPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/account/personal-data" element={
-                    <ProtectedRoute>
-                      <PersonalDataPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/account/orders" element={
-                    <ProtectedRoute>
-                      <OrdersPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/wishlist" element={
-                    <ProtectedRoute>
-                      <WishlistPage />
-                    </ProtectedRoute>
-                  } />
-                 
-                
                   {/* Fallback */}
-                  <Route path="*" element={<NotFoundFallback />} />
+                  <Route
+                    path="*"
+                    element={
+                      <div style={{ padding: "2rem", textAlign: "center" }}>
+                        Page Not Found
+                      </div>
+                    }
+                  />
                 </Routes>
-              </Box>
-              
+              </main>
               <Footer />
-            </Box>
+            </div>
           </WishlistProvider>
         </CartProvider>
       </AuthProvider>

@@ -49,6 +49,7 @@ function Home() {
         title="Welcome to Vinoir"
         subtitle="An Invitation to Venture Away"
         buttonText="Discover"
+        buttonLink={"/shop"}
         backgroundImage="/images/dummy-image.jpg"
       />
 
