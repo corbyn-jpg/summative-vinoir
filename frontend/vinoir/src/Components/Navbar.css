@@ -161,3 +161,4 @@
 /* Make sure the badge is visible against any background */
 .navbar .MuiIconButton-root:hover .cart-badge {
   background-color: darkred !important;
+}
