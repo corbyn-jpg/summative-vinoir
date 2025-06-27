@@ -1,66 +1,72 @@
+/* Hamburger Icon */
 .hamburger-icon {
-  transition: transform 0.3s ease-in-out;
-  background-color: transparent;
-  padding: 8px;
-  border-radius: 50%;
+  transition: all 0.4s ease-in-out !important;
+  background-color: transparent !important;
+  padding: 0.5rem !important;
 }
 
 .hamburger-icon.animating {
-  transform: rotate(90deg) scale(1.1);
+  transform: rotate(90deg) scale(1.1) !important;
 }
 
 .close-icon {
-  color: #000000;
-  pointer-events: auto;
+  color: var(--gold-accent) !important;
+  pointer-events: auto !important;
+  transition: all 0.3s ease !important;
 }
 
 .close-icon:hover {
-  background-color: transparent !important;
+  transform: scale(1.2) !important;
 }
 
 /* Separator line under X icon */
 .separator-line {
   width: 100%;
   height: 1px;
-  background-color: #ccc;
-  margin: 8px 0 12px 0;
+  background-color: rgba(186, 185, 185, 0.3);
+  margin: 1rem 0 1.5rem 0;
 }
 
+/* Luxury Menu */
 .luxury-menu {
-  width: 250px;
-  background-color: #ffffff;
+  width: 280px;
+  background: var(--raisin-black) !important;
   height: 100%;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: "Cormorant Garamond", serif !important;
   display: flex;
   flex-direction: column;
-  color: #000000;
+  color: var(--silver) !important;
+  border-right: 1px solid var(--gold-accent) !important;
 }
 
 /* Text style */
 .luxury-menu .MuiListItemText-primary {
-  font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  color: #000000;
-  transition: color 0.3s ease, opacity 0.3s ease;
+  font-size: 1.3rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  color: var(--silver) !important;
+  transition: all 0.4s ease !important;
+  font-family: "Cormorant Garamond", serif !important;
 }
 
 /* List item container */
 .luxury-menu .MuiListItem-root {
-  transition: opacity 0.3s ease;
-  padding: 12px 16px;
+  transition: all 0.4s ease !important;
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid rgba(186, 185, 185, 0.1) !important;
 }
 
-/* Fade effect: dim others, highlight hovered item */
-.luxury-menu:hover .MuiListItem-root {
-  opacity: 0.4;
-}
-
+/* Hover effects */
 .luxury-menu .MuiListItem-root:hover {
-  opacity: 1 !important;
+  background: rgba(42, 73, 54, 0.3) !important;
 }
 
 .luxury-menu .MuiListItem-root:hover .MuiListItemText-primary {
-  color: #111111; /* Slightly darker when hovered */
-  font-weight: 600;
+  color: var(--gold-accent) !important;
+  letter-spacing: 0.1em !important;
+}
+
+.luxury-menu .MuiListItemIcon-root {
+  color: var(--gold-accent) !important;
+  min-width: 40px !important;
 }
