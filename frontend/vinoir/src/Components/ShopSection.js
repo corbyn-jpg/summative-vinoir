@@ -1,20 +1,37 @@
-
 import React from "react";
 import ProductCard from "./ProductCard";
 import { Box, Typography } from "@mui/material";
-import "./ShopSection.css";
 
 function ShopSection({ products = [] }) {
-  // Take first 4 products (or featured products if you prefer)
   const displayProducts = products.slice(0, 4); 
   
   return (
-    <Box className="shop-section-container">
-      <Typography variant="h2" className="section-title">
+    <Box sx={{ 
+      maxWidth: '1600px', 
+      mx: 'auto', 
+      px: 2,
+      py: 6 
+    }}>
+      <Typography variant="h2" sx={{ 
+        textAlign: 'center', 
+        mb: 4,
+        fontSize: '2rem',
+        fontWeight: 300,
+        letterSpacing: '0.1em'
+      }}>
         OUR SIGNATURE SCENTS
       </Typography>
       
-      <Box className="vinoir-product-grid">
+      <Box sx={{ 
+        display: 'flex',
+        justifyContent: 'center',
+        gap: 4,
+        flexWrap: 'wrap',
+        '& > *': {
+          flex: '0 1 calc(25% - 32px)',
+          minWidth: '250px'
+        }
+      }}>
         {displayProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
