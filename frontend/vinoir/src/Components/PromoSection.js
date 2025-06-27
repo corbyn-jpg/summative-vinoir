@@ -1,89 +1,156 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, IconButton, Card, CardMedia, CardContent } from "@mui/material";
-import "./PromoSection.css";
-import "./ProductCard.css";
-
+import React from 'react';
+import { Box, Typography, Button } from '@mui/material';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Link } from 'react-router-dom';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import './PromoSection.css';
 
 const PromoSection = ({ products = [] }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Get 4 featured products or fallback to first 5
-  const promoItems = products.length > 0 
-    ? products.filter(p => p.featured).slice(0, 5) 
+  // Get featured products or fallback to placeholder data
+  const featuredProducts = products.length > 0 
+    ? products.filter(p => p.featured).slice(0, 5)
     : [
-        { id: 1, title: "Élégance Noir", subtitle: "A mysterious oriental blend", image: "/images/promo1.jpg" },
-        { id: 2, title: "Lumière d'Or", subtitle: "Golden citrus top notes", image: "/images/promo2.jpg" },
-        { id: 3, title: "Velvet Rose", subtitle: "Luxurious floral bouquet", image: "/images/promo3.jpg" },
-        { id: 4, title: "Oud Royal", subtitle: "Regal woody intensity", image: "/images/promo4.jpg" },
-        { id: 5, title: "Jardin Secret", subtitle: "Fresh green accords", image: "/images/promo5.jpg" }
+        { 
+          _id: '1', 
+          name: "Élégance Noir", 
+          description: "A mysterious oriental blend with notes of vanilla and amber", 
+          price: 120,
+          images: [{ url: "/images/promo1.jpg" }],
+          featured: true
+        },
+        { 
+          _id: '2', 
+          name: "Lumière d'Or", 
+          description: "Golden citrus top notes with a warm woody base", 
+          price: 95,
+          images: [{ url: "/images/promo2.jpg" }],
+          featured: true
+        },
+        { 
+          _id: '3', 
+          name: "Velvet Rose", 
+          description: "Luxurious floral bouquet with hints of peony and musk", 
+          price: 110,
+          images: [{ url: "/images/promo3.jpg" }],
+          featured: true
+        },
+        { 
+          _id: '4', 
+          name: "Oud Royal", 
+          description: "Regal woody intensity with smoky undertones", 
+          price: 150,
+          images: [{ url: "/images/promo4.jpg" }],
+          featured: true
+        },
+        { 
+          _id: '5', 
+          name: "Jardin Secret", 
+          description: "Fresh green accords with citrus and herbal notes", 
+          price: 85,
+          images: [{ url: "/images/promo5.jpg" }],
+          featured: true
+        }
       ];
 
-  // Auto-advance every 5 seconds
-  useEffect(() => {
-    if (promoItems.length <= 1) return;
-    const interval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setActiveIndex((prev) => (prev + 1) % promoItems.length);
-        setIsTransitioning(false);
-      }, 500);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [promoItems.length]);
-
-  // Get 3 visible items for the carousel
-  const getVisibleItems = () => {
-    return Array.from({ length: 3 }, (_, i) => 
-      promoItems[(activeIndex + i) % promoItems.length]
-    );
-  };
-
   return (
-    <Box className="promo-luxury-container">
-      <Typography variant="h2" className="promo-luxury-title">
-        CURATED COLLECTIONS
+    <Box className="promo-section">
+      <Typography variant="h2" className="promo-title">
+        FEATURED COLLECTION
+      </Typography>
+      <Typography variant="subtitle1" className="promo-subtitle">
+        Discover our most coveted fragrances
       </Typography>
 
-      <Box className={`promo-carousel-container ${isTransitioning ? "transitioning" : ""}`}>
-        <Box className="promo-carousel">
-          {getVisibleItems().map((item, index) => (
-            <Card 
-              key={item.id || item._id}
-              className={`promo-luxury-card ${index === 1 ? "active-card" : ""}`}
-            >
-              <CardMedia
-                component="img"
-                image={item.images?.[0]?.url || item.image}
-                alt={item.title || item.name}
-                className="promo-luxury-image"
-                onError={(e) => {
-                  e.target.src = '/images/fallback.jpg';
-                }}
-              />
-              <CardContent className="promo-luxury-content">
-                <Typography variant="h5" className="promo-item-title">
-                  {item.title || item.name}
-                </Typography>
-                <Typography variant="body2" className="promo-item-subtitle">
-                  {item.subtitle || item.description?.substring(0, 60) + '...'}
-                </Typography>
-              </CardContent>
-            </Card>
+      <Box className="swiper-container">
+        <Swiper
+          effect={'coverflow'}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={'auto'}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 300,
+            modifier: 2,
+            slideShadows: true,
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          navigation={true}
+          modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
+          className="promo-swiper"
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
+        >
+          {featuredProducts.map((product) => (
+            <SwiperSlide key={product._id} className="promo-slide">
+              <Link to={`/products/${product._id}`} className="promo-card-link">
+                <Box className="promo-card">
+                  <Box className="promo-image-container">
+                    <img
+                      src={product.images?.[0]?.url || '/images/fallback.jpg'}
+                      alt={product.name}
+                      className="promo-image"
+                      onError={(e) => {
+                        e.target.src = '/images/fallback.jpg';
+                      }}
+                    />
+                    <Box className="promo-overlay">
+                      <Button 
+                        variant="contained" 
+                        className="promo-shop-btn"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        View Details
+                      </Button>
+                    </Box>
+                  </Box>
+                  <Box className="promo-content">
+                    <Typography variant="h5" className="promo-product-title">
+                      {product.name}
+                    </Typography>
+                    <Typography variant="body1" className="promo-product-price">
+                      R{product.price.toFixed(2)}
+                    </Typography>
+                    <Typography variant="body2" className="promo-product-desc">
+                      {product.description.substring(0, 60)}...
+                    </Typography>
+                  </Box>
+                </Box>
+              </Link>
+            </SwiperSlide>
           ))}
-        </Box>
+        </Swiper>
       </Box>
 
-      <Box className="promo-luxury-indicators">
-        {promoItems.map((_, index) => (
-          <IconButton
-            key={index}
-            onClick={() => setActiveIndex(index)}
-            className={`luxury-dot ${activeIndex === index ? "active" : ""}`}
-            size="small"
-          />
-        ))}
-      </Box>
+      <Button 
+        variant="outlined" 
+        color="primary" 
+        component={Link} 
+        to="/shop"
+        className="promo-view-all-btn"
+      >
+        View All Products
+      </Button>
     </Box>
   );
 };
