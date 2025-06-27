@@ -125,7 +125,10 @@ export default function Navbar() {
 
             <IconButton
               onClick={toggleDrawer("cart")}
-              sx={{ color: "white" }} // Add this prop
+              sx={{
+                color: "white",
+                position: "relative", // Add this to position the badge absolutely
+              }}
             >
               <ShoppingBagOutlined sx={{ color: "inherit" }} />
               {cart.length > 0 && (
@@ -134,8 +137,8 @@ export default function Navbar() {
                     position: "absolute",
                     top: 5,
                     right: 5,
-                    backgroundColor: "var(--gold-accent)",
-                    color: "var(--raisin-black)",
+                    backgroundColor: "red", // Keep it red
+                    color: "white", // White text for contrast
                     borderRadius: "50%",
                     width: 18,
                     height: 18,
@@ -144,6 +147,7 @@ export default function Navbar() {
                     justifyContent: "center",
                     alignItems: "center",
                     fontWeight: "bold",
+                    zIndex: 1, // Ensure it stays above other elements
                   }}
                 >
                   {cart.length}
