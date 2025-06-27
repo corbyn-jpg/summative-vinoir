@@ -5,6 +5,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  font-family: 'Playfair Display', serif !important;
 }
 
 /* Title Styling */

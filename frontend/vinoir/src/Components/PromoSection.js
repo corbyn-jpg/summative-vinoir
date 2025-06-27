@@ -57,15 +57,34 @@ const PromoSection = ({ products = [] }) => {
       ];
 
   return (
-    <Box className="promo-section">
-      <Typography variant="h2" className="promo-title">
+    <Box className="promo-section" sx={{ py: 8 }}>
+      <Typography 
+        variant="h2" 
+        className="promo-title"
+        sx={{ 
+          fontFamily: '"Playfair Display", serif',
+          fontWeight: 700,
+          mb: 2,
+          textAlign: 'center'
+        }}
+      >
         FEATURED COLLECTION
       </Typography>
-      <Typography variant="subtitle1" className="promo-subtitle">
+      <Typography 
+        variant="subtitle1" 
+        className="promo-subtitle"
+        sx={{ 
+          fontFamily: '"Playfair Display", serif',
+          fontWeight: 400,
+          mb: 6,
+          textAlign: 'center',
+          fontSize: '1.25rem'
+        }}
+      >
         Discover our most coveted fragrances
       </Typography>
 
-      <Box className="swiper-container">
+      <Box className="swiper-container" sx={{ mb: 8 }}>
         <Swiper
           effect={'coverflow'}
           grabCursor={true}
@@ -103,9 +122,9 @@ const PromoSection = ({ products = [] }) => {
         >
           {featuredProducts.map((product) => (
             <SwiperSlide key={product._id} className="promo-slide">
-              <Link to={`/products/R{product._id}`} className="promo-card-link">
-                <Box className="promo-card">
-                  <Box className="promo-image-container">
+              <Link to={`/products/${product._id}`} className="promo-card-link">
+                <Box className="promo-card" sx={{ p: 2 }}>
+                  <Box className="promo-image-container" sx={{ mb: 2 }}>
                     <img
                       src={product.images?.[0]?.url || '/images/fallback.jpg'}
                       alt={product.name}
@@ -119,19 +138,51 @@ const PromoSection = ({ products = [] }) => {
                         variant="contained" 
                         className="promo-shop-btn"
                         onClick={(e) => e.preventDefault()}
+                        sx={{
+                          fontFamily: '"Playfair Display", serif',
+                          fontWeight: 500,
+                          fontSize: '1rem',
+                          py: 1.5,
+                          px: 3
+                        }}
                       >
                         View Details
                       </Button>
                     </Box>
                   </Box>
-                  <Box className="promo-content">
-                    <Typography variant="h5" className="promo-product-title">
+                  <Box className="promo-content" sx={{ textAlign: 'center' }}>
+                    <Typography 
+                      variant="h5" 
+                      className="promo-product-title"
+                      sx={{ 
+                        fontFamily: '"Playfair Display", serif',
+                        fontWeight: 600,
+                        mb: 1
+                      }}
+                    >
                       {product.name}
                     </Typography>
-                    <Typography variant="body1" className="promo-product-price">
+                    <Typography 
+                      variant="body1" 
+                      className="promo-product-price"
+                      sx={{ 
+                        fontFamily: '"Playfair Display", serif',
+                        fontWeight: 500,
+                        mb: 1.5,
+                        fontSize: '1.25rem'
+                      }}
+                    >
                       ${product.price.toFixed(2)}
                     </Typography>
-                    <Typography variant="body2" className="promo-product-desc">
+                    <Typography 
+                      variant="body2" 
+                      className="promo-product-desc"
+                      sx={{ 
+                        fontFamily: '"Playfair Display", serif',
+                        fontWeight: 400,
+                        mb: 2
+                      }}
+                    >
                       {product.description.substring(0, 60)}...
                     </Typography>
                   </Box>
@@ -142,15 +193,28 @@ const PromoSection = ({ products = [] }) => {
         </Swiper>
       </Box>
 
-      <Button 
-        variant="outlined" 
-        color="primary" 
-        component={Link} 
-        to="/shop"
-        className="promo-view-all-btn"
-      >
-        View All Products
-      </Button>
+      <Box sx={{ textAlign: 'center' }}>
+        <Button 
+          variant="outlined" 
+          color="primary" 
+          component={Link} 
+          to="/shop"
+          className="promo-view-all-btn"
+          sx={{
+            fontFamily: '"Playfair Display", serif',
+            fontWeight: 500,
+            fontSize: '1rem',
+            py: 1.5,
+            px: 4,
+            borderWidth: '2px',
+            '&:hover': {
+              borderWidth: '2px'
+            }
+          }}
+        >
+          View All Products
+        </Button>
+      </Box>
     </Box>
   );
 };
