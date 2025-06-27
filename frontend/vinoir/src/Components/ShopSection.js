@@ -17,6 +17,7 @@ function ShopSection({ products = [] }) {
         mb: 4,
         fontSize: '2rem',
         fontWeight: 300,
+        fontFamily: 'Playfair Display, serif',
         letterSpacing: '0.1em'
       }}>
         OUR SIGNATURE SCENTS
