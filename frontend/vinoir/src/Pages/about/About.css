@@ -1,6 +1,7 @@
-/* Main container */
+/* About Container */
 .about-container {
   margin: 0 auto;
+  max-width: 1800px;
 }
 
 /* Hero section */
@@ -12,6 +13,11 @@
   position: relative;
   size: cover;
   display: cover;
+  background: linear-gradient(
+      rgba(39, 39, 39, 0.7),
+      rgba(39, 39, 39, 0.3)
+    ),
+    url("../../assets/scents.mp4") center/cover no-repeat;
 }
 
 /* Mission section */
@@ -43,78 +49,88 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  padding: 40px;
+  padding: 2rem;
   text-align: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Cormorant Garamond", serif;
+  background: var(--raisin-black);
 }
 
 .section-title {
-  margin-bottom: 50px;
-  color: #a5a5a5;
-  font-size: 2.2rem;
-  font-weight: 300;
-  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  color: var(--gold-accent) !important;
+  font-size: 2.5rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  font-family: "Playfair Display", serif !important;
+  text-transform: uppercase;
 }
 
 .founders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 40px;
-  margin-top: 40px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 /* Process section */
 .process-section {
-  background-color: #f9f5f0;
-  padding: 80px 20px;
+  background-color: var(--russian-violet);
+  padding: 2rem 5%;
   text-align: center;
-  margin: 50px 0;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  margin: 2rem 0;
+  font-family: "Cormorant Garamond", serif;
 }
 
 .process-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  max-width: 1000px;
+  gap: 1rem;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .process-step {
-  padding: 40px 30px;
-  background: white;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  padding: 1rem 2rem;
+  background: rgba(42, 73, 54, 0.3);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
+  border: 1px solid rgba(186, 185, 185, 0.1);
 }
 
 .process-step:hover {
   transform: translateY(-10px);
+  border-color: var(--gold-accent);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
 }
 
 .step-number {
-  font-size: 2.5rem;
-  color: #bab9b9;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  color: var(--gold-accent);
+  margin-bottom: 1rem;
   font-weight: 300;
+  font-family: "Playfair Display", serif;
 }
 
 .process-step h3 {
-  margin-bottom: 15px;
-  color: #333;
+  margin-bottom: 1rem;
+  color: var(--gold-accent);
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.05em;
 }
 
 .process-step p {
-  color: #666;
-  line-height: 1.6;
+  color: var(--silver);
+  line-height: 1.8;
+  letter-spacing: 0.05em;
 }
 
 /* Philosophy section */
 .philosophy-section {
-  background-color: #2a2a2a;
-  color: #bab9b9;
-  padding: 100px 20px;
-  margin-bottom: 50px;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  background-color: var(--dark-green);
+  color: var(--silver);
+    padding: 2rem 5%;
+  margin-bottom: 3rem;
+  font-family: "Cormorant Garamond", serif;
 }
 
 .philosophy-content {
@@ -124,28 +140,80 @@
 }
 
 .philosophy-content h2 {
-  margin-bottom: 40px;
-  font-weight: 300;
-  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--gold-accent);
+  font-family: "Playfair Display", serif;
+  text-transform: uppercase;
 }
 
 .philosophy-content p {
-  margin: 25px 0;
+  margin: 1rem 0;
   line-height: 1.8;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-  .mission-section {
-    padding: 60px 20px;
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 3.5rem !important;
   }
+  
+  .mission-title {
+    font-size: 2.5rem !important;
+  }
+}
 
+@media (max-width: 900px) {
+  .hero-wrapper {
+    height: 70vh;
+  }
+  
+  .hero-title {
+    font-size: 3rem !important;
+  }
+  
+  .mission-section {
+    padding: 2rem 5%;
+  }
+  
+  .founders-section {
+    padding: 4rem;
+  }
+  
+  .process-section {
+    padding: 0rem 5%;
+  }
+}
+
+@media (max-width: 600px) {
   .hero-wrapper {
     height: 60vh;
   }
-
+  
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .mission-title {
+    font-size: 2rem !important;
+  }
+  
+  .section-title {
+    font-size: 2rem !important;
+  }
+  
+  .founders-section {
+    padding: 1rem 2rem;
+  }
+  
   .process-step {
-    padding: 30px 20px;
+    padding: 1rem 1.5rem;
+  }
+  
+  .philosophy-content h2 {
+    font-size: 1.8rem !important;
   }
 }

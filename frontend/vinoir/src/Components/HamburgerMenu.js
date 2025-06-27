@@ -33,7 +33,7 @@ export default function HamburgerMenu() {
       <IconButton
         className={`hamburger-icon ${animating ? "animating" : ""}`}
         onClick={toggleDrawer(true)}
-        sx={{ mr: 2 }}
+        sx={{ mr: 2, color: "#ffffff" }}
       >
         <MenuIcon sx={{ color: "#ffffff" }} />
       </IconButton>

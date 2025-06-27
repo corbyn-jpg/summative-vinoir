@@ -10,8 +10,10 @@ const ProductCard = ({ product }) => {
     <Card sx={{
       width: '100%',
       height: '100%',
+      margin:'0 auto',
       display: 'flex',
       flexDirection: 'column',
+      justifyContent: 'space-between',
       borderRadius: '12px',
       overflow: 'hidden',
       boxShadow: 'none',
@@ -60,10 +62,11 @@ const ProductCard = ({ product }) => {
               });
             }}
             sx={{
-              backgroundColor: 'rgba(20, 110, 58, 0.9)',
+              fontFamily: "serif",
+              backgroundColor: '#09301e',
               color: 'white',
               '&:hover': {
-                backgroundColor: 'rgba(15, 85, 45, 0.9)'
+                backgroundColor: '#09301e'
               }
             }}
           >

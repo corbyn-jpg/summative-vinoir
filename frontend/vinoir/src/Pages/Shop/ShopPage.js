@@ -161,8 +161,8 @@ const ShopPage = () => {
         <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 2 }}>
           {searchQuery ? `Results for "${searchQuery}"` : 'Our Luxury Fragrances'}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          Discover our exquisite collection of premium perfumes
+        <Typography>
+          <h2 className="section-title">Discover our selection of premium perfumes</h2>
         </Typography>
       </Box>
 

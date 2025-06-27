@@ -43,10 +43,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { isLoggedIn, login, logout } = useAuth();
-  const {
-    cart,
-    removeFromCart,
-  } = useCart();
+  const { cart, removeFromCart } = useCart();
   const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
@@ -95,7 +92,7 @@ export default function Navbar() {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: "#146e3a",
+          backgroundColor: "#09301e",
           boxShadow: "none",
           zIndex: 1200,
           height: "80px",
@@ -105,32 +102,52 @@ export default function Navbar() {
           <HamburgerMenu />
           {location.pathname === "/" && <ShrinkingTitle />}
           <Stack direction="row" spacing={3} alignItems="center">
-            <IconButton onClick={toggleDrawer("search")}>
-              <Search />
+            <IconButton
+              onClick={toggleDrawer("search")}
+              sx={{ color: "white" }} // Add this prop
+            >
+              <Search sx={{ color: "inherit" }} />
             </IconButton>
-            <IconButton onClick={toggleDrawer("account")}>
-              <PersonOutline />
+
+            <IconButton
+              onClick={toggleDrawer("account")}
+              sx={{ color: "white" }} // Add this prop
+            >
+              <PersonOutline sx={{ color: "inherit" }} />
             </IconButton>
-            <IconButton onClick={toggleDrawer("wishlist")}>
-              <FavoriteBorder />
+
+            <IconButton
+              onClick={toggleDrawer("wishlist")}
+              sx={{ color: "white" }} // Add this prop
+            >
+              <FavoriteBorder sx={{ color: "inherit" }} />
             </IconButton>
-            <IconButton onClick={toggleDrawer("cart")}>
-              <ShoppingBagOutlined />
+
+            <IconButton
+              onClick={toggleDrawer("cart")}
+              sx={{
+                color: "white",
+                position: "relative", // Add this to position the badge absolutely
+              }}
+            >
+              <ShoppingBagOutlined sx={{ color: "inherit" }} />
               {cart.length > 0 && (
                 <span
                   style={{
                     position: "absolute",
                     top: 5,
                     right: 5,
-                    backgroundColor: "red",
+                    backgroundColor: "red", // Keep it red
+                    color: "white", // White text for contrast
                     borderRadius: "50%",
                     width: 18,
                     height: 18,
                     fontSize: 12,
-                    color: "white",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    fontWeight: "bold",
+                    zIndex: 1, // Ensure it stays above other elements
                   }}
                 >
                   {cart.length}
@@ -383,37 +400,37 @@ export default function Navbar() {
       </Drawer>
       {/* === Search Drawer === */}
       <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
-  <Box sx={{ p: 3, width: 350 }}>
-    <Typography variant="h5" fontWeight="bold" mb={2}>
-      Search Fragrances
-    </Typography>
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
-      closeDrawer();
-    }}>
-      <TextField
-        fullWidth
-        placeholder="Search our collection..."
-        variant="outlined"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        sx={{ mb: 2 }}
-        autoFocus
-      />
-      <Button
-        fullWidth
-        variant="contained"
-        type="submit"
-        sx={{ backgroundColor: "#146e3a" }}
-      >
-        Search
-      </Button>
-    </form>
-  </Box>
-</Drawer>
+        <Box sx={{ p: 3, width: 350 }}>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Search Fragrances
+          </Typography>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
+              closeDrawer();
+            }}
+          >
+            <TextField
+              fullWidth
+              placeholder="Search our collection..."
+              variant="outlined"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{ mb: 2 }}
+              autoFocus
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              type="submit"
+              sx={{ backgroundColor: "#146e3a" }}
+            >
+              Search
+            </Button>
+          </form>
+        </Box>
+      </Drawer>
     </>
   );
 }
-
-
