@@ -11,8 +11,6 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Search,
@@ -39,18 +37,16 @@ export default function Navbar() {
   const [emojiPassword, setEmojiPassword] = useState([]);
   const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const { isLoggedIn, login, logout } = useAuth();
-  const { 
-  cart, 
-  addToCart, 
-  removeFromCart, 
-  updateCartItem, 
-  cartCount  // Add this to the destructured values
-} = useCart();
+  const {
+    cart,
+    removeFromCart,
+  } = useCart();
   const { wishlist, removeFromWishlist } = useWishlist();
 
   useEffect(() => {
@@ -385,27 +381,39 @@ export default function Navbar() {
           )}
         </Box>
       </Drawer>
-      {/* === Search Drawer (Optional Placeholder) === */}
+      {/* === Search Drawer === */}
       <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
-        <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            Search
-          </Typography>
-          <TextField
-            fullWidth
-            placeholder="Search our collection..."
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ backgroundColor: "#146e3a" }}
-          >
-            Search
-          </Button>
-        </Box>
-      </Drawer>
+  <Box sx={{ p: 3, width: 350 }}>
+    <Typography variant="h5" fontWeight="bold" mb={2}>
+      Search Fragrances
+    </Typography>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
+      closeDrawer();
+    }}>
+      <TextField
+        fullWidth
+        placeholder="Search our collection..."
+        variant="outlined"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        sx={{ mb: 2 }}
+        autoFocus
+      />
+      <Button
+        fullWidth
+        variant="contained"
+        type="submit"
+        sx={{ backgroundColor: "#146e3a" }}
+      >
+        Search
+      </Button>
+    </form>
+  </Box>
+</Drawer>
     </>
   );
 }
+
+
