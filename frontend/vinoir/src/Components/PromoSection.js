@@ -129,7 +129,7 @@ const PromoSection = ({ products = [] }) => {
                       {product.name}
                     </Typography>
                     <Typography variant="body1" className="promo-product-price">
-                      ${product.price.toFixed(2)}
+                      R{product.price.toFixed(2)}
                     </Typography>
                     <Typography variant="body2" className="promo-product-desc">
                       {product.description.substring(0, 60)}...
