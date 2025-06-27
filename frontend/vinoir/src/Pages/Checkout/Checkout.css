@@ -1,0 +1,115 @@
+.checkout-page {
+  padding: 3rem 5%;
+  max-width: 1200px;
+  margin: 100px auto 0;
+}
+
+.checkout-title {
+  font-size: 2.5rem !important;
+  margin-bottom: 3rem !important;
+  color: var(--gold-accent) !important;
+  font-family: "Playfair Display", serif !important;
+  position: relative;
+}
+
+.checkout-title:after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 2px;
+  background: var(--gold-accent);
+  margin: 1rem 0;
+}
+
+/* Form elements */
+.MuiTextField-root,
+.MuiSelect-root,
+.MuiInputBase-root {
+  background: rgba(186, 185, 185, 0.1) !important;
+  border: 1px solid var(--silver) !important;
+  color: var(--silver) !important;
+  border-radius: 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.MuiTextField-root label,
+.MuiInputLabel-root {
+  color: var(--silver) !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root,
+.MuiSelect-select {
+  color: var(--silver) !important;
+  font-family: "Cormorant Garamond", serif !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border-color: transparent !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--gold-accent) !important;
+}
+
+.MuiCheckbox-root {
+  color: var(--gold-accent) !important;
+}
+
+/* Order summary */
+.order-summary {
+  background: rgba(39, 39, 39, 0.7) !important;
+  padding: 2rem !important;
+  border: 1px solid var(--gold-accent) !important;
+  position: sticky;
+  top: 120px;
+}
+
+.order-summary-title {
+  font-size: 1.8rem !important;
+  margin-bottom: 1.5rem !important;
+  color: var(--gold-accent) !important;
+  font-family: "Playfair Display", serif !important;
+}
+
+.order-summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.order-summary-total {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-top: 1.5rem !important;
+  color: var(--gold-accent) !important;
+}
+
+/* Submit button */
+.submit-button {
+  background: linear-gradient(
+    to right,
+    var(--dark-green),
+    var(--brunswick-green)
+  ) !important;
+  color: white !important;
+  border: none !important;
+  padding: 1rem !important;
+  font-size: 1rem !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s ease !important;
+  border-radius: 0 !important;
+  font-family: "Cormorant Garamond", serif !important;
+  font-weight: 600 !important;
+  margin-top: 2rem !important;
+  width: 100%;
+}
+
+.submit-button:hover {
+  background: linear-gradient(
+    to right,
+    var(--brunswick-green),
+    var(--dark-green)
+  ) !important;
+  transform: translateY(-2px) !important;
+}

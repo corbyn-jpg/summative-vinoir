@@ -1,142 +1,237 @@
 /* Main Container */
-.promo-container {
-  padding: 80px 0;
-  background-color: #f8f5f2;
+.promo-section {
+  padding: 5rem 2rem;
+  background-color: #f9f5f0;
+  text-align: center;
   position: relative;
   overflow: hidden;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
 }
 
 /* Title Styling */
 .promo-title {
+  font-family: 'Playfair Display', serif;
   font-weight: 700;
-  letter-spacing: 1px;
-  text-align: center;
-  color: #731d8d;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
   position: relative;
+  display: inline-block;
 }
 
 .promo-title::after {
-  content: "";
-  display: block;
-  width: 80px;
+  content: '';
+  position: absolute;
+  width: 50px;
   height: 3px;
-  background-color: #146e3a;
-  margin: 20px auto 0;
-  border-radius: 2px;
+  background: #146e3a;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* Carousel Container */
-.promo-carousel-container {
+.promo-subtitle {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 3rem;
+}
+
+/* Swiper Container */
+.swiper-container {
   width: 100%;
-  overflow: hidden;
-}
-
-/* Carousel Flex Styling */
-.promo-carousel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2vw;
-  padding: 0 1vw;
+  padding: 2rem 0;
   position: relative;
+}
+
+.promo-swiper {
   width: 100%;
-  max-width: none;
+  height: 100%;
+  padding: 2rem 0;
+}
+
+/* Slide Styling */
+.promo-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 450px;
+  transition: all 0.3s ease;
+}
+
+.promo-slide:hover {
+  transform: translateY(-10px);
 }
 
 /* Card Styling */
 .promo-card {
-  width: 30vw;
-  min-width: 400px;
-  height: 55vh;
-  min-height: 500px;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  background: linear-gradient(to bottom, #fff, #f9f9f9);
-  flex-shrink: 0;
-  opacity: 0.9;
-  transform: scale(0.92);
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.active-card {
-  transform: scale(1.08);
-  width: 32vw;
-  height: 58vh;
-  z-index: 2;
+.promo-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.promo-image-container {
+  position: relative;
+  width: 100%;
+  height: 65%;
+  overflow: hidden;
+}
+
+.promo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.promo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.promo-card:hover .promo-overlay {
   opacity: 1;
 }
 
-/* Image Styling */
-.promo-image {
-  height: 70%;
-  object-fit: cover;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  width: 100%;
+.promo-card:hover .promo-image {
+  transform: scale(1.05);
+}
+
+.promo-shop-btn {
+  background-color: #146e3a !important;
+  color: white !important;
+  padding: 0.8rem 1.5rem !important;
+  font-weight: 600 !important;
+  border-radius: 25px !important;
+  transition: all 0.3s ease !important;
+}
+
+.promo-shop-btn:hover {
+  background-color: #0d5a2c !important;
+  transform: translateY(-3px);
 }
 
 /* Content Styling */
 .promo-content {
-  height: 30%;
+  padding: 1.5rem;
+  text-align: center;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 2vh 3vw;
 }
 
-.promo-item-title {
-  font-size: 1.8vw;
+.promo-product-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.promo-product-price {
   font-weight: 600;
-  margin-bottom: 1vh;
-  color: #333;
+  color: #146e3a;
+  margin-bottom: 0.8rem;
 }
 
-.promo-item-subtitle {
-  font-size: 1.1vw;
-  color: #666;
+.promo-product-desc {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
-/* Indicator Dots */
-.promo-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 48px;
-}
-
-.indicator-dot {
-  width: 14px;
-  height: 14px;
+/* Navigation Buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #146e3a !important;
+  background: rgba(255, 255, 255, 0.8);
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 50%;
-  background-color: #999;
-  padding: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  border: none;
 }
 
-.indicator-dot.active {
-  background-color: black;
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 1.2rem !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+/* Pagination */
+.swiper-pagination-bullet {
+  background: #bdc3c7 !important;
+  opacity: 1 !important;
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #146e3a !important;
   transform: scale(1.2);
 }
 
-.indicator-dot:hover {
-  background-color: #333;
+/* View All Button */
+.promo-view-all-btn {
+  margin-top: 2rem;
+  padding: 0.8rem 2rem !important;
+  border: 2px solid #146e3a !important;
+  color: #146e3a !important;
+  font-weight: 600 !important;
+  border-radius: 25px !important;
+  transition: all 0.3s ease !important;
 }
 
-/* Auto-slide Animation */
-.transitioning .promo-carousel {
-  animation: fadeSlide 0.5s ease-in-out;
+.promo-view-all-btn:hover {
+  background-color: #146e3a !important;
+  color: white !important;
+  transform: translateY(-3px);
 }
 
-@keyframes fadeSlide {
-  0% {
-    opacity: 0.5;
-    transform: translateX(20px);
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .promo-section {
+    padding: 3rem 1rem;
   }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
+  
+  .promo-title {
+    font-size: 2rem;
+  }
+  
+  .promo-slide {
+    width: 250px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-title {
+    font-size: 1.8rem;
+  }
+  
+  .promo-slide {
+    width: 220px;
+    height: 380px;
   }
 }

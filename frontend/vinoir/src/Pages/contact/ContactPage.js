@@ -5,7 +5,7 @@ import "./Contact.css";
 
 // Static image imports
 import contactHeroImage from "../../assets/spritz.jpeg";
-import contactHeroVideo from "../../assets/scents.mp4";
+import contactHeroVideo from "../../assets/ManUnited.jpeg";
 
 // Initialize EmailJS with your User ID
 emailjs.init("_QatdQkHx_mavwiI-");

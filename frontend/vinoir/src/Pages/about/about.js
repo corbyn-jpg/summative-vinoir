@@ -8,7 +8,7 @@ import marioImg from "../../assets/founders/mario.jpg";
 import corbynImg from "../../assets/founders/corbyn.jpg";
 import tristianImg from "../../assets/founders/tristian.jpg";
 import heroImage from "../../assets/spritz.jpeg";
-import heroVideo from "../../assets/scents.mp4";
+import heroVideo from "../../assets/Scents.mp4";
 
 const AboutPage = () => {
   const founders = [
