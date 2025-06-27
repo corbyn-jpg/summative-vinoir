@@ -3,7 +3,8 @@ const User = require('../models/User');
 class UserController {
   async getUser(req, res) {
     try {
-      const user = await User.findById(req.user.userId);
+      const userId = req.user.id; // assuming JWT payload has { id: userId }
+      const user = await User.findById(userId).select('-password'); // exclude password field for security
       if (!user) return res.status(404).json({ message: 'User not found' });
       res.json(user);
     } catch (err) {
@@ -14,7 +15,15 @@ class UserController {
 
   async updateUser(req, res) {
     try {
-      const updatedUser = await User.findByIdAndUpdate(req.user.userId, req.body, { new: true });
+      const userId = req.user.id;
+     
+
+      const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
+        new: true,
+        runValidators: true,
+        select: '-password',
+      });
+
       if (!updatedUser) return res.status(404).json({ message: 'User not found' });
       res.json(updatedUser);
     } catch (err) {
@@ -25,7 +34,8 @@ class UserController {
 
   async deleteUser(req, res) {
     try {
-      const deletedUser = await User.findByIdAndDelete(req.user.userId);
+      const userId = req.user.id;
+      const deletedUser = await User.findByIdAndDelete(userId);
       if (!deletedUser) return res.status(404).json({ message: 'User not found' });
       res.json({ message: 'User deleted successfully' });
     } catch (err) {
