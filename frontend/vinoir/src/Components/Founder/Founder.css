@@ -1,54 +1,69 @@
-/* src/Components/Founder/Founder.css */
+/* Founder Card */
 .founder-card {
-  background: white;
-  box-shadow: inset 0 12px 12px rgb(0, 0, 0),
-    /* stronger inner shadow */ 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(
+    to bottom,
+    rgba(42, 73, 54, 0.3),
+    rgba(39, 39, 39, 0.7)
+  ) !important;
+  box-shadow: inset 0 12px 12px rgba(0, 0, 0, 0.3),
+    0 20px 40px rgba(0, 0, 0, 0.25) !important;
   overflow: hidden;
-  transition: transform 0.3s ease;
-  margin: 10px;
+  transition: all 0.4s ease;
+  margin: 1rem;
   height: 570px;
+  border: 1px solid rgba(186, 185, 185, 0.1);
 }
 
 .founder-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  box-shadow: inset 0 12px 12px rgba(0, 0, 0, 0.3),
+    0 30px 60px rgba(0, 0, 0, 0.35) !important;
+  border-color: var(--gold-accent);
 }
 
 .founder-image-container {
   height: 300px;
   overflow: hidden;
+  position: relative;
 }
 
 .founder-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.8s ease;
 }
 
 .founder-card:hover .founder-image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .founder-info {
-  padding: 25px;
+  padding: 2.5rem;
   text-align: center;
 }
 
 .founder-name {
-  margin-bottom: 5px;
-  color: #333;
-  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--gold-accent) !important;
+  font-size: 1.6rem !important;
+  font-family: "Playfair Display", serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em;
 }
 
 .founder-role {
-  color: #888;
+  color: var(--silver) !important;
   font-style: italic;
-  margin-bottom: 15px;
-  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem !important;
+  font-family: "Cormorant Garamond", serif !important;
+  opacity: 0.8;
 }
 
 .founder-bio {
-  color: #666;
-  line-height: 1.6;
-  font-size: 0.9rem;
+  color: var(--silver) !important;
+  line-height: 1.8;
+  font-size: 1rem !important;
+  font-family: "Cormorant Garamond", serif !important;
 }

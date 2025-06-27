@@ -1,5 +1,5 @@
 .navbar {
-  background-color: #02361e;
+  background-color: #052013;
   box-shadow: none;
   height: 80px; /* Fixed height */
   transition: all 0.3s ease-in-out;
@@ -112,7 +112,7 @@
   color: #02361e;
   text-decoration: underline;
 }
-/* Add to Navbar.css */
+
 .search-drawer .MuiTextField-root,
 .wishlist-drawer .MuiTypography-body1,
 .cart-drawer .MuiTypography-body1 {
@@ -126,4 +126,36 @@
   text-transform: uppercase;
   font-weight: 500;
   transition: all 0.3s ease;
+}
+
+/* Icon Buttons */
+.navbar .MuiIconButton-root {
+  color: white !important; /* Force white color */
+  transition: all 0.3s ease !important;
+}
+
+.navbar .MuiIconButton-root:hover {
+  color: var(--gold-accent) !important; /* Gold accent on hover */
+  transform: scale(1.1) !important;
+}
+
+/* Specific icon adjustments */
+.navbar .MuiSvgIcon-root {
+  font-size: 1.5rem !important; /* Slightly larger icons */
+}
+
+/* Cart badge */
+.navbar .MuiIconButton-root span {
+  color: white !important;
+  background-color: var(--gold-accent) !important;
+}
+
+/* Search Drawer Icon */
+.search-drawer .MuiIconButton-root {
+  color: var(--raisin-black) !important;
+}
+
+/* Account Drawer Icon */
+.account-drawer .MuiIconButton-root {
+  color: var(--raisin-black) !important;
 }

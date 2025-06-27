@@ -1,0 +1,110 @@
+.cart-page {
+  padding: 3rem 5%;
+  max-width: 1200px;
+  margin: 100px auto 0;
+}
+
+.cart-title {
+  font-size: 2.5rem !important;
+  margin-bottom: 3rem !important;
+  color: var(--gold-accent) !important;
+  text-align: center;
+  position: relative;
+  font-family: "Playfair Display", serif !important;
+}
+
+.cart-title:after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 2px;
+  background: var(--gold-accent);
+  margin: 1rem auto;
+}
+
+/* Cart item */
+.MuiPaper-root {
+  background-color: rgba(39, 39, 39, 0.7) !important;
+  color: var(--silver) !important;
+  border: 1px solid rgba(186, 185, 185, 0.2) !important;
+  border-radius: 0 !important;
+  margin-bottom: 2rem;
+}
+
+.cart-item {
+  display: flex;
+  padding: 2rem;
+}
+
+.cart-item-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 2rem;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-title {
+  font-size: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+  color: var(--silver) !important;
+  font-family: "Playfair Display", serif !important;
+}
+
+/* Quantity controls */
+.MuiIconButton-root {
+  color: var(--gold-accent) !important;
+  border: 1px solid var(--gold-accent) !important;
+  margin: 0 0.5rem !important;
+  padding: 0.5rem !important;
+}
+
+.MuiIconButton-root:hover {
+  background-color: rgba(212, 175, 55, 0.1) !important;
+}
+
+/* Summary section */
+.cart-summary {
+  background: rgba(39, 39, 39, 0.7) !important;
+  padding: 2rem !important;
+  border: 1px solid var(--gold-accent) !important;
+  margin-top: 3rem !important;
+}
+
+.summary-title {
+  font-size: 1.8rem !important;
+  margin-bottom: 1.5rem !important;
+  color: var(--gold-accent) !important;
+  font-family: "Playfair Display", serif !important;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.summary-total {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-top: 1.5rem !important;
+  color: var(--gold-accent) !important;
+}
+
+/* Empty cart */
+.empty-cart {
+  text-align: center;
+  padding: 5rem 0;
+}
+
+.empty-cart .MuiTypography-h5 {
+  color: var(--gold-accent) !important;
+  margin-bottom: 2rem !important;
+}
+
+.empty-cart .MuiButton-root {
+  margin-top: 2rem !important;
+}
