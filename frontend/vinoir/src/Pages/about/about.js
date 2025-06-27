@@ -7,7 +7,8 @@ import "./About.css";
 import marioImg from "../../assets/founders/mario.jpg";
 import corbynImg from "../../assets/founders/corbyn.jpg";
 import tristianImg from "../../assets/founders/tristian.jpg";
-import heroImage from "../../assets/ManUnited.jpeg";
+import heroImage from "../../assets/spritz.jpeg";
+import heroVideo from "../../assets/Scents.mp4";
 
 const AboutPage = () => {
   const founders = [
@@ -40,6 +41,7 @@ const AboutPage = () => {
           backgroundImage={heroImage}
           buttonText={"CONTACT"}
           buttonLink={"/contact"}
+          videoSrc={heroVideo}
         />
       </div>
 
