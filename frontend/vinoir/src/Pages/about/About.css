@@ -8,7 +8,7 @@
 .hero-wrapper {
   overflow: hidden;
   margin-bottom: 50px;
-  height: 100vh;
+  height: 85vh;
   margin-top: 70px;
   position: relative;
   size: cover;
@@ -17,7 +17,7 @@
       rgba(39, 39, 39, 0.7),
       rgba(39, 39, 39, 0.3)
     ),
-    url("../../assets/ManUnited.jpeg") center/cover no-repeat;
+    url("../../assets/Scents.mp4") fit no-repeat;
 }
 
 /* Mission section */
