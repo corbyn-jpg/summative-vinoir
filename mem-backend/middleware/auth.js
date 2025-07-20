@@ -1,8 +1,9 @@
+// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
   try {
-    // Accommodate different casings
+    // Support different casing due to proxies, etc.
     const authHeader = req.headers.authorization || req.header('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ message: 'Authentication required' });
@@ -18,16 +19,17 @@ module.exports = (req, res, next) => {
       return res.status(500).json({ message: 'Server misconfiguration' });
     }
 
+    // May throw
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
-    // Optionally, differentiate errors in logging
     if (error.name === 'TokenExpiredError') {
       console.warn('JWT expired:', error);
-    } else {
-      console.error('JWT verification error:', error);
+      // Send specific message so frontend can respond ("Please log in again")
+      return res.status(401).json({ message: 'jwt expired' });
     }
+    console.error('JWT verification error:', error);
     res.status(401).json({ message: 'Please authenticate' });
   }
 };
