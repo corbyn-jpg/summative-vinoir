@@ -1,4 +1,3 @@
-// EmojiSelector.js
 import React from "react";
 import {
   Box,
@@ -11,42 +10,10 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 
 const emojiOptions = [
-  "🌹",
-  "🌸",
-  "🌼",
-  "🌺",
-  "🌷",
-  "💐",
-  "🍀",
-  "🌿",
-  "🍃",
-  "🌾",
-  "🌻",
-  "🌵",
-  "🌲",
-  "🌳",
-  "🌴",
-  "🌱",
-  "🌍",
-  "🌞",
-  "🌙",
-  "✨",
-  "💎",
-  "🕊️",
-  "🪷",
-  "🪴",
-  "🕯️",
-  "🍋",
-  "🍊",
-  "🍎",
-  "🍇",
-  "🍓",
-  "🍒",
-  "🍑",
-  "🥭",
-  "🥂",
-  "🍷",
-  "🎉",
+  "🌹", "🌸", "🌼", "🌺", "🌷", "💐", "🍀", "🌿", "🍃", "🌾",
+  "🌻", "🌵", "🌲", "🌳", "🌴", "🌱", "🌍", "🌞", "🌙", "✨",
+  "💎", "🕊️", "🪷", "🪴", "🕯️", "🍋", "🍊", "🍎", "🍇", "🍓",
+  "🍒", "🍑", "🥭", "🥂", "🍷", "🎉"
 ];
 
 const EmojiSelector = ({
@@ -55,6 +22,12 @@ const EmojiSelector = ({
   maxLength = 5,
   disabled = false,
 }) => {
+  // Optionally: check if emoji already selected
+  // const handleEmojiClick = (emoji) => {
+  //   if (selectedEmojis.length >= maxLength || selectedEmojis.includes(emoji)) return;
+  //   setSelectedEmojis((prev) => [...prev, emoji]);
+  // };
+
   const handleEmojiClick = (emoji) => {
     if (selectedEmojis.length >= maxLength) return;
     setSelectedEmojis((prev) => [...prev, emoji]);
@@ -82,27 +55,37 @@ const EmojiSelector = ({
         {`Select your emoji password (${selectedEmojis.length}/${maxLength}):`}
       </Typography>
 
-      <Grid container spacing={1} justifyContent="center">
+      <Grid container spacing={1} justifyContent="center" aria-label="Emoji selectors">
         {emojiOptions.map((emoji, index) => (
           <Grid item key={index}>
             <Paper
               elevation={3}
+              role="button"
+              tabIndex={disabled ? -1 : 0}
+              aria-disabled={disabled}
+              aria-label={`Select emoji ${emoji}`}
               sx={{
                 padding: "0.5rem",
                 borderRadius: "50%",
                 textAlign: "center",
                 cursor: disabled ? "default" : "pointer",
                 fontSize: "1.5rem",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                transition: "transform 0.2s, box-shadow 0.2s",
                 opacity: disabled ? 0.6 : 1,
-                "&:hover": {
+                "&:hover, &:focus": {
                   transform: disabled ? "scale(1)" : "scale(1.2)",
                   boxShadow: disabled
                     ? "0 4px 8px rgba(0, 0, 0, 0.1)"
                     : "0 6px 12px rgba(0, 0, 0, 0.2)",
+                  outline: "2px solid #146e3a"
                 },
               }}
               onClick={() => !disabled && handleEmojiClick(emoji)}
+              onKeyDown={e => {
+                if (!disabled && (e.key === "Enter" || e.key === " ")) {
+                  handleEmojiClick(emoji);
+                }
+              }}
             >
               {emoji}
             </Paper>
@@ -128,7 +111,7 @@ const EmojiSelector = ({
             >
               {selectedEmojis.map((emoji, index) => (
                 <Box
-                  key={index}
+                  key={`${emoji}-${index}`}
                   sx={{
                     position: "relative",
                     margin: "0.5rem",
@@ -148,6 +131,7 @@ const EmojiSelector = ({
                   {!disabled && (
                     <IconButton
                       size="small"
+                      aria-label="Remove emoji from password"
                       sx={{
                         position: "absolute",
                         top: -8,

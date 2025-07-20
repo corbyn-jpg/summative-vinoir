@@ -1,5 +1,4 @@
-// src/components/WishlistButton.js
-import { IconButton, Tooltip, Badge } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
@@ -7,19 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 const WishlistButton = ({ product, size = 'medium' }) => {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth(); // Consistent with AuthContext
   const navigate = useNavigate();
 
-  const isInWishlist = wishlist.some(item => item._id === product._id);
+  // Make the check robust for both _id and id
+  const prodId = product._id || product.id;
+  const isInWishlist = wishlist.some(item => (item._id || item.id) === prodId);
 
   const handleClick = () => {
-    if (!isLoggedIn) {
-      navigate('/login?redirect=' + window.location.pathname);
+    if (!isAuthenticated) {
+      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname));
       return;
     }
-
     if (isInWishlist) {
-      removeFromWishlist(product._id);
+      removeFromWishlist(prodId);
     } else {
       addToWishlist(product);
     }
@@ -31,6 +31,7 @@ const WishlistButton = ({ product, size = 'medium' }) => {
         onClick={handleClick}
         size={size}
         color={isInWishlist ? "error" : "default"}
+        aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
       >
         {isInWishlist ? <Favorite /> : <FavoriteBorder />}
       </IconButton>

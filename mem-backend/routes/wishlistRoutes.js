@@ -1,69 +1,111 @@
-// routes/wishlistRoutes.js
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 const Product = require('../models/Product');
 
-// Get user's wishlist
+/**
+ * @route   GET /api/wishlist
+ * @desc    Get the current user's populated wishlist
+ * @access  Private
+ */
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('wishlist');
-    res.json(user.wishlist);
+    const user = await User.findById(req.user.id).populate('wishlist').lean();
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user.wishlist || []);
   } catch (err) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('[Wishlist GET]', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Add to wishlist
+/**
+ * @route   POST /api/wishlist
+ * @desc    Add a product to the user's wishlist (avoiding duplicates)
+ * @access  Private
+ */
 router.post('/', auth, async (req, res) => {
   try {
     const { productId } = req.body;
-    
-    // Check if product exists
-    const product = await Product.findById(productId);
-    if (!product) {
+    if (!productId) {
+      return res.status(400).json({ message: 'Product ID is required.' });
+    }
+
+    // Check product existence
+    const productExists = await Product.exists({ _id: productId });
+    if (!productExists)
       return res.status(404).json({ message: 'Product not found' });
-    }
 
-    // Check if already in wishlist
-    const user = await User.findById(req.user.id);
-    if (user.wishlist.includes(productId)) {
-      return res.status(400).json({ message: 'Product already in wishlist' });
-    }
+    // Add product if not already present (atomic)
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $addToSet: { wishlist: productId } },
+      { new: true }
+    )
+      .populate('wishlist')
+      .lean();
 
-    user.wishlist.push(productId);
-    await user.save();
-    
-    res.json(user.wishlist);
+    if (!updatedUser)
+      return res.status(404).json({ message: 'User not found' });
+
+    res.json(updatedUser.wishlist);
   } catch (err) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('[Wishlist ADD]', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Remove from wishlist
+/**
+ * @route   DELETE /api/wishlist/:productId
+ * @desc    Remove a product from the user's wishlist (atomic)
+ * @access  Private
+ */
 router.delete('/:productId', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    user.wishlist = user.wishlist.filter(
-      id => id.toString() !== req.params.productId
-    );
-    await user.save();
-    res.json(user.wishlist);
+    const { productId } = req.params;
+
+    // Optionally, verify that productId is a valid ObjectId
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $pull: { wishlist: productId } },
+      { new: true }
+    )
+      .populate('wishlist')
+      .lean();
+
+    if (!updatedUser)
+      return res.status(404).json({ message: 'User not found' });
+
+    res.json(updatedUser.wishlist);
   } catch (err) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('[Wishlist REMOVE]', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Clear wishlist
+/**
+ * @route   DELETE /api/wishlist
+ * @desc    Clear the current user's wishlist
+ * @access  Private
+ */
 router.delete('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    user.wishlist = [];
-    await user.save();
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: { wishlist: [] } },
+      { new: true }
+    );
+    if (!updatedUser)
+      return res.status(404).json({ message: 'User not found' });
+
     res.json({ message: 'Wishlist cleared' });
   } catch (err) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('[Wishlist CLEAR]', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
