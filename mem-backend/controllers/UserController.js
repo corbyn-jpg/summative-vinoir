@@ -1,9 +1,22 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 
+// Optional: create a utility to filter allowed fields for update
+const filterUpdateFields = (body, allowedFields = ['name']) =>
+  Object.fromEntries(Object.entries(body).filter(([k]) => allowedFields.includes(k)));
+
 class UserController {
+  // GET current user profile (minus password)
   async getUser(req, res) {
     try {
-      const user = await User.findById(req.user.userId);
+      const userId = req.user.userId; // JWT payload should be { userId }
+      if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+      }
+      const user = await User.findById(userId)
+        .select('-password')
+        .populate('wishlist')
+        .lean();
       if (!user) return res.status(404).json({ message: 'User not found' });
       res.json(user);
     } catch (err) {
@@ -12,9 +25,24 @@ class UserController {
     }
   }
 
+  // PATCH update user (safe fields only)
   async updateUser(req, res) {
     try {
-      const updatedUser = await User.findByIdAndUpdate(req.user.userId, req.body, { new: true });
+      const userId = req.user.userId;
+      if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+      }
+
+      // Only allow selected fields to be updated
+      const allowedFields = ['name']; // You can add fields here if safe
+      const updateData = filterUpdateFields(req.body, allowedFields);
+
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        updateData,
+        { new: true, runValidators: true, select: '-password' }
+      ).lean();
+
       if (!updatedUser) return res.status(404).json({ message: 'User not found' });
       res.json(updatedUser);
     } catch (err) {
@@ -23,9 +51,14 @@ class UserController {
     }
   }
 
+  // DELETE user
   async deleteUser(req, res) {
     try {
-      const deletedUser = await User.findByIdAndDelete(req.user.userId);
+      const userId = req.user.userId;
+      if (!mongoose.isValidObjectId(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+      }
+      const deletedUser = await User.findByIdAndDelete(userId);
       if (!deletedUser) return res.status(404).json({ message: 'User not found' });
       res.json({ message: 'User deleted successfully' });
     } catch (err) {

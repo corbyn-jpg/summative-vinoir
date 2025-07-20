@@ -1,435 +1,558 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react';
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Stack,
-  Drawer,
-  Box,
-  Typography,
-  Button,
-  TextField,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+  AppBar, Toolbar, IconButton, Stack, Drawer, Box,
+  Typography, Button, TextField, Divider, Badge
+} from '@mui/material';
 import {
-  Search,
-  PersonOutline,
-  ShoppingBagOutlined,
-  FavoriteBorder,
-} from "@mui/icons-material";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+  Search, PersonOutline, ShoppingBagOutlined, FavoriteBorder,
+  Close, ArrowForward, Remove as RemoveIcon, Add as AddIcon, Delete as DeleteIcon
+} from '@mui/icons-material';
+import axios from 'axios';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 // Components
-import HamburgerMenu from "./HamburgerMenu";
-import EmojiSelector from "./EmojiSelector";
-import ShrinkingTitle from "./ShrinkingTitle";
+import HamburgerMenu from './HamburgerMenu';
+import EmojiSelector from './EmojiSelector';
+import ShrinkingTitle from './ShrinkingTitle';
 
 // Context
-import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
-import { useAuth } from "../context/AuthContext";
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const [drawer, setDrawer] = useState(null);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [emojiPassword, setEmojiPassword] = useState([]);
-  const [loginError, setLoginError] = useState("");
+  const [loginError, setLoginError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, isAuthenticated, login, logout } = useAuth(); // <<--- NOTE: use "isAuthenticated" from your AuthContext
+  const { cart, addToCart, removeFromCart, updateCartItem, cartCount } = useCart();
+  const { wishlist, removeFromWishlist, wishlistCount } = useWishlist();
 
-  const { isLoggedIn, login, logout } = useAuth();
-  const { cart, removeFromCart } = useCart();
-  const { wishlist, removeFromWishlist } = useWishlist();
-
+  // Show success message if routed from registration
   useEffect(() => {
-    const token = localStorage.getItem("vinoir_token");
-    if (token) login();
-  }, [login]);
+    const params = new URLSearchParams(location.search);
+    if (params.get('registered') === 'true') {
+      setLoginSuccess(true);
+      setDrawer('account');
+    }
+  }, [location]);
 
-  const toggleDrawer = (type) => () => {
+  const toggleDrawer = useCallback((type) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
     setDrawer(type);
-    setLoginError("");
+    setLoginError('');
     setEmojiPassword([]);
-  };
+    setLoginSuccess(false);
+  }, []);
 
-  const closeDrawer = () => {
+  const closeDrawer = useCallback(() => {
     setDrawer(null);
-    setLoginError("");
-    setEmojiPassword([]);
-  };
+  }, []);
 
-  const handleLogin = async (e) => {
+  const handleLogin = useCallback(async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setLoginError("");
+    setLoginError('');
     try {
-      const res = await axios.post("/api/users/login", {
+      const res = await axios.post('/api/users/login', {
         email: email.trim(),
-        password: emojiPassword.join(""),
+        password: emojiPassword.join('')
       });
-      localStorage.setItem("vinoir_token", res.data.token);
-      login();
-      closeDrawer();
+
+      localStorage.setItem('vinoir_token', res.data.token);
+      // recommended: fetch user data with token and call login
+      await login(res.data.token);
+      setLoginSuccess(true);
+
+      setTimeout(() => {
+        closeDrawer();
+      }, 2000);
     } catch (err) {
-      setLoginError(err.response?.data?.message || "Login failed.");
+      setLoginError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [email, emojiPassword, closeDrawer, login]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
     closeDrawer();
-  };
+    navigate('/');
+  }, [logout, closeDrawer, navigate]);
+
+  const handleSearch = useCallback((e) => {
+    e.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      navigate(`/search?q=${encodeURIComponent(trimmedQuery)}`);
+      closeDrawer();
+    }
+  }, [searchQuery, navigate, closeDrawer]);
+
+  // ───── Account Drawer ─────
+  const renderAccountDrawer = useCallback(() => (
+    <Box sx={{ width: 350, p: 3 }} role="presentation">
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h5" fontWeight="bold">
+          My Account
+        </Typography>
+        <IconButton onClick={closeDrawer}>
+          <Close />
+        </IconButton>
+      </Box>
+
+      {loginSuccess && (
+        <Typography color="success.main" sx={{ mb: 2 }}>
+          Registration complete! You may now log in.
+        </Typography>
+      )}
+
+      {isAuthenticated ? (
+        <>
+          <Typography variant="h6" mb={2}>
+            Hello, {user?.name || 'User'}!
+          </Typography>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleLogout}
+            sx={{
+              backgroundColor: '#146e3a',
+              '&:hover': { backgroundColor: '#0d5a2c' }
+            }}
+          >
+            Logout
+          </Button>
+        </>
+      ) : (
+        <>
+          <form onSubmit={handleLogin}>
+            <TextField
+              label="Email Address"
+              type="email"
+              fullWidth
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Typography variant="body2" sx={{ mb: 1, fontWeight: 'bold' }}>
+              Select your emoji password:
+            </Typography>
+            <EmojiSelector
+              selectedEmojis={emojiPassword}
+              setSelectedEmojis={setEmojiPassword}
+              maxLength={5}
+            />
+            {loginError && (
+              <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                {loginError}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={isLoading || emojiPassword.length === 0}
+              sx={{
+                mt: 3,
+                backgroundColor: '#146e3a',
+                '&:hover': { backgroundColor: '#0d5a2c' }
+              }}
+            >
+              {isLoading ? 'Logging in...' : 'Login'}
+            </Button>
+          </form>
+          <Divider sx={{ my: 3 }} />
+          <Typography variant="body2" textAlign="center" mb={2}>
+            Don't have an account?
+          </Typography>
+          <Button
+            fullWidth
+            variant="outlined"
+            component={Link}
+            to="/register"
+            onClick={closeDrawer}
+            sx={{
+              color: '#146e3a',
+              borderColor: '#146e3a',
+              '&:hover': {
+                backgroundColor: '#146e3a',
+                color: 'white'
+              }
+            }}
+          >
+            Create Account
+          </Button>
+        </>
+      )}
+    </Box>
+  ), [
+    isAuthenticated, user, handleLogout,
+    email, emojiPassword, loginError, isLoading,
+    handleLogin, closeDrawer, loginSuccess
+  ]);
+
+  // ───── Wishlist Drawer ─────
+  const renderWishlistDrawer = useCallback(() => (
+    <Box sx={{ width: 350, p: 3 }} role="presentation">
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h5" fontWeight="bold">
+          Your Wishlist ({wishlistCount})
+        </Typography>
+        <IconButton onClick={closeDrawer}>
+          <Close />
+        </IconButton>
+      </Box>
+
+      {!isAuthenticated ? (
+        <>
+          <Typography variant="body1" mb={3}>
+            Sign in to view and manage your wishlist
+          </Typography>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={toggleDrawer('account')}
+            sx={{
+              backgroundColor: '#146e3a',
+              '&:hover': { backgroundColor: '#0d5a2c' }
+            }}
+          >
+            Sign In
+          </Button>
+        </>
+      ) : wishlist.length === 0 ? (
+        <>
+          <Typography variant="body1" mb={3}>
+            Your wishlist is empty
+          </Typography>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={closeDrawer}
+            sx={{
+              color: '#146e3a',
+              borderColor: '#146e3a',
+              '&:hover': {
+                backgroundColor: '#146e3a',
+                color: 'white'
+              }
+            }}
+          >
+            Continue Shopping
+          </Button>
+        </>
+      ) : (
+        <Box sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
+          {wishlist.map((item) => (
+            <Box
+              key={item._id}
+              sx={{
+                display: 'flex',
+                mb: 2,
+                p: 2,
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              }}
+            >
+              <img
+                src={item.images?.[0]?.url || '/images/fallback.jpg'}
+                alt={item.name}
+                style={{
+                  width: 80,
+                  height: 80,
+                  objectFit: 'cover',
+                  borderRadius: '4px',
+                }}
+              />
+              <Box sx={{ ml: 2, flexGrow: 1 }}>
+                <Typography variant="subtitle1">{item.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  R {item.price.toFixed(2)}
+                </Typography>
+              </Box>
+              <Stack direction="column" spacing={1}>
+                <IconButton
+                  onClick={() => addToCart({ ...item, quantity: 1 })}
+                  size="small"
+                  color="primary"
+                >
+                  <ShoppingBagOutlined fontSize="small" />
+                </IconButton>
+                <IconButton
+                  onClick={() => removeFromWishlist(item._id)}
+                  size="small"
+                  color="error"
+                >
+                  <Close fontSize="small" />
+                </IconButton>
+              </Stack>
+            </Box>
+          ))}
+        </Box>
+      )}
+    </Box>
+  ), [
+    wishlistCount, isAuthenticated, wishlist,
+    closeDrawer, toggleDrawer, removeFromWishlist,
+    addToCart
+  ]);
+
+  // ───── Cart Drawer ─────
+  const renderCartDrawer = useCallback(() => {
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
+
+    return (
+      <Box sx={{ width: { xs: '100%', sm: 400 }, p: 3 }} role="presentation">
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+          <Typography variant="h5" fontWeight="bold">
+            Your Cart ({cartCount})
+          </Typography>
+          <IconButton onClick={closeDrawer}>
+            <Close />
+          </IconButton>
+        </Box>
+
+        {cart.length === 0 ? (
+          <>
+            <Typography variant="body1" mb={3} textAlign="center">
+              Your cart is empty
+            </Typography>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={closeDrawer}
+              sx={{
+                color: '#146e3a',
+                borderColor: '#146e3a',
+                '&:hover': {
+                  backgroundColor: '#146e3a',
+                  color: 'white'
+                }
+              }}
+            >
+              Continue Shopping
+            </Button>
+          </>
+        ) : (
+          <>
+            <Box sx={{ maxHeight: '60vh', overflowY: 'auto', mb: 3 }}>
+              {cart.map((item) => (
+                <Box
+                  key={item._id}
+                  sx={{
+                    display: 'flex',
+                    mb: 2,
+                    p: 2,
+                    backgroundColor: 'white',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  }}
+                >
+                  <img
+                    src={item.images?.[0]?.url || '/images/fallback.jpg'}
+                    alt={item.name}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      objectFit: 'cover',
+                      borderRadius: '4px',
+                    }}
+                  />
+                  <Box sx={{ ml: 2, flexGrow: 1 }}>
+                    <Typography variant="subtitle1">{item.name}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      R {item.price.toFixed(2)} × {item.quantity}
+                    </Typography>
+                    <Stack direction="row" spacing={1} mt={1}>
+                      <IconButton
+                        size="small"
+                        onClick={() => updateCartItem(item._id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                      <Typography variant="body1">{item.quantity}</Typography>
+                      <IconButton
+                        size="small"
+                        onClick={() => updateCartItem(item._id, item.quantity + 1)}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Stack>
+                  </Box>
+                  <IconButton
+                    onClick={() => removeFromCart(item._id)}
+                    color="error"
+                    sx={{ alignSelf: 'flex-start' }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+
+            <Box
+              sx={{
+                backgroundColor: 'white',
+                p: 3,
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <Typography variant="subtitle1">Subtotal:</Typography>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  R {subtotal}
+                </Typography>
+              </Box>
+              <Button
+                fullWidth
+                variant="contained"
+                component={Link}
+                to="/checkout"
+                onClick={closeDrawer}
+                endIcon={<ArrowForward />}
+                sx={{
+                  backgroundColor: '#146e3a',
+                  '&:hover': { backgroundColor: '#0d5a2c' }
+                }}
+              >
+                Proceed to Checkout
+              </Button>
+            </Box>
+          </>
+        )}
+      </Box>
+    );
+  }, [
+    cart, cartCount, closeDrawer,
+    updateCartItem, removeFromCart
+  ]);
+
+  // ───── Search Drawer ─────
+  const renderSearchDrawer = useCallback(() => (
+    <Box sx={{ width: 350, p: 3 }} role="presentation">
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h5" fontWeight="bold">
+          Search Fragrances
+        </Typography>
+        <IconButton onClick={closeDrawer}>
+          <Close />
+        </IconButton>
+      </Box>
+      <form onSubmit={handleSearch}>
+        <TextField
+          fullWidth
+          placeholder="Search by name, notes, or brand..."
+          variant="outlined"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{ mb: 3 }}
+          autoFocus
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          disabled={!searchQuery.trim()}
+          sx={{
+            backgroundColor: '#146e3a',
+            '&:hover': { backgroundColor: '#0d5a2c' }
+          }}
+        >
+          Search
+        </Button>
+      </form>
+    </Box>
+  ), [searchQuery, handleSearch, closeDrawer]);
+
+  // Show shrinking title only on home page:
+  const showShrinkingTitle = location.pathname === '/';
 
   return (
     <>
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: "#09301e",
-          boxShadow: "none",
+          backgroundColor: '#146e3a',
+          boxShadow: 'none',
           zIndex: 1200,
-          height: "80px",
+          height: '80px',
         }}
       >
-        <Toolbar sx={{ justifyContent: "space-between", px: 3 }}>
+        <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
           <HamburgerMenu />
-          {location.pathname === "/" && <ShrinkingTitle />}
+          {showShrinkingTitle && <ShrinkingTitle />}
           <Stack direction="row" spacing={3} alignItems="center">
-            <IconButton
-              onClick={toggleDrawer("search")}
-              sx={{ color: "white" }} // Add this prop
-            >
-              <Search sx={{ color: "inherit" }} />
+            <IconButton onClick={toggleDrawer('search')} color="inherit">
+              <Search />
             </IconButton>
-
-            <IconButton
-              onClick={toggleDrawer("account")}
-              sx={{ color: "white" }} // Add this prop
-            >
-              <PersonOutline sx={{ color: "inherit" }} />
+            <IconButton onClick={toggleDrawer('account')} color="inherit">
+              <PersonOutline />
             </IconButton>
-
-            <IconButton
-              onClick={toggleDrawer("wishlist")}
-              sx={{ color: "white" }} // Add this prop
-            >
-              <FavoriteBorder sx={{ color: "inherit" }} />
+            <IconButton onClick={toggleDrawer('wishlist')} color="inherit">
+              <Badge badgeContent={wishlistCount} color="error">
+                <FavoriteBorder />
+              </Badge>
             </IconButton>
-
-            <IconButton
-              onClick={toggleDrawer("cart")}
-              sx={{
-                color: "white",
-                position: "relative", // Add this to position the badge absolutely
-              }}
-            >
-              <ShoppingBagOutlined sx={{ color: "inherit" }} />
-              {cart.length > 0 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 5,
-                    right: 5,
-                    backgroundColor: "red", // Keep it red
-                    color: "white", // White text for contrast
-                    borderRadius: "50%",
-                    width: 18,
-                    height: 18,
-                    fontSize: 12,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontWeight: "bold",
-                    zIndex: 1, // Ensure it stays above other elements
-                  }}
-                >
-                  {cart.length}
-                </span>
-              )}
+            <IconButton onClick={toggleDrawer('cart')} color="inherit">
+              <Badge badgeContent={cartCount} color="error">
+                <ShoppingBagOutlined />
+              </Badge>
             </IconButton>
           </Stack>
         </Toolbar>
       </AppBar>
-      {/* === Account Drawer === */}
-      <Drawer anchor="right" open={drawer === "account"} onClose={closeDrawer}>
-        <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            {isLoggedIn ? "My Account" : "Welcome Back"}
-          </Typography>
 
-          {isLoggedIn ? (
-            <>
-              <Typography sx={{ mb: 2 }}>You are logged in.</Typography>
-              <Button variant="outlined" fullWidth onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <form onSubmit={handleLogin}>
-                <TextField
-                  label="Email Address"
-                  type="email"
-                  fullWidth
-                  margin="normal"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold" }}>
-                  Select your emoji password:
-                </Typography>
-                <EmojiSelector
-                  selectedEmojis={emojiPassword}
-                  setSelectedEmojis={setEmojiPassword}
-                  maxLength={5}
-                />
-                {loginError && (
-                  <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-                    {loginError}
-                  </Typography>
-                )}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  disabled={isLoading || emojiPassword.length === 0}
-                  sx={{
-                    mt: 3,
-                    backgroundColor: "#146e3a",
-                    "&:hover": { backgroundColor: "#0d5a2c" },
-                  }}
-                >
-                  {isLoading ? "Logging in..." : "Login"}
-                </Button>
-              </form>
-              {/* ✅ Register Button */}
-              <Button
-                variant="outlined"
-                fullWidth
-                href="/register"
-                sx={{
-                  mt: 2,
-                  color: "#146e3a",
-                  borderColor: "#146e3a",
-                  "&:hover": {
-                    backgroundColor: "#146e3a",
-                    color: "white",
-                  },
-                }}
-              >
-                Register
-              </Button>
-            </>
-          )}
-        </Box>
-      </Drawer>
-      {/* === Wishlist Drawer === */}
-      <Drawer anchor="right" open={drawer === "wishlist"} onClose={closeDrawer}>
-        <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            Your Wishlist
-          </Typography>
-          {isLoggedIn ? (
-            wishlist.length === 0 ? (
-              <Typography>No items in wishlist</Typography>
-            ) : (
-              wishlist.map((item) => (
-                <Box key={item.id} display="flex" alignItems="center" mb={2}>
-                  <img
-                    src={item.image}
-                    width={60}
-                    height={60}
-                    alt={item.name}
-                    style={{ objectFit: "cover" }}
-                  />
-                  <Box ml={2}>
-                    <Typography>{item.name}</Typography>
-                    <Button
-                      size="small"
-                      onClick={() => removeFromWishlist(item.id)}
-                    >
-                      Remove
-                    </Button>
-                  </Box>
-                </Box>
-              ))
-            )
-          ) : (
-            <>
-              <Typography sx={{ mb: 2 }}>
-                Sign in to view your wishlist
-              </Typography>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={toggleDrawer("account")}
-              >
-                Sign In
-              </Button>
-            </>
-          )}
-        </Box>
-      </Drawer>
-      {/* === Cart Drawer === */}
+      {/* Drawers */}
       <Drawer
         anchor="right"
-        open={drawer === "cart"}
+        open={drawer === 'account'}
+        onClose={closeDrawer}
+      >
+        {renderAccountDrawer()}
+      </Drawer>
+
+      <Drawer
+        anchor="right"
+        open={drawer === 'wishlist'}
+        onClose={closeDrawer}
+      >
+        {renderWishlistDrawer()}
+      </Drawer>
+
+      <Drawer
+        anchor="right"
+        open={drawer === 'cart'}
         onClose={closeDrawer}
         sx={{
-          "& .MuiDrawer-paper": {
-            width: { xs: "100%", sm: 400 },
-            backgroundColor: "#f9f9f9",
+          '& .MuiDrawer-paper': {
+            width: { xs: '100%', sm: 400 },
+            backgroundColor: '#f9f9f9',
           },
         }}
       >
-        <Box sx={{ p: 3 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            Your Cart ({cart.length})
-          </Typography>
-
-          {cart.length === 0 ? (
-            <Box sx={{ textAlign: "center", py: 4 }}>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                Your cart is empty
-              </Typography>
-              <Button
-                variant="contained"
-                onClick={closeDrawer}
-                sx={{
-                  backgroundColor: "#146e3a",
-                  "&:hover": { backgroundColor: "#0d5a2c" },
-                }}
-              >
-                Continue Shopping
-              </Button>
-            </Box>
-          ) : (
-            <>
-              <Box sx={{ maxHeight: "60vh", overflowY: "auto", mb: 2 }}>
-                {cart.map((item) => (
-                  <Box
-                    key={item._id}
-                    sx={{
-                      display: "flex",
-                      mb: 2,
-                      p: 2,
-                      backgroundColor: "white",
-                      borderRadius: "8px",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                    }}
-                  >
-                    <img
-                      src={item.images?.[0]?.url || "/images/fallback.jpg"}
-                      alt={item.name}
-                      style={{
-                        width: 80,
-                        height: 80,
-                        objectFit: "cover",
-                        borderRadius: "4px",
-                      }}
-                    />
-                    <Box sx={{ ml: 2, flexGrow: 1 }}>
-                      <Typography variant="subtitle1">{item.name}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        R {item.price.toFixed(2)} × {item.quantity}
-                      </Typography>
-                    </Box>
-                    <IconButton
-                      onClick={() => removeFromCart(item._id)}
-                      color="error"
-                      sx={{ alignSelf: "flex-start" }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                ))}
-              </Box>
-
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  p: 2,
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 1,
-                  }}
-                >
-                  <Typography>Subtotal:</Typography>
-                  <Typography fontWeight="bold">
-                    R{" "}
-                    {cart
-                      .reduce(
-                        (sum, item) => sum + item.price * item.quantity,
-                        0
-                      )
-                      .toFixed(2)}
-                  </Typography>
-                </Box>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  component={Link}
-                  to="/cart"
-                  onClick={closeDrawer}
-                  sx={{
-                    mt: 1,
-                    backgroundColor: "#146e3a",
-                    "&:hover": { backgroundColor: "#0d5a2c" },
-                  }}
-                >
-                  View Full Cart
-                </Button>
-              </Box>
-            </>
-          )}
-        </Box>
+        {renderCartDrawer()}
       </Drawer>
-      {/* === Search Drawer === */}
-      <Drawer anchor="right" open={drawer === "search"} onClose={closeDrawer}>
-        <Box sx={{ p: 3, width: 350 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>
-            Search Fragrances
-          </Typography>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
-              closeDrawer();
-            }}
-          >
-            <TextField
-              fullWidth
-              placeholder="Search our collection..."
-              variant="outlined"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{ mb: 2 }}
-              autoFocus
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              type="submit"
-              sx={{ backgroundColor: "#146e3a" }}
-            >
-              Search
-            </Button>
-          </form>
-        </Box>
+
+      <Drawer
+        anchor="right"
+        open={drawer === 'search'}
+        onClose={closeDrawer}
+      >
+        {renderSearchDrawer()}
       </Drawer>
     </>
   );

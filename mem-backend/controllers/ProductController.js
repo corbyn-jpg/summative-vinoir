@@ -1,87 +1,81 @@
+const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
 class ProductController {
-  /**
-   * Get all products
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   */
+  // GET all products (optionally: support filtering/pagination later)
   async getAllProducts(req, res) {
     try {
-      const products = await Product.find();
-      return products; // Return products to be sent by the route
+      const products = await Product.find().lean();
+      return res.json(products);
     } catch (err) {
-      throw new Error('Error fetching products');
+      console.error('[ProductController] getAllProducts:', err);
+      return res.status(500).json({ message: 'Error fetching products' });
     }
   }
 
-  /**
-   * Get a single product by ID
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   */
+  // GET single product by ID
   async getProductById(req, res) {
     try {
-      const product = await Product.findById(req.params.id);
-      if (!product) {
-        throw new Error('Product not found');
+      const { id } = req.params;
+      if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid product ID' });
       }
-      return product; // Return product to be sent by the route
+      const product = await Product.findById(id).lean();
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      return res.json(product);
     } catch (err) {
-      throw new Error('Error fetching product');
+      console.error('[ProductController] getProductById:', err);
+      return res.status(500).json({ message: 'Error fetching product' });
     }
   }
 
-  /**
-   * Create a new product
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   */
+  // POST create new product
   async createProduct(req, res) {
     try {
       const product = new Product(req.body);
       await product.save();
-      return product; // Return created product to be sent by the route
+      return res.status(201).json(product);
     } catch (err) {
-      throw new Error('Error creating product: ' + err.message);
+      console.error('[ProductController] createProduct:', err);
+      return res.status(400).json({ message: 'Error creating product', error: err.message });
     }
   }
 
-  /**
-   * Update a product
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   */
+  // PATCH/PUT update product
   async updateProduct(req, res) {
     try {
-      const product = await Product.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      );
-      if (!product) {
-        throw new Error('Product not found');
+      const { id } = req.params;
+      if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid product ID' });
       }
-      return product; // Return updated product to be sent by the route
+      const product = await Product.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, lean: true });
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      return res.json(product);
     } catch (err) {
-      throw new Error('Error updating product: ' + err.message);
+      console.error('[ProductController] updateProduct:', err);
+      return res.status(400).json({ message: 'Error updating product', error: err.message });
     }
   }
 
-  /**
-   * Delete a product
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   */
+  // DELETE product
   async deleteProduct(req, res) {
     try {
-      const product = await Product.findByIdAndDelete(req.params.id);
-      if (!product) {
-        throw new Error('Product not found');
+      const { id } = req.params;
+      if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid product ID' });
       }
-      return; // Return nothing (204 No Content)
+      const product = await Product.findByIdAndDelete(id);
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      return res.status(204).send(); // No content
     } catch (err) {
-      throw new Error('Error deleting product: ' + err.message);
+      console.error('[ProductController] deleteProduct:', err);
+      return res.status(500).json({ message: 'Error deleting product', error: err.message });
     }
   }
 }
