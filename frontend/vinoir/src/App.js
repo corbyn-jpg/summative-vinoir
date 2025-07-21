@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, Typography } from "@mui/material"; // <-- Add Typography here
 
 // Context Providers
 import { AuthProvider } from "./context/AuthContext";
@@ -24,13 +24,15 @@ import WishlistPage from "./Pages/Shop/WishlistPage";
 import ShopPage from "./Pages/Shop/ShopPage";
 import FragranceDetail from "./Pages/Fragrance/FragranceDetail";
 import CartPage from "./Pages/cart/CartPage";
-import CheckoutPage from './Pages/Checkout/CheckoutPage';
-import OrderConfirmation from './Pages/Checkout/OrderConfirmation';
+import CheckoutPage from "./Pages/Checkout/CheckoutPage";
+import OrderConfirmation from "./Pages/Checkout/OrderConfirmation";
 
-// Optional: Scroll to top on page change
+// ScrollToTop scrolls to top each time location changes
 function ScrollToTop() {
   const { pathname } = useLocation();
-  React.useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return null;
 }
 
@@ -65,12 +67,14 @@ function AppInner() {
                   <Route path="/checkout" element={<CheckoutPage />} />
                   <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-                  {/* Fallback */}
+                  {/* Fallback route for unmatched paths */}
                   <Route
                     path="*"
                     element={
                       <div style={{ padding: "2rem", textAlign: "center" }}>
-                        Page Not Found
+                        <Typography variant="h4" color="text.secondary">
+                          Page Not Found
+                        </Typography>
                       </div>
                     }
                   />
@@ -85,7 +89,7 @@ function AppInner() {
   );
 }
 
-// Put ScrollToTop inside Router context
+// App root wraps the app in Router to provide routing context
 export default function App() {
   return (
     <Router>

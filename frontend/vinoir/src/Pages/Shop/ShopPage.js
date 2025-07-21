@@ -15,13 +15,8 @@ import {
   Tab,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import productService from "../../services/ProductService"; // <-- import instance, not class
-import {
-  ArrowUpward,
-  ArrowDownward,
-  Whatshot,
-  FilterList,
-} from "@mui/icons-material";
+import { ArrowUpward, ArrowDownward, Whatshot, FilterList } from "@mui/icons-material";
+import { getProducts } from "../../services/ProductService"; // Ensure path and casing match your actual file
 
 function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -33,50 +28,45 @@ function ShopPage() {
   const [activeFilters, setActiveFilters] = useState([]);
   const [tab, setTab] = useState(0);
 
-  // Fetch products from ProductService
+  const fetchProducts = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const params = {};
+      if (category !== "all") params.category = category;
+      if (filter) params.name = filter; // adjust according to your backend expected filter param
+
+      // You can add sorting params here if your backend supports them
+      // e.g., params.sortBy = sortBy;
+
+      const data = await getProducts(params);
+      const productsList =
+        data && Array.isArray(data.products) ? data.products : Array.isArray(data) ? data : [];
+
+      const productsWithPopularity = productsList.map((product) => ({
+        ...product,
+        popularity:
+          typeof product.popularity === "number"
+            ? product.popularity
+            : Math.floor(Math.random() * 100),
+      }));
+
+      setProducts(productsWithPopularity);
+    } catch {
+      setError("Failed to load products. Please try again later.");
+      setProducts([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [category, filter]);
+
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const searchQuery = searchParams.get("q") || "";
     setFilter(searchQuery);
 
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const data = await productService.getAllProducts();
-
-        // Defensive: Handle API response shape (object with products array or direct array)
-        let productsList = [];
-        if (data.products && Array.isArray(data.products)) {
-          productsList = data.products;
-        } else if (Array.isArray(data)) {
-          productsList = data;
-        } else {
-          console.error("Invalid products data:", data);
-        }
-
-        // Add popularity if missing (fallback random)
-        const productsWithPopularity = productsList.map((product) => ({
-          ...product,
-          popularity:
-            typeof product.popularity === "number"
-              ? product.popularity
-              : Math.floor(Math.random() * 100),
-        }));
-
-        setProducts(productsWithPopularity);
-      } catch (e) {
-        console.error("Failed to load products:", e);
-        setError("Failed to load products. Please try again later.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchProducts();
 
-    // Listen to browser back/forward button changes (popstate) for query param updates
     const handleUrlChange = () => {
       const params = new URLSearchParams(window.location.search);
       const newQuery = params.get("q") || "";
@@ -85,67 +75,46 @@ function ShopPage() {
 
     window.addEventListener("popstate", handleUrlChange);
     return () => window.removeEventListener("popstate", handleUrlChange);
-  }, [filter]);
+  }, [fetchProducts, filter]);
 
-  // Filter change handlers with activeFilters update
-  const handleCategoryChange = useCallback(
-    (e) => {
-      const newCategory = e.target.value;
-      setCategory(newCategory);
+  const handleCategoryChange = (e) => {
+    const newCategory = e.target.value;
+    setCategory(newCategory);
+    setActiveFilters((prev) => {
+      const withoutOldCategory = prev.filter((f) => f.type !== "category");
+      return newCategory === "all"
+        ? withoutOldCategory
+        : [...withoutOldCategory, { type: "category", value: newCategory }];
+    });
+  };
 
-      setActiveFilters((prev) => {
-        const withoutOldCategory = prev.filter((f) => f.type !== "category");
-        return newCategory === "all"
-          ? withoutOldCategory
-          : [...withoutOldCategory, { type: "category", value: newCategory }];
-      });
-    },
-    [setActiveFilters]
-  );
+  const handleSortChange = (sortType) => {
+    setSortBy(sortType);
+    setActiveFilters((prev) => {
+      const withoutOldSort = prev.filter((f) => f.type !== "sort");
+      return sortType === "none"
+        ? withoutOldSort
+        : [...withoutOldSort, { type: "sort", value: sortType }];
+    });
+  };
 
-  const handleSortChange = useCallback(
-    (sortType) => {
-      setSortBy(sortType);
+  const removeFilter = (filterToRemove) => {
+    if (filterToRemove.type === "category") setCategory("all");
+    else if (filterToRemove.type === "sort") setSortBy("none");
+    setActiveFilters((prev) =>
+      prev.filter((f) => !(f.type === filterToRemove.type && f.value === filterToRemove.value))
+    );
+  };
 
-      setActiveFilters((prev) => {
-        const withoutOldSort = prev.filter((f) => f.type !== "sort");
-        return sortType === "none"
-          ? withoutOldSort
-          : [...withoutOldSort, { type: "sort", value: sortType }];
-      });
-    },
-    [setActiveFilters]
-  );
+  const formatRand = (num) => "R" + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  const removeFilter = useCallback(
-    (filterToRemove) => {
-      if (filterToRemove.type === "category") setCategory("all");
-      else if (filterToRemove.type === "sort") setSortBy("none");
-
-      setActiveFilters((prev) =>
-        prev.filter(
-          (f) =>
-            !(f.type === filterToRemove.type && f.value === filterToRemove.value)
-        )
-      );
-    },
-    [setActiveFilters]
-  );
-
-  // Format price like R1,200.00
-  const formatRand = (num) =>
-    "R" + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // Filter and sort products based on current filters
   const getFilteredProducts = () => {
     let filtered = products.filter((product) => {
       const matchesSearch =
-        filter === "" ||
+        !filter ||
         product.name.toLowerCase().includes(filter.toLowerCase()) ||
         product.description.toLowerCase().includes(filter.toLowerCase());
-
       const matchesCategory = category === "all" || product.category === category;
-
       return matchesSearch && matchesCategory;
     });
 
@@ -167,43 +136,24 @@ function ShopPage() {
   };
 
   const filteredProducts = getFilteredProducts();
-
-  // Recommend first 4 products
   const recommendedProducts = products.slice(0, 4);
 
-  // Loading state
-  if (isLoading) {
+  if (isLoading)
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "50vh",
-        }}
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
         <CircularProgress size={60} />
         <Typography variant="h6" sx={{ ml: 2 }}>
           Loading fragrances...
         </Typography>
       </Box>
     );
-  }
 
-  // Error state
-  if (error) {
-    return (
-      <Alert severity="error" sx={{ m: 3 }}>
-        {error}
-      </Alert>
-    );
-  }
+  if (error) return <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>;
 
   return (
     <Box sx={{ p: { xs: 2, md: 3 } }}>
-      {/* Header */}
       <Box sx={{ mb: 4, textAlign: "center" }}>
-        <Typography variant="h3" component="h1" sx={{ fontWeight: "bold", mb: 2 }}>
+        <Typography variant="h3" fontWeight="bold" mb={2}>
           {filter ? `Search Results for "${filter}"` : "Our Luxury Fragrances"}
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
@@ -211,7 +161,6 @@ function ShopPage() {
         </Typography>
       </Box>
 
-      {/* Tabs */}
       <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
         <Tabs value={tab} onChange={(e, v) => setTab(v)} centered>
           <Tab label="All Products" />
@@ -219,35 +168,32 @@ function ShopPage() {
         </Tabs>
       </Box>
 
-      {/* Filters - only on 'All Products' tab */}
       {tab === 0 && (
         <Box sx={{ mb: 4, display: "flex", flexDirection: "column", gap: 2 }}>
-          {/* Active Filters */}
           {activeFilters.length > 0 && (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
               <FilterList color="action" />
-              {activeFilters.map((filter, index) => (
+              {activeFilters.map((f, i) => (
                 <Chip
-                  key={index}
+                  key={i}
                   label={
-                    filter.type === "category"
-                      ? `Category: ${filter.value}`
-                      : filter.type === "sort"
-                      ? filter.value === "price-asc"
+                    f.type === "category"
+                      ? `Category: ${f.value}`
+                      : f.type === "sort"
+                      ? f.value === "price-asc"
                         ? "Price: Low to High"
-                        : filter.value === "price-desc"
+                        : f.value === "price-desc"
                         ? "Price: High to Low"
                         : "Popularity"
                       : ""
                   }
-                  onDelete={() => removeFilter(filter)}
+                  onDelete={() => removeFilter(f)}
                   sx={{ mr: 1 }}
                 />
               ))}
             </Box>
           )}
 
-          {/* Filter Controls */}
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
               <TextField
@@ -293,7 +239,6 @@ function ShopPage() {
         </Box>
       )}
 
-      {/* Products grid */}
       {(tab === 0 ? filteredProducts : recommendedProducts).length === 0 ? (
         <Typography variant="h6" sx={{ textAlign: "center", my: 4 }}>
           {filter ? "No fragrances found matching your search" : "No fragrances available"}
@@ -318,20 +263,14 @@ function ShopPage() {
                   <img
                     src={product.images?.[0]?.url || "/images/fallback.jpg"}
                     alt={product.name}
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain",
-                      width: "auto",
-                      height: "auto",
-                    }}
+                    style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
                   />
                 </Box>
                 <Box sx={{ p: 1.5 }}>
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     {product.name}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: "#000000", fontWeight: "bold" }}>
+                  <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
                     {formatRand(product.price)}
                   </Typography>
                 </Box>

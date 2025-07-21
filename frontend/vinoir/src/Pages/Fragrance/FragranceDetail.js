@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"; // Added useCallback
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -12,71 +12,77 @@ import {
   Stack,
 } from "@mui/material";
 import { useCart } from "../../context/CartContext";
-import ProductService from "../../services/ProductService"; // Ensure this path is correct
+import { getProductById } from "../../services/ProductService"; // Ensure file name and path casing matches exactly
 
 function FragranceDetail() {
-  const { id } = useParams(); // This 'id' must match the parameter name in your Route path
+  const { id } = useParams();
+
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const { addToCart } = useCart();
 
-  // Function to fetch product details (memoized with useCallback)
+  // Fetch product details by id when component mounts or id changes
   const fetchProduct = useCallback(async () => {
-    if (!id) { // Defensive check: if ID is null/undefined, don't attempt fetch
+    if (!id) {
       setError("No product ID provided in the URL.");
       setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
-    setError(null); // Clear previous errors
+    setError(null);
+
     try {
-      const fetchedProduct = await ProductService.getProductById(id);
+      console.log("Fetching product with ID:", id);
+      const fetchedProduct = await getProductById(id);
+      console.log("Product fetched:", fetchedProduct);
       setProduct(fetchedProduct);
     } catch (err) {
       console.error("Error fetching product:", err);
-      // Provide more specific error messages
-      if (err.message && err.message.includes('404')) {
+      if (err.message && err.message.toLowerCase().includes("404")) {
         setError("Product not found. The product may have been removed.");
+      } else if (err.message && err.message.toLowerCase().includes("network")) {
+        setError("Network error. Please check your connection.");
       } else {
         setError("Failed to load product details. Please try again later.");
       }
     } finally {
       setIsLoading(false);
     }
-  }, [id]); // Re-create fetchProduct function only if 'id' changes
+  }, [id]);
 
-  // useEffect to call fetchProduct when the component mounts or 'id' changes
   useEffect(() => {
     fetchProduct();
-  }, [fetchProduct]); // Depend on fetchProduct (which depends on 'id')
+  }, [fetchProduct]);
 
-  // Helper for price formatting
-  const formatPrice = (p) => {
-    return `R${Number(p).toFixed(2)}`; // Assuming ZAR currency
-  };
+  // Format price helper
+  const formatPrice = (price) =>
+    price ? `R${Number(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` : "";
 
-  // --- Loading State ---
+  // Show loading spinner
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 6, py: 10 }}>
+      <Box display="flex" justifyContent="center" mt={6}>
         <CircularProgress size={60} />
       </Box>
     );
   }
 
-  // --- Error State ---
+  // Show error message with retry button
   if (error) {
     return (
-      <Alert severity="error" sx={{ m: 3, maxWidth: 600, mx: 'auto', py: 5 }}>
+      <Alert severity="error" sx={{ m: 3, maxWidth: 600, mx: "auto", py: 5 }}>
         {error}
-        <Button sx={{ ml: 2 }} onClick={fetchProduct}>Retry</Button> {/* Added Retry button */}
+        <Button sx={{ ml: 2 }} onClick={fetchProduct}>
+          Retry
+        </Button>
       </Alert>
     );
   }
 
-  // --- Product Not Found State (after loading and no error, but product is null) ---
+  // If no product (shouldn't happen if no error)
   if (!product) {
     return (
       <Typography variant="h5" sx={{ textAlign: "center", mt: 6, py: 10 }}>
@@ -85,7 +91,6 @@ function FragranceDetail() {
     );
   }
 
-  // Destructure product properties for easier use
   const {
     name,
     category,
@@ -96,13 +101,9 @@ function FragranceDetail() {
     images,
     stock,
   } = product;
-
-  // Graceful fallback for alt text and image URL
   const mainImage = images?.[0];
-  // Assuming a public folder structure like /images/fallback.jpg
   const imageUrl = mainImage?.url || "/images/fallback.jpg";
-  const imageAlt = mainImage?.altText || name || "Fragrance image";
-
+  const imageAlt = mainImage?.altText || name || "Product image";
   const isOutOfStock = stock === 0;
 
   return (
@@ -118,39 +119,36 @@ function FragranceDetail() {
               maxHeight: "500px",
               objectFit: "contain",
             }}
-            onError={(e) => { e.target.src = "/images/fallback.jpg"; }} // Fallback on image load error
+            onError={(e) => {
+              e.target.src = "/images/fallback.jpg";
+            }}
           />
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Typography variant="h3" sx={{ mb: 2 }}>
-            {name}
+          <Typography variant="h3" sx={{ mb: 2, fontWeight: "bold" }}>
+            {name || "Unnamed Product"}
           </Typography>
-
-          <Typography variant="subtitle1" sx={{ mb: 1 }}>
-            {category} • {size}
+          <Typography variant="subtitle1" sx={{ mb: 1, color: "text.secondary" }}>
+            {category || "Uncategorized"} &bull; {size || "Size not specified"}
           </Typography>
-
-          <Typography variant="h5" sx={{ mb: 3, color: "#146e3a" }}>
-            {formatPrice(price)} {/* Using formatPrice helper */}
+          <Typography variant="h5" sx={{ mb: 3, color: "#146e3a", fontWeight: "bold" }}>
+            {formatPrice(price)}
           </Typography>
-
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            {description}
+          <Typography variant="body1" sx={{ mb: 3, whiteSpace: "pre-line" }}>
+            {description || "No description available."}
           </Typography>
-
           <Divider sx={{ my: 3 }} />
 
-          {fragranceNotes && (
+          {fragranceNotes ? (
             <>
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Fragrance Notes:
               </Typography>
               <Stack direction="column" spacing={1} sx={{ mb: 3 }}>
-                {/* Only show sections if notes present, else display None */}
                 {["topNotes", "middleNotes", "baseNotes"].map((field) => (
                   <div key={field}>
-                    <Typography variant="subtitle2">
+                    <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
                       {field === "topNotes"
                         ? "Top Notes"
                         : field === "middleNotes"
@@ -158,8 +156,8 @@ function FragranceDetail() {
                         : "Base Notes"}
                       :
                     </Typography>
-                    <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
-                      {(Array.isArray(fragranceNotes[field]) && fragranceNotes[field].length > 0) ? (
+                    <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: "wrap" }}>
+                      {Array.isArray(fragranceNotes[field]) && fragranceNotes[field].length > 0 ? (
                         fragranceNotes[field].map((note, idx) => (
                           <Chip key={idx} label={note} size="small" />
                         ))
@@ -173,7 +171,7 @@ function FragranceDetail() {
                 ))}
               </Stack>
             </>
-          )}
+          ) : null}
 
           <Button
             variant="contained"
@@ -182,12 +180,13 @@ function FragranceDetail() {
             onClick={() =>
               addToCart({
                 ...product,
-                id: product._id || product.id, // Ensure consistent ID for cart
+                id: product._id || product.id,
               })
             }
             sx={{
               mt: 3,
               backgroundColor: "#146e3a",
+              fontWeight: "bold",
               "&:hover": { backgroundColor: "#0d5a2c" },
             }}
           >

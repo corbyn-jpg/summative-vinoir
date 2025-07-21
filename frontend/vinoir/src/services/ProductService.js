@@ -1,42 +1,45 @@
-// src/services/ProductService.js
-class ProductService {
-  constructor() {
-    // Allow REACT_APP_API_URL overrides, fallback to proxy
-    this.baseUrl =
-      process.env.REACT_APP_API_URL
-        ? `${process.env.REACT_APP_API_URL}/products`
-        : '/api/products';
-  }
+// src/services/productService.js
+import axios from 'axios';
 
-  async getAllProducts() {
-    try {
-      const response = await fetch(this.baseUrl);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch products (status ${response.status})`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('ProductService.getAllProducts:', error);
-      throw error;
-    }
-  }
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-  async getProductById(id) {
-    try {
-      const response = await fetch(`${this.baseUrl}/${id}`);
-      if (!response.ok) {
-        const message = await response.text();
-        throw new Error(
-          `Failed to fetch product ${id} (status ${response.status}): ${message}`
-        );
-      }
-      return await response.json();
-    } catch (error) {
-      console.error(`ProductService.getProductById(${id}):`, error);
-      throw error;
-    }
-  }
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+function extractErrorMessage(error) {
+  if (
+    error.response &&
+    error.response.data &&
+    error.response.data.message
+  )
+    return error.response.data.message;
+  if (error.message) return error.message;
+  return 'Unknown error occurred';
 }
 
-const productServiceInstance = new ProductService();
-export default productServiceInstance;
+// Fetch (paginated and/or filtered) list of products
+const getProducts = async (params = {}) => {
+  try {
+    const response = await api.get('/products', { params });
+    return response.data; // { products, total, ... }
+  } catch (error) {
+    throw new Error(extractErrorMessage(error));
+  }
+};
+
+// Fetch product by ID
+const getProductById = async (id) => {
+  if (!id) throw new Error('Product ID is required');
+  try {
+    const response = await api.get(`/products/${id}`);
+    return response.data; // product object
+  } catch (error) {
+    throw new Error(extractErrorMessage(error));
+  }
+};
+
+export { getProducts, getProductById };
