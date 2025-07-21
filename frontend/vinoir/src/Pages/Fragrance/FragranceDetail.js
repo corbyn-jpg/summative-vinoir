@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react"; // Added useCallback
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -12,60 +12,80 @@ import {
   Stack,
 } from "@mui/material";
 import { useCart } from "../../context/CartContext";
-import ProductService from "../../services/ProductService";
+import ProductService from "../../services/ProductService"; // Ensure this path is correct
 
 function FragranceDetail() {
-  const { id } = useParams();
+  const { id } = useParams(); // This 'id' must match the parameter name in your Route path
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
 
-  // Optional: for retry button
-  const fetchProduct = async () => {
+  // Function to fetch product details (memoized with useCallback)
+  const fetchProduct = useCallback(async () => {
+    if (!id) { // Defensive check: if ID is null/undefined, don't attempt fetch
+      setError("No product ID provided in the URL.");
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
-    setError(null);
+    setError(null); // Clear previous errors
     try {
-      const product = await ProductService.getProductById(id);
-      setProduct(product);
-    } catch (error) {
-      setError(error.message || "Failed to load product details");
+      const fetchedProduct = await ProductService.getProductById(id);
+      setProduct(fetchedProduct);
+    } catch (err) {
+      console.error("Error fetching product:", err);
+      // Provide more specific error messages
+      if (err.message && err.message.includes('404')) {
+        setError("Product not found. The product may have been removed.");
+      } else {
+        setError("Failed to load product details. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]); // Re-create fetchProduct function only if 'id' changes
 
+  // useEffect to call fetchProduct when the component mounts or 'id' changes
   useEffect(() => {
     fetchProduct();
-    // eslint-disable-next-line
-  }, [id]);
+  }, [fetchProduct]); // Depend on fetchProduct (which depends on 'id')
 
+  // Helper for price formatting
+  const formatPrice = (p) => {
+    return `R${Number(p).toFixed(2)}`; // Assuming ZAR currency
+  };
+
+  // --- Loading State ---
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 6, py: 10 }}>
         <CircularProgress size={60} />
       </Box>
     );
   }
 
+  // --- Error State ---
   if (error) {
     return (
-      <Alert severity="error" sx={{ m: 3 }}>
+      <Alert severity="error" sx={{ m: 3, maxWidth: 600, mx: 'auto', py: 5 }}>
         {error}
-        {/* Uncomment below for a retry button */}
-        {/* <Button sx={{ ml: 2 }} onClick={fetchProduct}>Retry</Button> */}
+        <Button sx={{ ml: 2 }} onClick={fetchProduct}>Retry</Button> {/* Added Retry button */}
       </Alert>
     );
   }
 
+  // --- Product Not Found State (after loading and no error, but product is null) ---
   if (!product) {
     return (
-      <Typography variant="h5" sx={{ textAlign: "center", mt: 4 }}>
+      <Typography variant="h5" sx={{ textAlign: "center", mt: 6, py: 10 }}>
         Product not found
       </Typography>
     );
   }
 
+  // Destructure product properties for easier use
   const {
     name,
     category,
@@ -77,10 +97,13 @@ function FragranceDetail() {
     stock,
   } = product;
 
-  // Graceful fallback for alt text
+  // Graceful fallback for alt text and image URL
   const mainImage = images?.[0];
-  const imageUrl = mainImage?.url || "/placeholder-product.jpg";
+  // Assuming a public folder structure like /images/fallback.jpg
+  const imageUrl = mainImage?.url || "/images/fallback.jpg";
   const imageAlt = mainImage?.altText || name || "Fragrance image";
+
+  const isOutOfStock = stock === 0;
 
   return (
     <Box sx={{ maxWidth: 1200, margin: "4rem auto", padding: "2rem" }}>
@@ -95,6 +118,7 @@ function FragranceDetail() {
               maxHeight: "500px",
               objectFit: "contain",
             }}
+            onError={(e) => { e.target.src = "/images/fallback.jpg"; }} // Fallback on image load error
           />
         </Grid>
 
@@ -108,7 +132,7 @@ function FragranceDetail() {
           </Typography>
 
           <Typography variant="h5" sx={{ mb: 3, color: "#146e3a" }}>
-            ${price?.toFixed(2)}
+            {formatPrice(price)} {/* Using formatPrice helper */}
           </Typography>
 
           <Typography variant="body1" sx={{ mb: 3 }}>
@@ -134,8 +158,8 @@ function FragranceDetail() {
                         : "Base Notes"}
                       :
                     </Typography>
-                    <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                      {(fragranceNotes[field] && fragranceNotes[field].length > 0) ? (
+                    <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
+                      {(Array.isArray(fragranceNotes[field]) && fragranceNotes[field].length > 0) ? (
                         fragranceNotes[field].map((note, idx) => (
                           <Chip key={idx} label={note} size="small" />
                         ))
@@ -154,11 +178,11 @@ function FragranceDetail() {
           <Button
             variant="contained"
             size="large"
-            disabled={stock === 0}
+            disabled={isOutOfStock}
             onClick={() =>
               addToCart({
                 ...product,
-                id: product._id || product.id, // Ensure consistent ID
+                id: product._id || product.id, // Ensure consistent ID for cart
               })
             }
             sx={{
@@ -167,7 +191,7 @@ function FragranceDetail() {
               "&:hover": { backgroundColor: "#0d5a2c" },
             }}
           >
-            {stock === 0 ? "Out of Stock" : "Add to Cart"}
+            {isOutOfStock ? "Out of Stock" : "Add to Cart"}
           </Button>
         </Grid>
       </Grid>

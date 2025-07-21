@@ -15,9 +15,23 @@ function Home() {
         const response = await fetch('http://localhost:5000/api/products');
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
-        setProducts(data);
+
+        console.log("API products response:", data);
+
+        // Adjust this logic based on your API response structure:
+        if (data.products && Array.isArray(data.products)) {
+          // If API returns { products: [...] }
+          setProducts(data.products);
+        } else if (Array.isArray(data)) {
+          // If API returns [...]
+          setProducts(data);
+        } else {
+          console.error('API did not return an array or expected structure:', data);
+          setProducts([]);
+        }
       } catch (err) {
         setError(err.message);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
@@ -26,24 +40,31 @@ function Home() {
     fetchProducts();
   }, []);
 
-  if (loading) return (
-    <Box display="flex" justifyContent="center" mt={4}>
-      <CircularProgress />
-    </Box>
-  );
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  if (error) return (
-    <Box textAlign="center" mt={4}>
-      Error: {error}
-    </Box>
-  );
+  if (error) {
+    return (
+      <Box textAlign="center" mt={4}>
+        Error: {error}
+      </Box>
+    );
+  }
 
   return (
-    <Box component="main" sx={{
-      pt: { xs: '130px', sm: '180px' },
-      px: { xs: 2, sm: 3 },
-      pb: 4
-    }}>
+    <Box
+      component="main"
+      sx={{
+        pt: { xs: "130px", sm: "180px" },
+        px: { xs: 2, sm: 3 },
+        pb: 4,
+      }}
+    >
       {/* Hero Section */}
       <HeroSection
         title="Welcome to Vinoir"

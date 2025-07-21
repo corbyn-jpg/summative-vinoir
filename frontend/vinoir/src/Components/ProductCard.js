@@ -1,10 +1,9 @@
 import React from "react";
-import { 
-  Box, 
-  Typography, 
-  Button, 
+import {
+  Box,
+  Typography,
+  Button,
   IconButton,
-  Badge,
   Tooltip
 } from "@mui/material";
 import { useCart } from "../context/CartContext";
@@ -20,9 +19,9 @@ import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
-  const { 
-    wishlist, 
-    addToWishlist, 
+  const {
+    wishlist,
+    addToWishlist,
     removeFromWishlist,
     loading: wishlistLoading
   } = useWishlist();
@@ -40,7 +39,7 @@ const ProductCard = ({ product }) => {
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (!isLoggedIn) {
       navigate('/login?redirect=' + window.location.pathname);
       return;
@@ -54,7 +53,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Box 
+    <Box
       component={Link}
       to={`/fragrance/${product._id}`}
       sx={{
@@ -73,11 +72,11 @@ const ProductCard = ({ product }) => {
       }}
     >
       {/* Wishlist Button */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: 8, 
+      <Box sx={{
+        position: 'absolute',
+        top: 8,
         right: 8,
-        zIndex: 1 
+        zIndex: 1
       }}>
         <Tooltip title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}>
           <IconButton
@@ -97,7 +96,7 @@ const ProductCard = ({ product }) => {
       </Box>
 
       {/* Product Image */}
-      <Box sx={{ 
+      <Box sx={{
         height: '300px',
         display: 'flex',
         alignItems: 'center',
@@ -117,12 +116,10 @@ const ProductCard = ({ product }) => {
             objectFit: 'contain',
             transition: 'transform 0.3s ease'
           }}
-          onError={(e) => {
-            e.target.src = '/images/fallback.jpg';
-          }}
+          onError={(e) => { e.target.src = '/images/fallback.jpg'; }}
         />
       </Box>
-      
+
       {/* Product Details */}
       <Box sx={{ p: 2 }}>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -134,7 +131,7 @@ const ProductCard = ({ product }) => {
         <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
           R {product.price.toFixed(2)}
         </Typography>
-        
+
         {/* Add to Cart Button */}
         <Button
           variant="outlined"
@@ -154,7 +151,7 @@ const ProductCard = ({ product }) => {
         </Button>
       </Box>
 
-      {/* Sale Badge (example) */}
+      {/* Sale Badge */}
       {product.onSale && (
         <Box sx={{
           position: 'absolute',
