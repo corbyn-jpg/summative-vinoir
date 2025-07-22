@@ -12,7 +12,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useCart } from "../../context/CartContext";
-import { getProductById } from "../../services/ProductService"; // Ensure file name and path casing matches exactly
+import { getProductById } from "../../services/ProductService";
 
 function FragranceDetail() {
   const { id } = useParams();
@@ -23,7 +23,6 @@ function FragranceDetail() {
 
   const { addToCart } = useCart();
 
-  // Fetch product details by id when component mounts or id changes
   const fetchProduct = useCallback(async () => {
     if (!id) {
       setError("No product ID provided in the URL.");
@@ -35,9 +34,7 @@ function FragranceDetail() {
     setError(null);
 
     try {
-      console.log("Fetching product with ID:", id);
       const fetchedProduct = await getProductById(id);
-      console.log("Product fetched:", fetchedProduct);
       setProduct(fetchedProduct);
     } catch (err) {
       console.error("Error fetching product:", err);
@@ -57,32 +54,37 @@ function FragranceDetail() {
     fetchProduct();
   }, [fetchProduct]);
 
-  // Format price helper
   const formatPrice = (price) =>
-    price ? `R${Number(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` : "";
+    price
+      ? `R${Number(price)
+          .toFixed(2)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
+      : "";
 
-  // Show loading spinner
   if (isLoading) {
     return (
-      <Box display="flex" justifyContent="center" mt={6}>
+      <Box display="flex" justifyContent="center" mt={6} aria-label="Loading product details">
         <CircularProgress size={60} />
       </Box>
     );
   }
 
-  // Show error message with retry button
   if (error) {
     return (
-      <Alert severity="error" sx={{ m: 3, maxWidth: 600, mx: "auto", py: 5 }}>
+      <Alert
+        severity="error"
+        sx={{ m: 3, maxWidth: 600, mx: "auto", py: 5 }}
+        role="alert"
+        aria-live="assertive"
+      >
         {error}
-        <Button sx={{ ml: 2 }} onClick={fetchProduct}>
+        <Button sx={{ ml: 2 }} onClick={fetchProduct} aria-label="Retry loading product details">
           Retry
         </Button>
       </Alert>
     );
   }
 
-  // If no product (shouldn't happen if no error)
   if (!product) {
     return (
       <Typography variant="h5" sx={{ textAlign: "center", mt: 6, py: 10 }}>
@@ -101,6 +103,7 @@ function FragranceDetail() {
     images,
     stock,
   } = product;
+
   const mainImage = images?.[0];
   const imageUrl = mainImage?.url || "/images/fallback.jpg";
   const imageAlt = mainImage?.altText || name || "Product image";
@@ -115,18 +118,21 @@ function FragranceDetail() {
             alt={imageAlt}
             style={{
               width: "100%",
-              borderRadius: "8px",
-              maxHeight: "500px",
+              borderRadius: 8,
+              maxHeight: 500,
               objectFit: "contain",
+              display: "block",
             }}
             onError={(e) => {
+              e.target.onerror = null;
               e.target.src = "/images/fallback.jpg";
             }}
+            loading="lazy"
           />
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Typography variant="h3" sx={{ mb: 2, fontWeight: "bold" }}>
+          <Typography variant="h3" sx={{ mb: 2, fontWeight: "bold" }} tabIndex={0}>
             {name || "Unnamed Product"}
           </Typography>
           <Typography variant="subtitle1" sx={{ mb: 1, color: "text.secondary" }}>
@@ -140,12 +146,12 @@ function FragranceDetail() {
           </Typography>
           <Divider sx={{ my: 3 }} />
 
-          {fragranceNotes ? (
+          {fragranceNotes && (
             <>
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Fragrance Notes:
               </Typography>
-              <Stack direction="column" spacing={1} sx={{ mb: 3 }}>
+              <Stack direction="column" spacing={1} sx={{ mb: 3 }} aria-label="Fragrance Notes">
                 {["topNotes", "middleNotes", "baseNotes"].map((field) => (
                   <div key={field}>
                     <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
@@ -159,7 +165,7 @@ function FragranceDetail() {
                     <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: "wrap" }}>
                       {Array.isArray(fragranceNotes[field]) && fragranceNotes[field].length > 0 ? (
                         fragranceNotes[field].map((note, idx) => (
-                          <Chip key={idx} label={note} size="small" />
+                          <Chip key={idx} label={note} size="small" aria-label={`Fragrance note: ${note}`} />
                         ))
                       ) : (
                         <Typography variant="caption" color="text.secondary">
@@ -171,7 +177,7 @@ function FragranceDetail() {
                 ))}
               </Stack>
             </>
-          ) : null}
+          )}
 
           <Button
             variant="contained"
@@ -189,6 +195,7 @@ function FragranceDetail() {
               fontWeight: "bold",
               "&:hover": { backgroundColor: "#0d5a2c" },
             }}
+            aria-label={isOutOfStock ? "Out of stock" : `Add ${name} to cart`}
           >
             {isOutOfStock ? "Out of Stock" : "Add to Cart"}
           </Button>

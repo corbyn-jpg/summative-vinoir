@@ -1,54 +1,68 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  Select,
-  MenuItem,
   Typography,
   CircularProgress,
   Alert,
-  Grid,
   Box,
+  Tabs,
+  Tab,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   ButtonGroup,
   Button,
   Chip,
-  TextField,
-  Tabs,
-  Tab,
+  Grid,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { ArrowUpward, ArrowDownward, Whatshot, FilterList } from "@mui/icons-material";
-import { getProducts } from "../../services/ProductService"; // Ensure path and casing match your actual file
+import {
+  ArrowUpward,
+  ArrowDownward,
+  Whatshot,
+  FilterList,
+  Close as CloseIcon,
+} from "@mui/icons-material";
+import { getProducts } from "../../services/ProductService";
+import ProductCard from "../../Components/ProductCard";
+import "./ShopPage.css";
+
+const COLORS = {
+  green: "#146e3a",
+  silver: "#bab9b9",
+  darkText: "#2c3e50",
+  offWhite: "#f8f5f2",
+};
 
 function ShopPage() {
-  const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState("");
+  // Immediate input for search field
+  const [filterInput, setFilterInput] = useState("");
   const [category, setCategory] = useState("all");
   const [sortBy, setSortBy] = useState("none");
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [activeFilters, setActiveFilters] = useState([]);
   const [tab, setTab] = useState(0);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState([]);
 
+  // Fetch products on category change ONLY (no search param)
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const params = {};
       if (category !== "all") params.category = category;
-      if (filter) params.name = filter; // adjust according to your backend expected filter param
-
-      // You can add sorting params here if your backend supports them
-      // e.g., params.sortBy = sortBy;
 
       const data = await getProducts(params);
+
       const productsList =
         data && Array.isArray(data.products) ? data.products : Array.isArray(data) ? data : [];
 
-      const productsWithPopularity = productsList.map((product) => ({
-        ...product,
+      const productsWithPopularity = productsList.map((p) => ({
+        ...p,
+        _id: p._id || p.id,
         popularity:
-          typeof product.popularity === "number"
-            ? product.popularity
-            : Math.floor(Math.random() * 100),
+          typeof p.popularity === "number" ? p.popularity : Math.floor(Math.random() * 100),
       }));
 
       setProducts(productsWithPopularity);
@@ -58,43 +72,26 @@ function ShopPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [category, filter]);
+  }, [category]);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const searchQuery = searchParams.get("q") || "";
-    setFilter(searchQuery);
-
     fetchProducts();
-
-    const handleUrlChange = () => {
-      const params = new URLSearchParams(window.location.search);
-      const newQuery = params.get("q") || "";
-      if (newQuery !== filter) setFilter(newQuery);
-    };
-
-    window.addEventListener("popstate", handleUrlChange);
-    return () => window.removeEventListener("popstate", handleUrlChange);
-  }, [fetchProducts, filter]);
+  }, [fetchProducts]);
 
   const handleCategoryChange = (e) => {
-    const newCategory = e.target.value;
-    setCategory(newCategory);
+    const newCat = e.target.value;
+    setCategory(newCat);
     setActiveFilters((prev) => {
-      const withoutOldCategory = prev.filter((f) => f.type !== "category");
-      return newCategory === "all"
-        ? withoutOldCategory
-        : [...withoutOldCategory, { type: "category", value: newCategory }];
+      const withoutCat = prev.filter((f) => f.type !== "category");
+      return newCat === "all" ? withoutCat : [...withoutCat, { type: "category", value: newCat }];
     });
   };
 
   const handleSortChange = (sortType) => {
     setSortBy(sortType);
     setActiveFilters((prev) => {
-      const withoutOldSort = prev.filter((f) => f.type !== "sort");
-      return sortType === "none"
-        ? withoutOldSort
-        : [...withoutOldSort, { type: "sort", value: sortType }];
+      const withoutSort = prev.filter((f) => f.type !== "sort");
+      return sortType === "none" ? withoutSort : [...withoutSort, { type: "sort", value: sortType }];
     });
   };
 
@@ -106,178 +103,265 @@ function ShopPage() {
     );
   };
 
-  const formatRand = (num) => "R" + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  const getFilteredProducts = () => {
-    let filtered = products.filter((product) => {
-      const matchesSearch =
-        !filter ||
-        product.name.toLowerCase().includes(filter.toLowerCase()) ||
-        product.description.toLowerCase().includes(filter.toLowerCase());
-      const matchesCategory = category === "all" || product.category === category;
-      return matchesSearch && matchesCategory;
-    });
-
-    switch (sortBy) {
-      case "price-asc":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "popularity":
-        filtered.sort((a, b) => b.popularity - a.popularity);
-        break;
-      default:
-        break;
+  // Filter client-side by immediate input, then category and sorting
+  const getFilteredAndSortedProducts = () => {
+    let current = [...products];
+    if (tab === 0) {
+      if (filterInput) {
+        const normalizedFilter = filterInput.toLowerCase();
+        current = current.filter(
+          (p) =>
+            (p.name && p.name.toLowerCase().includes(normalizedFilter)) ||
+            (p.description && p.description.toLowerCase().includes(normalizedFilter))
+        );
+      }
+      if (category !== "all") {
+        current = current.filter((p) => p.category === category);
+      }
+      switch (sortBy) {
+        case "price-asc":
+          current.sort((a, b) => a.price - b.price);
+          break;
+        case "price-desc":
+          current.sort((a, b) => b.price - a.price);
+          break;
+        case "popularity":
+          current.sort((a, b) => b.popularity - a.popularity);
+          break;
+        default:
+          break;
+      }
     }
-
-    return filtered;
+    return current;
   };
 
-  const filteredProducts = getFilteredProducts();
-  const recommendedProducts = products.slice(0, 4);
+  const filteredAndSortedProducts = getFilteredAndSortedProducts();
+  const recommendedProducts = products.filter((p) => p.featured).slice(0, 8);
 
   if (isLoading)
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
-        <CircularProgress size={60} />
-        <Typography variant="h6" sx={{ ml: 2 }}>
-          Loading fragrances...
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+        py={5}
+      >
+        <CircularProgress size={60} sx={{ color: COLORS.green }} />
+        <Typography variant="h6" sx={{ mt: 2, color: COLORS.darkText }}>
+          Loading our exquisite collection...
         </Typography>
       </Box>
     );
 
-  if (error) return <Alert severity="error" sx={{ m: 3 }}>{error}</Alert>;
+  if (error)
+    return (
+      <Alert severity="error" sx={{ maxWidth: 600, mx: "auto", my: 4 }}>
+        {error}
+      </Alert>
+    );
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 } }}>
-      <Box sx={{ mb: 4, textAlign: "center" }}>
-        <Typography variant="h3" fontWeight="bold" mb={2}>
-          {filter ? `Search Results for "${filter}"` : "Our Luxury Fragrances"}
+    <Box sx={{ p: { xs: 2, md: 5 }, maxWidth: 1600, mx: "auto", mt: 2, fontFamily: '"Cormorant Garamond", serif' }}>
+      <Typography className="dior-shop-title">
+        {filterInput ? `Search Results for "${filterInput}"` : "Our Luxury Fragrances"}
+      </Typography>
+      {!filterInput && (
+        <Typography variant="h6" sx={{ color: COLORS.silver, fontWeight: 400, textAlign: "center", mb: 6 }}>
+          Discover our exquisite collection of premium perfumes
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          {filter ? "" : "Discover our exquisite collection of premium perfumes"}
-        </Typography>
-      </Box>
+      )}
 
-      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
-        <Tabs value={tab} onChange={(e, v) => setTab(v)} centered>
+      <Box sx={{ borderBottom: 1, borderColor: COLORS.silver, mb: 4 }}>
+        <Tabs
+          value={tab}
+          onChange={(e, v) => setTab(v)}
+          centered
+          textColor="primary"
+          indicatorColor="primary"
+          sx={{
+            "& .MuiTab-root": {
+              fontFamily: '"Playfair Display", serif',
+              fontWeight: 600,
+              fontSize: "1.1rem",
+              textTransform: "uppercase",
+              color: COLORS.silver,
+              "&.Mui-selected": { color: COLORS.green },
+            },
+          }}
+        >
           <Tab label="All Products" />
           <Tab label="Recommended" />
         </Tabs>
       </Box>
 
       {tab === 0 && (
-        <Box sx={{ mb: 4, display: "flex", flexDirection: "column", gap: 2 }}>
+        <>
           {activeFilters.length > 0 && (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
-              <FilterList color="action" />
-              {activeFilters.map((f, i) => (
-                <Chip
-                  key={i}
-                  label={
-                    f.type === "category"
-                      ? `Category: ${f.value}`
-                      : f.type === "sort"
-                      ? f.value === "price-asc"
-                        ? "Price: Low to High"
-                        : f.value === "price-desc"
-                        ? "Price: High to Low"
-                        : "Popularity"
-                      : ""
-                  }
-                  onDelete={() => removeFilter(f)}
-                  sx={{ mr: 1 }}
-                />
-              ))}
+            <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 1, mb: 3 }}>
+              <FilterList color="action" sx={{ color: COLORS.green }} />
+              {activeFilters.map((f, i) => {
+                let label = "";
+                if (f.type === "category") label = `Category: ${f.value}`;
+                else if (f.type === "sort") {
+                  label =
+                    f.value === "price-asc"
+                      ? "Price: Low to High"
+                      : f.value === "price-desc"
+                      ? "Price: High to Low"
+                      : "Popularity";
+                }
+                return (
+                  <Chip
+                    key={i}
+                    label={label}
+                    onDelete={() => removeFilter(f)}
+                    color="primary"
+                    variant="outlined"
+                    sx={{
+                      bgcolor: "rgba(20,110,58,0.08)",
+                      borderColor: COLORS.green,
+                      color: COLORS.green,
+                      "& .MuiChip-deleteIcon": { color: COLORS.green },
+                      fontFamily: '"Cormorant Garamond", serif',
+                      fontWeight: 600,
+                      letterSpacing: "0.03em",
+                    }}
+                    deleteIcon={<CloseIcon />}
+                  />
+                );
+              })}
             </Box>
           )}
 
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                label="Search by name or description"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Select fullWidth value={category} onChange={handleCategoryChange} size="small">
-                <MenuItem value="all">All Categories</MenuItem>
-                <MenuItem value="Eau de Parfum">Eau de Parfum</MenuItem>
-                <MenuItem value="Eau de Toilette">Eau de Toilette</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <ButtonGroup variant="outlined" fullWidth>
-                <Button
-                  startIcon={<ArrowUpward />}
-                  onClick={() => handleSortChange("price-asc")}
-                  color={sortBy === "price-asc" ? "primary" : "inherit"}
-                >
-                  Price (Low to High)
-                </Button>
-                <Button
-                  startIcon={<ArrowDownward />}
-                  onClick={() => handleSortChange("price-desc")}
-                  color={sortBy === "price-desc" ? "primary" : "inherit"}
-                >
-                  Price (High to Low)
-                </Button>
-                <Button
-                  startIcon={<Whatshot />}
-                  onClick={() => handleSortChange("popularity")}
-                  color={sortBy === "popularity" ? "primary" : "inherit"}
-                >
-                  Popularity
-                </Button>
-              </ButtonGroup>
-            </Grid>
-          </Grid>
-        </Box>
-      )}
-
-      {(tab === 0 ? filteredProducts : recommendedProducts).length === 0 ? (
-        <Typography variant="h6" sx={{ textAlign: "center", my: 4 }}>
-          {filter ? "No fragrances found matching your search" : "No fragrances available"}
-        </Typography>
-      ) : (
-        <Grid container spacing={4}>
-          {(tab === 0 ? filteredProducts : recommendedProducts).map((product) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
-              <Link to={`/fragrance/${product._id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <Box
+          <Box mb={5}>
+            <Grid container spacing={2} alignItems="flex-end" mb={3}>
+              <Grid item xs={12} sm={6} md={4}>
+                <TextField
+                  label="Search Products"
+                  variant="outlined"
+                  fullWidth
+                  value={filterInput}
+                  onChange={(e) => setFilterInput(e.target.value)}
                   sx={{
-                    backgroundColor: "#f8f5f2",
-                    borderRadius: 2,
-                    overflow: "hidden",
-                    height: 300,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    mb: 2,
+                    "& .MuiOutlinedInput-root": { borderRadius: 3 },
+                    "& .MuiInputLabel-root": { fontFamily: '"Cormorant Garamond", serif' },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel sx={{ fontFamily: '"Cormorant Garamond", serif' }}>Category</InputLabel>
+                  <Select
+                    value={category}
+                    onChange={handleCategoryChange}
+                    label="Category"
+                    sx={{ borderRadius: 3 }}
+                  >
+                    <MenuItem value="all">All Categories</MenuItem>
+                    <MenuItem value="Eau de Parfum">Eau de Parfum</MenuItem>
+                    <MenuItem value="Eau de Toilette">Eau de Toilette</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={5}>
+                <ButtonGroup
+                  variant="outlined"
+                  fullWidth
+                  sx={{
+                    height: "56px",
+                    "& .MuiButton-root": {
+                      fontFamily: '"Cormorant Garamond", serif',
+                      fontWeight: 600,
+                      borderColor: COLORS.green,
+                      color: COLORS.green,
+                      "&:hover": {
+                        bgcolor: "rgba(20, 110, 58, 0.07)",
+                        borderColor: COLORS.green,
+                      },
+                      "&.Mui-selected, &.Mui-selected:hover": {
+                        bgcolor: COLORS.green,
+                        color: "#fff",
+                        borderColor: COLORS.green,
+                      },
+                      textTransform: "none",
+                      letterSpacing: "0.05em",
+                    },
                   }}
                 >
-                  <img
-                    src={product.images?.[0]?.url || "/images/fallback.jpg"}
-                    alt={product.name}
-                    style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
-                  />
-                </Box>
-                <Box sx={{ p: 1.5 }}>
-                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                    {product.name}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
-                    {formatRand(product.price)}
-                  </Typography>
-                </Box>
-              </Link>
+                  <Button
+                    startIcon={<ArrowUpward />}
+                    onClick={() => handleSortChange("price-asc")}
+                    className={sortBy === "price-asc" ? "Mui-selected" : ""}
+                    aria-pressed={sortBy === "price-asc"}
+                  >
+                    Price (Low)
+                  </Button>
+                  <Button
+                    startIcon={<ArrowDownward />}
+                    onClick={() => handleSortChange("price-desc")}
+                    className={sortBy === "price-desc" ? "Mui-selected" : ""}
+                    aria-pressed={sortBy === "price-desc"}
+                  >
+                    Price (High)
+                  </Button>
+                  <Button
+                    startIcon={<Whatshot />}
+                    onClick={() => handleSortChange("popularity")}
+                    className={sortBy === "popularity" ? "Mui-selected" : ""}
+                    aria-pressed={sortBy === "popularity"}
+                  >
+                    Popularity
+                  </Button>
+                </ButtonGroup>
+              </Grid>
             </Grid>
+          </Box>
+        </>
+      )}
+
+      {(tab === 0 ? filteredAndSortedProducts : recommendedProducts).length === 0 ? (
+        <Box
+          sx={{
+            py: 6,
+            textAlign: "center",
+            bgcolor: COLORS.offWhite,
+            borderRadius: 3,
+            color: COLORS.darkText,
+            fontFamily: '"Playfair Display", serif',
+          }}
+          role="alert"
+        >
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            {filterInput ? "No fragrances found matching your search." : "No fragrances available."}
+          </Typography>
+          {filterInput && (
+            <Button
+              variant="outlined"
+              onClick={() => setFilterInput("")}
+              sx={{
+                borderColor: COLORS.green,
+                color: COLORS.green,
+                fontFamily: '"Cormorant Garamond", serif',
+                fontWeight: 600,
+                borderRadius: 3,
+                px: 4,
+              }}
+            >
+              Clear Search
+            </Button>
+          )}
+        </Box>
+      ) : (
+        <Box className="dior-product-grid" mt={2}>
+          {(tab === 0 ? filteredAndSortedProducts : recommendedProducts).map((product) => (
+            <Box key={product._id} className="dior-product-item">
+              <ProductCard product={product} />
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
     </Box>
   );

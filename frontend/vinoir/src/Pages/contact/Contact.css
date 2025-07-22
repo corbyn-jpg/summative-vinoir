@@ -5,6 +5,7 @@
   font-family: "Cormorant Garamond", serif; /* Elegant serif */
   color: #272727; /* Raisin Black */
   background: #f8f8f8;
+  padding-bottom: 4rem;
 }
 
 /* ----- Hero Section ----- */
@@ -14,24 +15,30 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url("../../assets/rose.jpeg");
+    url("../../assets/rose.jpeg") no-repeat center center/cover;
 }
 
 /* ----- Form Section ----- */
 .contact-form-section {
   padding: 100px 40px;
   background: linear-gradient(to bottom, #02361e 20%, #3c0556 100%);
+  display: flex;
+  justify-content: center;
 }
 
+/* Center & add subtle radius */
 .form-container {
   max-width: 700px;
+  width: 100%;
   margin: 0 auto;
-  padding: 60px;
+  padding: 60px 60px 70px;
   background: white;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
   border: 1px solid #bab9b9; /* Silver */
 }
 
+/* Section Title styling */
 .section-title {
   font-size: 2.5rem;
   font-weight: 600;
@@ -41,45 +48,53 @@
   text-align: center;
   position: relative;
   font-family: "Playfair Display", serif;
+  user-select: none;
 }
-
-.section-title:after {
+.section-title::after {
   content: "";
   display: block;
   width: 80px;
   height: 2px;
   background: #3c0556; /* Russian Violet */
-  margin: 20px auto;
+  margin: 20px auto 0;
+  border-radius: 2px;
 }
 
-/* ----- Input Fields ----- */
+/* Input Fields — consistent spacing and luxury feel */
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 16px;
-  border: 1px solid #bab9b9; /* Silver */
-  background: #ffffff;
+  padding: 16px 20px;
+  border: 1.5px solid #bab9b9; /* Silver */
+  background: #fdfdfd;
   font-family: "Cormorant Garamond", serif;
   font-size: 1.1rem;
   color: #272727;
-  margin-bottom: 25px;
-  transition: all 0.3s ease;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  outline-offset: 4px;
 }
 
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
   border-color: #2a4936; /* Brunswick Green */
   outline: none;
-  box-shadow: 0 0 0 2px rgba(42, 73, 54, 0.1);
+  box-shadow: 0 0 8px rgba(42, 73, 54, 0.3);
 }
 
+/* Textarea */
 .form-group textarea {
   min-height: 180px;
   resize: vertical;
+  line-height: 1.6;
+  font-family: "Cormorant Garamond", serif;
 }
 
-/* ----- Submit Button ----- */
+/* Submit Button */
 .submit-button {
   background: #2a4936; /* Brunswick Green */
   color: white;
@@ -89,38 +104,109 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   width: 100%;
   font-family: "Cormorant Garamond", serif;
   font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(42, 73, 54, 0.3);
 }
 
-.submit-button:hover {
+.submit-button:hover,
+.submit-button:focus {
   background: #02361e; /* Dark Green */
   transform: translateY(-2px);
+  outline: none;
+  box-shadow: 0 8px 16px rgba(2, 54, 11, 0.6);
 }
 
 /* ----- Contact Info Section ----- */
 .contact-info-section {
-  padding: 100px 40px;
+  padding: 80px 40px;
   background: #272727; /* Raisin Black */
   color: #bab9b9; /* Silver */
   text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  user-select: none;
+}
+
+.contact-info-section h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #d4af37; /* Gold accent */
+  letter-spacing: 0.1em;
 }
 
 .contact-method h3 {
+  margin-bottom: 0.6rem;
   color: #bab9b9; /* Silver */
   font-family: "Playfair Display", serif;
-  letter-spacing: 1px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Link styles */
+.contact-method p a {
+  color: #bab9b9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.contact-method p a:hover,
+.contact-method p a:focus {
+  color: #d4af37; /* Gold on hover */
+  outline: none;
 }
 
 /* ----- Map Section ----- */
 .location-section {
   background: #02361e; /* Dark Green */
   padding: 20px 0;
+  user-select: none;
 }
 
 .map-container {
   height: 500px;
   filter: grayscale(50%) sepia(10%) contrast(110%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .contact-form-section {
+    padding: 60px 20px;
+  }
+
+  .form-container {
+    padding: 40px 30px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-hero-wrapper {
+    margin-top: 60px;
+    height: 60vh;
+  }
+
+  .contact-form-section {
+    padding: 40px 15px;
+  }
+
+  .form-container {
+    padding: 35px 20px;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 30px;
+  }
 }

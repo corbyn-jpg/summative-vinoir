@@ -1,35 +1,22 @@
-/* Shop Section Container */
-.section-title {
-  margin-bottom: 1rem;
-  color: var(--gold-accent) !important;
-  font-size: 2.5rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.1em !important;
-  font-family: "Playfair Display", serif !important;
-  text-transform: uppercase;
+/* Theme Colors */
+:root {
+  --green-accent: #146e3a;
+  --dark-green: #146e3a;
+  --raisin-black: #272727;
+  --off-white: #f8f5f2;
+  --silver: #bab9b9;
 }
 
-/* Main Shop Section */
-.dior-shop-section {
-  padding: 8rem 0;
-  position: relative;
-  overflow: hidden;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  background: linear-gradient(to bottom, var(--raisin-black) 0%, var(--dark-green) 100%);
-  box-sizing: border-box;
-}
-
-/* Shop Title */
+/* Container and Title */
 .dior-shop-title {
-  font-weight: 700 !important;
-  letter-spacing: 0.3em !important;
-  text-align: center;
-  color: var(--gold-accent) !important;
-  font-family: "Playfair Display", serif !important;
-  font-size: 2.5rem !important;
-  margin-bottom: 5rem !important;
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  font-size: 2.5rem;
+  color: var(--green-accent);
   text-transform: uppercase;
+  margin-bottom: 5rem;
+  text-align: center;
   position: relative;
 }
 
@@ -38,148 +25,140 @@
   display: block;
   width: 100px;
   height: 2px;
-  background: var(--gold-accent);
+  background: var(--green-accent);
   margin: 2rem auto 0;
 }
 
-/* Product Grid */
+/* Product Grid 4 columns */
 .dior-product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 2rem;
   box-sizing: border-box;
 }
 
-/* Product Card Styling */
+/* Product Card */
 .dior-product-item {
-  width: 100%;
-  height: 55vh;
-  min-height: 500px;
-  border-radius: 8px;
-  background: linear-gradient(
-    to bottom,
-    rgba(42, 73, 54, 0.3),
-    rgba(39, 39, 39, 0.85)
-  ) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  height: 600px; /* fixed for uniform big cards */
+  background: var(--off-white);
+  border-radius: 12px;
+  border: 1.5px solid var(--silver);
+  box-shadow: 0 20px 60px rgba(39, 39, 39, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-  border: 1px solid rgba(186, 185, 185, 0.1);
-  overflow: hidden;
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
 }
 
 .dior-product-item:hover,
 .dior-product-item:focus-within {
   transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-  border-color: var(--gold-accent);
+  box-shadow: 0 30px 80px rgba(20, 110, 58, 0.16);
+  border-color: var(--green-accent);
   outline: none;
 }
 
-/* Image Container */
+/* Image Container with fixed aspect ratio */
 .dior-product-image-container {
-  background-color: rgba(0, 0, 0, 0.25);
   width: 100%;
-  height: 70%;
+  aspect-ratio: 4 / 5; /* tall container */
+  overflow: hidden;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 .dior-product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s ease;
+  object-fit: cover; /* fills container, crops if needed */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dior-product-item:hover .dior-product-image,
 .dior-product-item:focus-within .dior-product-image {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
-/* Text Styles */
+/* Titles and Text */
 .dior-product-title {
-  font-size: 1.6rem !important;
-  font-weight: 600 !important;
-  margin: 1.5rem 0 0.5rem !important;
-  color: var(--gold-accent) !important;
-  text-align: center;
-  font-family: "Playfair Display", serif !important;
+  font-family: "Playfair Display", serif;
+  font-size: 1.6rem;
+  font-weight: 600;
   letter-spacing: 0.05em;
+  color: var(--green-accent);
+  text-align: center;
+  padding: 1.5rem 1rem 0.5rem;
+  text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .dior-product-subtitle {
-  font-size: 1.1rem !important;
-  color: var(--silver) !important;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  color: var(--dark-green);
   text-align: center;
-  font-family: "Cormorant Garamond", serif !important;
   letter-spacing: 0.05em;
   opacity: 0.8;
-  padding: 0 1rem;
-  margin-bottom: 1rem;
+  padding: 0 1rem 1.2rem;
+  flex-shrink: 0;
+}
+
+.dior-product-price {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--dark-green);
+  text-align: center;
+  padding: 0 1rem 1.5rem;
 }
 
 /* Responsive Breakpoints */
 @media (max-width: 1200px) {
-  .dior-shop-section {
-    padding: 6rem 0;
-  }
-
   .dior-product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-
-  .dior-product-title {
-    font-size: 1.4rem !important;
+  .dior-product-item {
+    height: 520px;
   }
 }
 
 @media (max-width: 900px) {
-  .dior-shop-title {
-    font-size: 2rem !important;
-    margin-bottom: 3rem !important;
-  }
-
   .dior-product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
+  .dior-product-item {
+    height: 460px;
+  }
+  .dior-product-title {
+    font-size: 1.4rem;
+  }
+  .dior-product-subtitle {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 600px) {
-  .dior-shop-section {
-    padding: 4rem 0;
-  }
-
-  .dior-shop-title {
-    font-size: 1.5rem !important;
-    letter-spacing: 0.2em !important;
-  }
-
   .dior-product-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 0 1rem;
   }
-
-  .dior-product-title {
-    font-size: 1.3rem !important;
+  .dior-product-item {
+    height: 380px;
   }
-
+  .dior-product-title {
+    font-size: 1.3rem;
+  }
   .dior-product-subtitle {
-    font-size: 1rem !important;
+    font-size: 0.95rem;
   }
 }

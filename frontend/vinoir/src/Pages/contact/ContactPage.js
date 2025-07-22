@@ -3,7 +3,7 @@ import HeroSection from "../../Components/HeroSection";
 import emailjs from "emailjs-com";
 import "./Contact.css";
 
-// Static image imports
+// Static media
 import contactHeroImage from "../../assets/spritz.jpeg";
 import contactHeroVideo from "../../assets/ManUnited.jpeg";
 
@@ -36,10 +36,9 @@ const ContactPage = () => {
     setError("");
 
     try {
-      // Send email using EmailJS
       await emailjs.send(
-        "service_jtead7u", // EmailJS Service ID
-        "template_63xglp9", // EmailJS Template ID
+        "service_jtead7u", // Service ID
+        "template_63xglp9", // Template ID
         {
           to_email: "241040@virtualwindow.co.za",
           from_name: formData.name,
@@ -64,10 +63,10 @@ const ContactPage = () => {
       {/* Hero Section */}
       <div className="contact-hero-wrapper">
         <HeroSection
-          title={"CONTACT VINOIR"}
+          title="CONTACT VINOIR"
           backgroundImage={contactHeroImage}
-          buttonText={"EXPLORE"}
-          buttonLink={"/shop"}
+          buttonText="EXPLORE"
+          buttonLink="/shop"
           videoSrc={contactHeroVideo}
         />
       </div>
@@ -76,12 +75,19 @@ const ContactPage = () => {
       <div className="contact-form-section">
         <div className="form-container">
           <h2 className="section-title">Send Us a Message</h2>
-          {error && <div className="error-message">{error}</div>}
+
+          {error && (
+            <div role="alert" className="error-message">
+              {error}
+            </div>
+          )}
+
           {isSubmitted ? (
-            <div className="success-message">
+            <div className="success-message" role="status">
               <h3>Thank you for your message!</h3>
               <p>We've received your inquiry and will respond shortly.</p>
               <button
+                type="button"
                 onClick={() => setIsSubmitted(false)}
                 className="submit-button"
               >
@@ -89,8 +95,9 @@ const ContactPage = () => {
               </button>
             </div>
           ) : (
-            <form className="contact-form" onSubmit={handleSubmit}>
+            <form className="contact-form" onSubmit={handleSubmit} noValidate>
               <div className="form-group">
+                <label htmlFor="name" className="sr-only">Full Name</label>
                 <input
                   type="text"
                   id="name"
@@ -99,10 +106,12 @@ const ContactPage = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
+                  aria-required="true"
                 />
               </div>
 
               <div className="form-group">
+                <label htmlFor="email" className="sr-only">Email Address</label>
                 <input
                   type="email"
                   id="email"
@@ -111,29 +120,31 @@ const ContactPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  aria-required="true"
                 />
               </div>
 
               <div className="form-group">
+                <label htmlFor="subject" className="sr-only">Subject</label>
                 <select
                   id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   required
+                  aria-required="true"
                 >
                   <option value="">Select a subject</option>
                   <option value="Product Inquiry">Product Inquiry</option>
                   <option value="Order Support">Order Support</option>
                   <option value="Press Inquiry">Press Inquiry</option>
-                  <option value="Partnership Opportunity">
-                    Partnership Opportunity
-                  </option>
+                  <option value="Partnership Opportunity">Partnership Opportunity</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
               <div className="form-group">
+                <label htmlFor="message" className="sr-only">Your message</label>
                 <textarea
                   id="message"
                   name="message"
@@ -142,13 +153,15 @@ const ContactPage = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                ></textarea>
+                  aria-required="true"
+                />
               </div>
 
               <button
                 type="submit"
                 className="submit-button"
                 disabled={isLoading}
+                aria-busy={isLoading}
               >
                 {isLoading ? "Sending..." : "Send Message"}
               </button>
@@ -158,32 +171,32 @@ const ContactPage = () => {
       </div>
 
       {/* Contact Info Section */}
-      <div className="contact-info-section">
+      <div className="contact-info-section" aria-label="Contact Information">
         <div className="contact-info-content">
           <h2>Contact Information</h2>
           <div className="contact-details">
-            <div className="contact-method">
-              <h3>General Inquiries</h3>
+            <section className="contact-method" aria-labelledby="general-inquiries">
+              <h3 id="general-inquiries">General Inquiries</h3>
               <p>
                 <a href="mailto:241040@virtualwindow.co.za">
                   241040@virtualwindow.co.za
                 </a>
               </p>
               <p>+27 12 345 6789</p>
-            </div>
+            </section>
 
-            <div className="contact-method">
-              <h3>Visit Us</h3>
+            <section className="contact-method" aria-labelledby="visit-us">
+              <h3 id="visit-us">Visit Us</h3>
               <p>Open Window - Centurion</p>
               <p>1297 John Vorster</p>
               <p>Centurion, Gauteng</p>
-            </div>
+            </section>
           </div>
         </div>
       </div>
 
-      {/* Location Section */}
-      <div className="location-section">
+      {/* Location Map Section */}
+      <div className="location-section" aria-label="Location Map">
         <div className="map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.8473501694!2d28.2094135!3d-25.8919438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956608911ce097%3A0x519896b4b6eda40a!2sOpen%20Window%20-%20Centurion!5e0!3m2!1sen!2sza!4v1718200000000!5m2!1sen!2sza"

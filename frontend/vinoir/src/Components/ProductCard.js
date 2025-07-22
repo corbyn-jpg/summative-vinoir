@@ -17,6 +17,7 @@ import {
 } from "@mui/icons-material";
 import "./ProductCard.css";
 
+
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const {
@@ -51,6 +52,18 @@ const ProductCard = ({ product }) => {
       addToWishlist(product);
     }
   };
+
+  // Price formatter for South African Rand with thousand separators
+  const formatPrice = (price) => {
+    if (price == null || isNaN(price)) return "R 0.00";
+    return (
+      "R " +
+      Number(price)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    );
+  };
+
 
   return (
     <Box
@@ -148,7 +161,7 @@ const ProductCard = ({ product }) => {
           {product.category}
         </Typography>
         <Typography variant="body1" sx={{ fontWeight: "bold", mb: 2 }}>
-          R {product.price.toFixed(2)}
+          {formatPrice(product.price)}
         </Typography>
 
         {/* Add to Cart Button */}

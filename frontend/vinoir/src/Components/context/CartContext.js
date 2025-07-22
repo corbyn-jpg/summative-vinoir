@@ -4,17 +4,17 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('vinoir_cart');
+    const savedCart = localStorage.getItem("vinoir_cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('vinoir_cart', JSON.stringify(cart));
+    localStorage.setItem("vinoir_cart", JSON.stringify(cart));
   }, [cart]);
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem('vinoir_cart');
+    localStorage.removeItem("vinoir_cart");
   };
 
   const safeProduct = (product) => ({
@@ -52,30 +52,36 @@ export function CartProvider({ children }) {
   };
 
   const updateCartItem = (productId, newQuantity) => {
-    const quantity = Math.max(1, Number(newQuantity) || 1);
-    setCart((currentCart) =>
-      currentCart.map((item) =>
+    let quantity = Number(newQuantity);
+    if (isNaN(quantity) || quantity < 0) quantity = 1;
+
+    setCart((currentCart) => {
+      if (quantity === 0) {
+        // Remove item if quantity is zero
+        return currentCart.filter((item) => item._id !== productId);
+      }
+      return currentCart.map((item) =>
         item._id === productId ? { ...item, quantity } : item
-      )
-    );
+      );
+    });
   };
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce(
-  (total, item) => total + (item.price * item.quantity),
-  0
-);
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   return (
-    <CartContext.Provider 
-      value={{ 
+    <CartContext.Provider
+      value={{
         cart,
         addToCart,
         removeFromCart,
         updateCartItem,
-        clearCart, 
+        clearCart,
         cartCount,
-        cartTotal
+        cartTotal,
       }}
     >
       {children}
@@ -86,7 +92,7 @@ export function CartProvider({ children }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 }
