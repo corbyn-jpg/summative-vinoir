@@ -7,11 +7,13 @@ function Footer() {
   return (
     <Box component="footer" className="luxury-footer">
       <Box className="footer-content">
+        {/* Brand Section */}
         <Box className="footer-section">
           <Typography
             variant="h6"
             className="footer-heading"
             sx={{ fontFamily: "serif" }}
+            component="h2"
           >
             VINOIR
           </Typography>
@@ -24,11 +26,13 @@ function Footer() {
           </Typography>
         </Box>
 
-        <Box className="footer-section">
+        {/* Explore Links */}
+        <Box className="footer-section" aria-label="Explore navigation links">
           <Typography
             variant="subtitle1"
             className="footer-heading"
             sx={{ fontFamily: "serif" }}
+            component="h3"
           >
             Explore
           </Typography>
@@ -37,6 +41,7 @@ function Footer() {
             to="/"
             className="footer-link"
             sx={{ fontFamily: "serif" }}
+            underline="hover"
           >
             Home
           </Link>
@@ -45,6 +50,7 @@ function Footer() {
             to="/shop"
             className="footer-link"
             sx={{ fontFamily: "serif" }}
+            underline="hover"
           >
             Shop
           </Link>
@@ -53,6 +59,7 @@ function Footer() {
             to="/about"
             className="footer-link"
             sx={{ fontFamily: "serif" }}
+            underline="hover"
           >
             About
           </Link>
@@ -61,16 +68,19 @@ function Footer() {
             to="/contact"
             className="footer-link"
             sx={{ fontFamily: "serif" }}
+            underline="hover"
           >
             Contact
           </Link>
         </Box>
 
-        <Box className="footer-section">
+        {/* Legal Links */}
+        <Box className="footer-section" aria-label="Legal navigation links">
           <Typography
             variant="subtitle1"
             className="footer-heading"
             sx={{ fontFamily: "serif" }}
+            component="h3"
           >
             Legal
           </Typography>
@@ -79,6 +89,7 @@ function Footer() {
             to="/privacy"
             className="footer-link"
             sx={{ fontFamily: "serif" }}
+            underline="hover"
           >
             Privacy Policy
           </Link>
@@ -87,16 +98,19 @@ function Footer() {
             to="/terms"
             className="footer-link"
             sx={{ fontFamily: "serif" }}
+            underline="hover"
           >
             Terms of Service
           </Link>
         </Box>
 
+        {/* Contact Section */}
         <Box className="footer-section">
           <Typography
             variant="subtitle1"
             className="footer-heading"
             sx={{ fontFamily: "serif" }}
+            component="h3"
           >
             Connect
           </Typography>
@@ -104,24 +118,32 @@ function Footer() {
             variant="body2"
             className="footer-text"
             sx={{ fontFamily: "serif" }}
+            component="p"
           >
-            info@vinoir.com
+            <Link href="mailto:info@vinoir.com" underline="hover" color="inherit">
+              info@vinoir.com
+            </Link>
           </Typography>
           <Typography
             variant="body2"
             className="footer-text"
             sx={{ fontFamily: "serif" }}
+            component="p"
           >
-            +1 (555) 123-4567
+            <Link href="tel:+15551234567" underline="hover" color="inherit">
+              +1 (555) 123-4567
+            </Link>
           </Typography>
         </Box>
       </Box>
 
-      <Box className="footer-bottom">
+      <Box className="footer-bottom" sx={{ textAlign: 'center', py: 2 }}>
         <Typography
           variant="caption"
           className="footer-copyright"
           sx={{ fontFamily: "serif" }}
+          component="p"
+          aria-label="Copyright"
         >
           © {new Date().getFullYear()} VINOIR. All rights reserved.
         </Typography>

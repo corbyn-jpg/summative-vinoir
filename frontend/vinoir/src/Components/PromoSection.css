@@ -10,13 +10,14 @@
 
 /* Title Styling */
 .promo-title {
-  font-family: 'Playfair Display', serif;
   font-weight: 700;
   font-size: 2.5rem;
   color: #2c3e50;
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.05em;
 }
 
 .promo-title::after {
@@ -34,57 +35,73 @@
   font-size: 1.1rem;
   color: #7f8c8d;
   margin-bottom: 3rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Swiper Container */
-.swiper-container {
-  width: 100%;
-  padding: 2rem 0;
-  position: relative;
-}
-
+.swiper-container,
 .promo-swiper {
   width: 100%;
   height: 100%;
   padding: 2rem 0;
+  position: relative;
 }
 
 /* Slide Styling */
 .promo-slide {
-  background-position: center;
-  background-size: cover;
   width: 300px;
   height: 450px;
-  transition: all 0.3s ease;
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.promo-slide:hover {
+.promo-slide:hover,
+.promo-slide:focus-within {
   transform: translateY(-10px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+  outline: none;
 }
 
 /* Card Styling */
 .promo-card {
   width: 100%;
   height: 100%;
-  background: white;
+  background: #fff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .promo-card-link {
   text-decoration: none;
   color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
+/* Image Container */
 .promo-image-container {
   position: relative;
   width: 100%;
   height: 65%;
   overflow: hidden;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .promo-image {
@@ -92,30 +109,33 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  display: block;
 }
 
+.promo-card:hover .promo-image,
+.promo-card:focus-within .promo-image {
+  transform: scale(1.05);
+}
+
+/* Overlay on Image */
 .promo-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  border-radius: 12px 12px 0 0;
 }
 
-.promo-card:hover .promo-overlay {
+.promo-card:hover .promo-overlay,
+.promo-card:focus-within .promo-overlay {
   opacity: 1;
 }
 
-.promo-card:hover .promo-image {
-  transform: scale(1.05);
-}
-
+/* View Details Button */
 .promo-shop-btn {
   background-color: #146e3a !important;
   color: white !important;
@@ -123,50 +143,66 @@
   font-weight: 600 !important;
   border-radius: 25px !important;
   transition: all 0.3s ease !important;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Playfair Display', serif !important;
 }
 
-.promo-shop-btn:hover {
+.promo-shop-btn:hover,
+.promo-shop-btn:focus {
   background-color: #0d5a2c !important;
   transform: translateY(-3px);
 }
 
-/* Content Styling */
+/* Content Section */
 .promo-content {
   padding: 1.5rem;
   text-align: center;
-  flex: 1;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
+/* Product Title & Price */
 .promo-product-title {
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: #2c3e50;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.03em;
 }
 
 .promo-product-price {
   font-weight: 600;
   color: #146e3a;
   margin-bottom: 0.8rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
 }
 
+/* Product Description */
 .promo-product-desc {
   color: #7f8c8d;
   font-size: 0.9rem;
   line-height: 1.4;
+  font-family: 'Playfair Display', serif;
+  flex-grow: 1;
 }
 
 /* Navigation Buttons */
 .swiper-button-next,
 .swiper-button-prev {
   color: #146e3a !important;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   width: 40px !important;
   height: 40px !important;
   border-radius: 50%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .swiper-button-next::after,
@@ -180,12 +216,13 @@
   transform: scale(1.1);
 }
 
-/* Pagination */
+/* Pagination Bullets */
 .swiper-pagination-bullet {
   background: #bdc3c7 !important;
   opacity: 1 !important;
   width: 12px !important;
   height: 12px !important;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .swiper-pagination-bullet-active {
@@ -193,7 +230,7 @@
   transform: scale(1.2);
 }
 
-/* View All Button */
+/* "View All" Button */
 .promo-view-all-btn {
   margin-top: 2rem;
   padding: 0.8rem 2rem !important;
@@ -201,13 +238,17 @@
   color: #146e3a !important;
   font-weight: 600 !important;
   border-radius: 25px !important;
-  transition: all 0.3s ease !important;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  font-family: 'Playfair Display', serif !important;
 }
 
-.promo-view-all-btn:hover {
+.promo-view-all-btn:hover,
+.promo-view-all-btn:focus {
   background-color: #146e3a !important;
   color: white !important;
   transform: translateY(-3px);
+  outline: none;
 }
 
 /* Responsive Adjustments */
@@ -215,11 +256,11 @@
   .promo-section {
     padding: 3rem 1rem;
   }
-  
+
   .promo-title {
     font-size: 2rem;
   }
-  
+
   .promo-slide {
     width: 250px;
     height: 400px;
@@ -230,7 +271,7 @@
   .promo-title {
     font-size: 1.8rem;
   }
-  
+
   .promo-slide {
     width: 220px;
     height: 380px;

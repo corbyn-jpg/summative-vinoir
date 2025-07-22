@@ -3,11 +3,11 @@
   width: 100%;
   height: 60vh;
   min-height: 240px;
-  border-radius: 4px;
+  border-radius: 8px; /* increased for smoother corners */
   background: linear-gradient(
     to bottom,
-    rgba(13, 59, 31, 0.2),
-    rgba(0, 0, 0, 0.7)
+    rgba(13, 59, 31, 0.25),
+    rgba(0, 0, 0, 0.75)
   ) !important;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -15,20 +15,23 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: all 0.6s ease;
+  transition: transform 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
   border: 1px solid rgba(186, 185, 185, 0.1);
   overflow: hidden;
+  cursor: pointer;
 }
 
-.vinoir-product-card:hover {
+.vinoir-product-card:hover,
+.vinoir-product-card:focus-within {
   transform: translateY(-10px);
-  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.4);
   border-color: var(--gold-accent);
+  outline: none;
 }
 
 /* Hero Image Container */
 .vinoir-product-image-container {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   height: 75%;
   overflow: hidden;
@@ -36,6 +39,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .vinoir-product-image {
@@ -45,7 +50,8 @@
   transition: transform 0.8s ease;
 }
 
-.vinoir-product-card:hover .vinoir-product-image {
+.vinoir-product-card:hover .vinoir-product-image,
+.vinoir-product-card:focus-within .vinoir-product-image {
   transform: scale(1.05);
 }
 
@@ -60,6 +66,7 @@
   background: transparent !important;
 }
 
+/* Product Name */
 .vinoir-product-name {
   font-size: 1.6rem !important;
   font-weight: 700 !important;
@@ -70,6 +77,7 @@
   letter-spacing: 0.1em;
 }
 
+/* Additional info - e.g. years or subtitle */
 .vinoir-product-years {
   font-size: 1.1rem !important;
   color: var(--silver) !important;
@@ -87,7 +95,8 @@
   padding: 0 2rem;
   max-width: 1800px;
   margin: 0 auto;
-  justify-items: center; /* This centers the cards in the grid */
+  justify-items: center; /* center card in each grid cell */
+  box-sizing: border-box;
 }
 
 /* Add to Cart Button */
@@ -109,15 +118,18 @@
   font-family: "Cormorant Garamond", serif !important;
   font-weight: 600 !important;
   border-radius: 0 !important;
+  cursor: pointer;
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btn:hover,
+.add-to-cart-btn:focus {
   background: linear-gradient(
     to right,
     var(--brunswick-green),
     var(--dark-green)
   ) !important;
   letter-spacing: 0.15em !important;
+  outline: none;
 }
 
 /* Responsive Breakpoints */
@@ -125,7 +137,7 @@
   .vinoir-product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   .vinoir-product-name {
     font-size: 1.4rem !important;
   }
