@@ -1,44 +1,32 @@
-import React from "react";
+// ...existing code...
+import React, { useMemo } from "react";
 import ProductCard from "./ProductCard";
-import { Box, Typography } from "@mui/material";
+import "./ShopSection.css";
 
 function ShopSection({ products = [] }) {
-  const displayProducts = products.slice(0, 4); 
-  
+  const displayProducts = useMemo(() => {
+    if (!Array.isArray(products)) return [];
+    return products.slice(0, 4);
+  }, [products]);
+
   return (
-    <Box sx={{ 
-      maxWidth: '1600px', 
-      mx: 'auto', 
-      px: 2,
-      py: 6 
-    }}>
-      <Typography variant="h2" sx={{ 
-        textAlign: 'center', 
-        mb: 4,
-        fontSize: '2rem',
-        fontWeight: 300,
-        fontFamily: 'Playfair Display, serif',
-        letterSpacing: '0.1em'
-      }}>
-        OUR SIGNATURE SCENTS
-      </Typography>
-      
-      <Box sx={{ 
-        display: 'flex',
-        justifyContent: 'center',
-        gap: 4,
-        flexWrap: 'wrap',
-        '& > *': {
-          flex: '0 1 calc(25% - 32px)',
-          minWidth: '250px'
-        }
-      }}>
-        {displayProducts.map((product) => (
-          <ProductCard key={product._id} product={product} />
-        ))}
-      </Box>
-    </Box>
+    <section className="shop-section" aria-labelledby="shop-heading">
+      <div className="shop-container">
+        <h2 id="shop-heading" className="shop-title">
+          OUR SIGNATURE SCENTS
+        </h2>
+
+        <div className="shop-grid" role="list">
+          {displayProducts.map((product) => (
+            <div role="listitem" key={product._id || product.id} className="shop-item">
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
-export default ShopSection;
+export default React.memo(ShopSection);
+// ...existing code...

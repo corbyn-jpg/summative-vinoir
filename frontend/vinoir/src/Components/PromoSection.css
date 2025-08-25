@@ -1,6 +1,6 @@
 :root{
-  --accent: #6fa88b;
-  --accent-600: #5b8f71;
+  --accent: #0b723d;
+  --accent-600: #16532f;
   --muted-weak: rgba(255,255,255,0.16);
   --glass-border: rgba(255,255,255,0.04);
 }
@@ -127,7 +127,6 @@
 .swiper-button-next,
 .swiper-button-prev {
   color: #fff !important;
-  border-radius: 10px;
   width: 38px !important;
   height: 38px !important;
   display:flex;
@@ -138,6 +137,7 @@
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
   transform: translateY(-4px);
+
 }
 
 /* Make arrows slightly smaller on mobile */
@@ -162,14 +162,6 @@
   box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
 
-/* Focus visible for keyboard users */
-.promo-card-link:focus-visible,
-.promo-shop-btn:focus-visible,
-.promo-view-all-btn:focus-visible {
-  outline: 3px solid rgba(111,168,139,0.12);
-  outline-offset: 6px;
-  border-radius: 10px;
-}
 
 /* Responsive adjustments */
 @media (max-width: 880px) {

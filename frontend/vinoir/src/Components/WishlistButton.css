@@ -1,0 +1,47 @@
+/* Wishlist button visual parity with app theme (no orange/gold, consistent accent) */
+.wishlist-toggle {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 10px;
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--muted, #bfc6bd);
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+  cursor: pointer;
+}
+
+/* Hover affordance — lift and accent background */
+.wishlist-toggle:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(180deg, var(--accent, #6fa88b), var(--accent-600, #5b8f71));
+  color: #08150b;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+}
+
+/* Active / selected state */
+.wishlist-toggle.active,
+.wishlist-toggle[aria-pressed="true"] {
+  background: linear-gradient(180deg, var(--accent, #6fa88b), var(--accent-600, #5b8f71));
+  color: #08150b;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+}
+
+/* Ensure icons inherit color and size */
+.wishlist-toggle .MuiSvgIcon-root,
+.wishlist-toggle svg {
+  color: inherit !important;
+  width: 20px;
+  height: 20px;
+}
+
+/* Keyboard focus ring */
+.wishlist-toggle:focus-visible {
+  outline: 3px solid rgba(111,168,139,0.12);
+  outline-offset: 4px;
+  border-radius: 10px;
+}

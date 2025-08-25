@@ -1,42 +1,59 @@
-import { IconButton, Tooltip } from '@mui/material';
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { useWishlist } from '../context/WishlistContext';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useMemo, useCallback } from "react";
+import PropTypes from "prop-types";
+import { IconButton, Tooltip } from "@mui/material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useWishlist } from "../context/WishlistContext";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import "./WishlistButton.css";
 
-const WishlistButton = ({ product, size = 'medium' }) => {
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { isAuthenticated } = useAuth(); // Consistent with AuthContext
+const WishlistButton = ({ product, size = "medium" }) => {
   const navigate = useNavigate();
+  const { wishlist = [], addToWishlist, removeFromWishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
 
-  // Make the check robust for both _id and id
-  const prodId = product._id || product.id;
-  const isInWishlist = wishlist.some(item => (item._id || item.id) === prodId);
+  const prodId = product?._id || product?.id;
+  const isInWishlist = useMemo(
+    () => Boolean(wishlist && wishlist.some((it) => (it?._id || it?.id) === prodId)),
+    [wishlist, prodId]
+  );
 
-  const handleClick = () => {
-    if (!isAuthenticated) {
-      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname));
-      return;
-    }
-    if (isInWishlist) {
-      removeFromWishlist(prodId);
-    } else {
-      addToWishlist(product);
-    }
-  };
+  const handleClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!isAuthenticated) {
+        navigate("/login?redirect=" + encodeURIComponent(window.location.pathname));
+        return;
+      }
+      if (isInWishlist) {
+        removeFromWishlist(prodId);
+      } else {
+        addToWishlist(product);
+      }
+    },
+    [isAuthenticated, navigate, isInWishlist, removeFromWishlist, addToWishlist, prodId, product]
+  );
 
   return (
     <Tooltip title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}>
       <IconButton
         onClick={handleClick}
         size={size}
-        color={isInWishlist ? "error" : "default"}
+        className={`wishlist-toggle ${isInWishlist ? "active" : ""}`}
+        aria-pressed={isInWishlist}
         aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        color="inherit"
       >
-        {isInWishlist ? <Favorite /> : <FavoriteBorder />}
+        {isInWishlist ? <Favorite fontSize={size === "small" ? "small" : "medium"} /> : <FavoriteBorder fontSize={size === "small" ? "small" : "medium"} />}
       </IconButton>
     </Tooltip>
   );
 };
 
-export default WishlistButton;
+WishlistButton.propTypes = {
+  product: PropTypes.object.isRequired,
+  size: PropTypes.oneOf(["small", "medium", "large"]),
+};
+
+export default React.memo(WishlistButton);
