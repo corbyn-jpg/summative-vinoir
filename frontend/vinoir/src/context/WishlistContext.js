@@ -1,128 +1,80 @@
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+const WishlistContext = createContext(undefined);
 
-// Create Wishlist Context
-const WishlistContext = createContext();
-
-// Provider Component
 export function WishlistProvider({ children }) {
-  const [wishlist, setWishlist] = useState([]);
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      const raw = localStorage.getItem("vinoir_wishlist");
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Load wishlist on mount if token exists
   useEffect(() => {
-    const fetchWishlist = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const token = localStorage.getItem('vinoir_token');
-        if (token) {
-          const response = await axios.get('/api/wishlist', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setWishlist(Array.isArray(response.data) ? response.data : []);
-        } else {
-          setWishlist([]);
-        }
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load wishlist');
-        setWishlist([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchWishlist();
+    try {
+      localStorage.setItem("vinoir_wishlist", JSON.stringify(wishlist));
+    } catch {}
+  }, [wishlist]);
+
+  const addToWishlist = useCallback((product) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const id = product.id || product._id;
+      setWishlist((prev) => {
+        if (prev.find((p) => (p.id || p._id) === id)) return prev;
+        return [...prev, { ...product, id }];
+      });
+    } catch (err) {
+      setError(err?.message || "Failed to add to wishlist");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // Add product to wishlist
-  const addToWishlist = async (product) => {
+  const removeFromWishlist = useCallback((id) => {
     setLoading(true);
     setError(null);
     try {
-      const token = localStorage.getItem('vinoir_token');
-      if (!token) throw new Error('Authentication required');
-      const response = await axios.post(
-        '/api/wishlist',
-        { productId: product._id },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setWishlist((prev) => prev.some((item) => item._id === response.data._id)
-        ? prev // do not duplicate
-        : [...prev, response.data]);
+      setWishlist((prev) => prev.filter((p) => (p.id || p._id) !== id));
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to add to wishlist');
-      throw err;
+      setError(err?.message || "Failed to remove from wishlist");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // Remove product from wishlist
-  const removeFromWishlist = async (productId) => {
+  const toggleWishlist = useCallback((product) => {
     setLoading(true);
     setError(null);
     try {
-      const token = localStorage.getItem('vinoir_token');
-      if (!token) throw new Error('Authentication required');
-      await axios.delete(`/api/wishlist/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const id = product.id || product._id;
+      setWishlist((prev) => {
+        const exists = prev.find((p) => (p.id || p._id) === id);
+        if (exists) return prev.filter((p) => (p.id || p._id) !== id);
+        return [...prev, { ...product, id }];
       });
-      setWishlist((prev) => prev.filter((item) => item._id !== productId));
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to remove from wishlist');
+      setError(err?.message || "Failed to toggle wishlist");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // Clear the entire wishlist
-  const clearWishlist = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const token = localStorage.getItem('vinoir_token');
-      if (!token) throw new Error('Authentication required');
-      await axios.delete('/api/wishlist', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setWishlist([]);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to clear wishlist');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Useful derived values
-  const wishlistCount = wishlist.length;
-
-  return (
-    <WishlistContext.Provider
-      value={{
-        wishlist,
-        loading,
-        error,
-        addToWishlist,
-        removeFromWishlist,
-        clearWishlist,
-        wishlistCount,
-        setWishlist, // exposed for advanced cases
-      }}
-    >
-      {children}
-    </WishlistContext.Provider>
+  const value = useMemo(
+    () => ({ wishlist, loading, error, addToWishlist, removeFromWishlist, toggleWishlist, setWishlist }),
+    [wishlist, loading, error, addToWishlist, removeFromWishlist, toggleWishlist]
   );
+
+  return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 }
 
-// Context Hook
 export function useWishlist() {
   const ctx = useContext(WishlistContext);
-  if (!ctx) throw new Error('useWishlist must be used within WishlistProvider');
+  if (ctx === undefined) throw new Error("useWishlist must be used within a WishlistProvider");
   return ctx;
 }

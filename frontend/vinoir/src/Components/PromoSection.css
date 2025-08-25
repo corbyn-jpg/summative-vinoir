@@ -1,279 +1,178 @@
-/* Main Container */
+:root{
+  --accent: #6fa88b;
+  --accent-600: #5b8f71;
+  --muted-weak: rgba(255,255,255,0.16);
+  --glass-border: rgba(255,255,255,0.04);
+}
+
+/* PromoSection — cleaned, single source of truth */
 .promo-section {
-  padding: 5rem 2rem;
-  background-color: #f9f5f0;
+  padding: clamp(36px, 6vw, 72px) 12px;
+  max-width: 1280px;
+  margin: 0 auto 28px;
+  box-sizing: border-box;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Playfair Display', serif !important;
 }
 
-/* Title Styling */
 .promo-title {
-  font-weight: 700;
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  position: relative;
-  display: inline-block;
-  font-family: 'Playfair Display', serif;
-  letter-spacing: 0.05em;
-}
-
-.promo-title::after {
-  content: '';
-  position: absolute;
-  width: 50px;
-  height: 3px;
-  background: #146e3a;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(24px, 3.6vw, 36px);
+  color: #fff;
+  margin: 0 0 12px;
+  letter-spacing: 0.04em;
 }
 
 .promo-subtitle {
-  font-size: 1.1rem;
-  color: #7f8c8d;
-  margin-bottom: 3rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 400;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 28px;
+  font-size: 1rem;
 }
 
-/* Swiper Container */
-.swiper-container,
-.promo-swiper {
-  width: 100%;
-  height: 100%;
-  padding: 2rem 0;
-  position: relative;
-}
-
-/* Slide Styling */
-.promo-slide {
-  width: 300px;
-  height: 450px;
-  background-position: center;
-  background-size: cover;
-  transition: transform 0.3s ease;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.promo-slide:hover,
-.promo-slide:focus-within {
-  transform: translateY(-10px);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.15);
-  outline: none;
-}
-
-/* Card Styling */
-.promo-card {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.promo-card-link {
+/* Links inherit color and remove default underline */
+.promo-section a,
+.promo-section a:visited {
   text-decoration: none;
   color: inherit;
+}
+
+/* Swiper / card grid */
+.promo-swiper {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.promo-card {
+  width: 300px;
+  height: 460px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  transition: transform 300ms ease, box-shadow 300ms ease;
 }
+.promo-card:hover { transform: translateY(-8px); box-shadow: 0 28px 70px rgba(0,0,0,0.6); }
 
-/* Image Container */
-.promo-image-container {
-  position: relative;
-  width: 100%;
-  height: 65%;
-  overflow: hidden;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-}
+/* Image area */
+.promo-image-container { height: 62%; position: relative; overflow: hidden; }
+.promo-image { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms ease; display: block; }
+.promo-card:hover .promo-image { transform: scale(1.06); }
 
-.promo-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  display: block;
-}
-
-.promo-card:hover .promo-image,
-.promo-card:focus-within .promo-image {
-  transform: scale(1.05);
-}
-
-/* Overlay on Image */
+/* Overlay & CTA — clearer on hover */
 .promo-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 14px;
+  pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 12px 12px 0 0;
+  transition: opacity 220ms ease, backdrop-filter 220ms ease;
+  backdrop-filter: blur(0px);
 }
-
-.promo-card:hover .promo-overlay,
-.promo-card:focus-within .promo-overlay {
+.promo-card:hover .promo-overlay {
   opacity: 1;
+  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.32));
 }
 
-/* View Details Button */
+/* Primary CTA: visible, high-contrast, accessible */
 .promo-shop-btn {
-  background-color: #146e3a !important;
-  color: white !important;
-  padding: 0.8rem 1.5rem !important;
-  font-weight: 600 !important;
-  border-radius: 25px !important;
-  transition: all 0.3s ease !important;
+  pointer-events: auto;
+  background: #fff;
+  color: var(--accent-600);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.45);
   cursor: pointer;
-  user-select: none;
-  font-family: 'Playfair Display', serif !important;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
 }
-
 .promo-shop-btn:hover,
 .promo-shop-btn:focus {
-  background-color: #0d5a2c !important;
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  background: var(--accent);
+  color: #08150b;
 }
 
-/* Content Section */
-.promo-content {
-  padding: 1.5rem;
-  text-align: center;
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+/* Content area */
+.promo-content { padding: 16px; display:flex; flex-direction:column; gap:8px; flex:1; text-align: center; }
+.promo-product-title { font-family: "Cormorant Garamond", serif; font-size:1.05rem; color:#fff; margin:0; }
+.promo-product-price { color: var(--accent); font-weight:700; }
+.promo-product-desc { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
 
-/* Product Title & Price */
-.promo-product-title {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-  font-family: 'Playfair Display', serif;
-  letter-spacing: 0.03em;
+/* View all button */
+.promo-view-all-btn {
+  margin-top: 8px;
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease, transform 160ms ease;
 }
+.promo-view-all-btn:hover { background: rgba(111,168,139,0.06); color: #fff; transform: translateY(-3px); }
 
-.promo-product-price {
-  font-weight: 600;
-  color: #146e3a;
-  margin-bottom: 0.8rem;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
-}
-
-/* Product Description */
-.promo-product-desc {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  font-family: 'Playfair Display', serif;
-  flex-grow: 1;
-}
-
-/* Navigation Buttons */
+/* Arrow buttons — sleeker dark style */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #146e3a !important;
-  background: rgba(255, 255, 255, 0.85);
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: background 0.3s ease, transform 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #fff !important;
+  border-radius: 10px;
+  width: 38px !important;
+  height: 38px !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition: transform 160ms ease, background 160ms ease;
 }
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 1.2rem !important;
-}
-
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background: white;
-  transform: scale(1.1);
+  transform: translateY(-4px);
 }
 
-/* Pagination Bullets */
+/* Make arrows slightly smaller on mobile */
+@media (max-width: 880px) {
+  .swiper-button-next, .swiper-button-prev { width: 34px !important; height: 34px !important; }
+}
+
+/* Pagination bullets (underneath circles) */
+.swiper-pagination {
+  margin-top: 12px;
+}
 .swiper-pagination-bullet {
-  background: #bdc3c7 !important;
-  opacity: 1 !important;
-  width: 12px !important;
-  height: 12px !important;
-  transition: background 0.3s ease, transform 0.3s ease;
+  width: 10px;
+  height: 10px;
+  background: var(--muted-weak);
+  opacity: 1;
+  transition: transform 180ms ease, background 180ms ease;
 }
-
 .swiper-pagination-bullet-active {
-  background: #146e3a !important;
-  transform: scale(1.2);
+  background: var(--accent) !important;
+  transform: scale(1.25);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
 
-/* "View All" Button */
-.promo-view-all-btn {
-  margin-top: 2rem;
-  padding: 0.8rem 2rem !important;
-  border: 2px solid #146e3a !important;
-  color: #146e3a !important;
-  font-weight: 600 !important;
-  border-radius: 25px !important;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  cursor: pointer;
-  font-family: 'Playfair Display', serif !important;
+/* Focus visible for keyboard users */
+.promo-card-link:focus-visible,
+.promo-shop-btn:focus-visible,
+.promo-view-all-btn:focus-visible {
+  outline: 3px solid rgba(111,168,139,0.12);
+  outline-offset: 6px;
+  border-radius: 10px;
 }
 
-.promo-view-all-btn:hover,
-.promo-view-all-btn:focus {
-  background-color: #146e3a !important;
-  color: white !important;
-  transform: translateY(-3px);
-  outline: none;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .promo-section {
-    padding: 3rem 1rem;
-  }
-
-  .promo-title {
-    font-size: 2rem;
-  }
-
-  .promo-slide {
-    width: 250px;
-    height: 400px;
-  }
-}
-
-@media (max-width: 480px) {
-  .promo-title {
-    font-size: 1.8rem;
-  }
-
-  .promo-slide {
-    width: 220px;
-    height: 380px;
-  }
+/* Responsive adjustments */
+@media (max-width: 880px) {
+  .promo-swiper { gap: 14px; overflow-x:auto; padding-bottom: 10px; }
+  .promo-card { width: 260px; height: 420px; }
 }

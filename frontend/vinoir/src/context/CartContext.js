@@ -1,71 +1,80 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const CartContext = createContext(undefined);
+const CartContext = createContext();
 
-export function CartProvider({ children }) {
+export const useCart = () => useContext(CartContext);
+
+export const CartProvider = ({ children }) => {
+  // Load initial cart from localStorage or start empty
   const [cart, setCart] = useState(() => {
     try {
-      const raw = localStorage.getItem('vinoir_cart');
-      return raw ? JSON.parse(raw) : [];
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
     } catch {
       return [];
     }
   });
 
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    try {
-      localStorage.setItem('vinoir_cart', JSON.stringify(cart));
-    } catch {}
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product, qty = 1) => {
-    setCart((prev) => {
-      const id = product.id || product._id;
-      if (!id) {
-        // ensure item has an id
-        const newItem = { ...product, _id: product._id || product.id || Math.random().toString(36).slice(2), quantity: qty };
-        return [...prev, newItem];
+  // Support _id or id as product identifier
+  const getProductId = (product) => product._id || product.id;
+
+  const addToCart = (product) => {
+    const productId = getProductId(product);
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => getProductId(item) === productId);
+      if (existingItem) {
+        return prevCart.map((item) =>
+          getProductId(item) === productId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
       }
-      const idx = prev.findIndex((p) => (p.id || p._id) === id);
-      if (idx > -1) {
-        const next = [...prev];
-        next[idx] = { ...next[idx], quantity: (next[idx].quantity || 1) + qty };
-        return next;
-      }
-      return [...prev, { ...product, quantity: qty, id }];
+      return [...prevCart, { ...product, quantity: 1 }];
     });
   };
 
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((p) => (p.id || p._id) !== id));
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter((item) => getProductId(item) !== productId));
   };
 
-  const updateCartItem = (id, quantity) => {
-    const q = Number(quantity);
-    setCart((prev) => {
-      if (isNaN(q) || q < 0) return prev;
-      if (q === 0) return prev.filter((p) => (p.id || p._id) !== id);
-      return prev.map((p) => ((p.id || p._id) === id ? { ...p, quantity: q } : p));
-    });
+  const updateCartItem = (productId, quantity) => {
+    if (quantity <= 0) {
+      // Remove if quantity is 0 or less
+      removeFromCart(productId);
+      return;
+    }
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        getProductId(item) === productId ? { ...item, quantity } : item
+      )
+    );
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+  };
 
-  const cartCount = useMemo(() => cart.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0), [cart]);
-  const cartTotal = useMemo(() => cart.reduce((sum, it) => sum + (Number(it.price) || 0) * (Number(it.quantity) || 0), 0), [cart]);
+  // Optional: total quantity count of items in cart
+  const getCartQuantity = () =>
+    cart.reduce((total, item) => total + (item.quantity || 0), 0);
 
-  const value = useMemo(
-    () => ({ cart, addToCart, removeFromCart, updateCartItem, clearCart, cartCount, cartTotal, setCart }),
-    [cart, cartCount, cartTotal]
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateCartItem,
+        clearCart,
+        getCartQuantity,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
   );
-
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
-}
-
-export function useCart() {
-  const ctx = useContext(CartContext);
-  if (ctx === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return ctx;
-}
+};
