@@ -129,100 +129,389 @@ export default function Navbar() {
     [searchQuery, navigate, closeDrawer]
   );
 
-  // ───── Account Drawer ─────
+  // ───── Luxury Account Drawer (DIOR-inspired) ─────
   const renderAccountDrawer = useCallback(() => (
-    <Box sx={{ width: 350, p: 3 }} role="presentation">
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5" fontWeight="bold">
-          My Account
+    <Box sx={{ width: 450, p: 0 }} role="presentation">
+      {/* Elegant Header */}
+      <Box 
+        sx={{ 
+          background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+          p: 4,
+          color: 'white',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Background Pattern */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+            pointerEvents: 'none'
+          }}
+        />
+        
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} position="relative">
+          <Typography 
+            variant="h4" 
+            sx={{
+              fontFamily: '"Playfair Display", serif',
+              fontWeight: 300,
+              letterSpacing: '0.02em'
+            }}
+          >
+            My Account
+          </Typography>
+          <IconButton 
+            onClick={closeDrawer} 
+            aria-label="Close account drawer"
+            sx={{
+              color: 'white',
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,0.2)',
+                transform: 'rotate(90deg)'
+              },
+              transition: 'all 0.3s ease'
+            }}
+          >
+            <Close />
+          </IconButton>
+        </Box>
+        
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            opacity: 0.9,
+            fontFamily: '"Cormorant Garamond", serif',
+            fontSize: '1.1rem',
+            fontStyle: 'italic'
+          }}
+        >
+          {isAuthenticated ? `Welcome back, luxury awaits` : 'Enter the world of luxury fragrances'}
         </Typography>
-        <IconButton onClick={closeDrawer} aria-label="Close account drawer">
-          <Close />
-        </IconButton>
       </Box>
 
-      {loginSuccess && (
-        <Typography color="success.main" sx={{ mb: 2 }}>
-          Registration complete! You may now log in.
-        </Typography>
-      )}
-
-      {isAuthenticated ? (
-        <>
-          <Typography variant="h6" mb={2}>
-            Hello, {user?.name || "User"}!
-          </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={handleLogout}
+      {/* Content Area */}
+      <Box sx={{ p: 4 }}>
+        {/* Success Animation */}
+        {loginSuccess && (
+          <Box
             sx={{
-              backgroundColor: "#146e3a",
-              "&:hover": { backgroundColor: "#0d5a2c" },
+              mb: 3,
+              p: 3,
+              backgroundColor: 'rgba(45, 90, 61, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(45, 90, 61, 0.2)',
+              textAlign: 'center',
+              animation: 'luxuryFadeIn 0.8s ease-out',
+              '@keyframes luxuryFadeIn': {
+                '0%': { opacity: 0, transform: 'translateY(20px)' },
+                '100%': { opacity: 1, transform: 'translateY(0)' }
+              }
             }}
           >
-            Logout
-          </Button>
-        </>
-      ) : (
-        <>
-          <form onSubmit={handleLogin}>
-            <TextField
-              label="Email Address"
-              type="email"
-              fullWidth
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-            />
-            <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold" }}>
-              Select your emoji password:
-            </Typography>
-            <EmojiSelector selectedEmojis={emojiPassword} setSelectedEmojis={setEmojiPassword} maxLength={5} />
-            {loginError && (
-              <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-                {loginError}
-              </Typography>
-            )}
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              disabled={isLoading || emojiPassword.length === 0}
-              sx={{
-                mt: 3,
-                backgroundColor: "#146e3a",
-                "&:hover": { backgroundColor: "#0d5a2c" },
+            <Typography 
+              sx={{ 
+                color: '#2d5a3d',
+                fontWeight: 600,
+                fontSize: '1.1rem',
+                mb: 1
               }}
             >
-              {isLoading ? "Logging in..." : "Login"}
-            </Button>
-          </form>
-          <Divider sx={{ my: 3 }} />
-          <Typography variant="body2" textAlign="center" mb={2}>
-            Don't have an account?
-          </Typography>
-          <Button
-            fullWidth
-            variant="outlined"
-            component={Link}
-            to="/register"
-            onClick={closeDrawer}
-            sx={{
-              color: "#146e3a",
-              borderColor: "#146e3a",
-              "&:hover": {
-                backgroundColor: "#146e3a",
-                color: "white",
-              },
-            }}
-          >
-            Create Account
-          </Button>
-        </>
-      )}
+              ✨ Welcome to Vinoir ✨
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#666' }}>
+              Registration complete! You may now sign in to your luxury experience.
+            </Typography>
+          </Box>
+        )}
+
+        {isAuthenticated ? (
+          /* Authenticated User Experience */
+          <Box sx={{ textAlign: 'center' }}>
+            {/* Welcome Message with Avatar */}
+            <Box
+              sx={{
+                mb: 4,
+                p: 3,
+                background: 'linear-gradient(135deg, rgba(45, 90, 61, 0.05) 0%, rgba(106, 76, 147, 0.05) 100%)',
+                borderRadius: '16px',
+                border: '1px solid rgba(45, 90, 61, 0.1)'
+              }}
+            >
+              <Box
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  fontSize: '2rem'
+                }}
+              >
+                👑
+              </Box>
+              <Typography 
+                variant="h5" 
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  color: '#2d5a3d',
+                  mb: 1
+                }}
+              >
+                Hello, {user?.name || "Distinguished Guest"}
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#666', fontStyle: 'italic' }}>
+                Your personal fragrance journey continues
+              </Typography>
+            </Box>
+
+            {/* Account Actions */}
+            <Stack spacing={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                component={Link}
+                to="/account"
+                onClick={closeDrawer}
+                sx={{
+                  py: 1.5,
+                  borderColor: '#2d5a3d',
+                  color: '#2d5a3d',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(45, 90, 61, 0.05)',
+                    borderColor: '#2d5a3d'
+                  }
+                }}
+              >
+                Manage Account
+              </Button>
+              
+              <Button
+                fullWidth
+                variant="outlined"
+                component={Link}
+                to="/account/orders"
+                onClick={closeDrawer}
+                sx={{
+                  py: 1.5,
+                  borderColor: '#6a4c93',
+                  color: '#6a4c93',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(106, 76, 147, 0.05)',
+                    borderColor: '#6a4c93'
+                  }
+                }}
+              >
+                Order History
+              </Button>
+
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleLogout}
+                sx={{
+                  py: 1.5,
+                  background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  "&:hover": { 
+                    background: 'linear-gradient(135deg, #1e3e29 0%, #4a3269 100%)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(45, 90, 61, 0.3)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Sign Out
+              </Button>
+            </Stack>
+          </Box>
+        ) : (
+          /* Login Experience */
+          <Box>
+            <form onSubmit={handleLogin}>
+              {/* Email Field */}
+              <TextField
+                label="Email Address"
+                type="email"
+                fullWidth
+                margin="normal"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonOutline sx={{ color: '#2d5a3d' }} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  mb: 3,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    backgroundColor: 'rgba(45, 90, 61, 0.02)',
+                    '& fieldset': {
+                      borderColor: 'rgba(45, 90, 61, 0.3)'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#2d5a3d'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#2d5a3d',
+                      borderWidth: '2px'
+                    }
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'rgba(45, 90, 61, 0.7)',
+                    '&.Mui-focused': { color: '#2d5a3d' }
+                  }
+                }}
+              />
+
+              {/* Emoji Password Section */}
+              <Box
+                sx={{
+                  mb: 3,
+                  p: 3,
+                  backgroundColor: 'rgba(45, 90, 61, 0.02)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(45, 90, 61, 0.1)'
+                }}
+              >
+                <Typography 
+                  variant="subtitle1" 
+                  sx={{ 
+                    mb: 2, 
+                    fontWeight: 600,
+                    color: '#2d5a3d',
+                    fontFamily: '"Playfair Display", serif'
+                  }}
+                >
+                  🎭 Your Signature Emoji Password
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 2, color: '#666', fontStyle: 'italic' }}>
+                  Select your unique emoji combination (up to 5 emojis)
+                </Typography>
+                <EmojiSelector selectedEmojis={emojiPassword} setSelectedEmojis={setEmojiPassword} maxLength={5} />
+              </Box>
+
+              {/* Error Message */}
+              {loginError && (
+                <Box
+                  sx={{
+                    mb: 3,
+                    p: 2,
+                    backgroundColor: 'rgba(211, 47, 47, 0.05)',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(211, 47, 47, 0.2)'
+                  }}
+                >
+                  <Typography color="error" variant="body2">
+                    {loginError}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Login Button */}
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={isLoading || emojiPassword.length === 0}
+                sx={{
+                  py: 1.5,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  letterSpacing: '0.5px',
+                  background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+                  "&:hover": { 
+                    background: 'linear-gradient(135deg, #1e3e29 0%, #4a3269 100%)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(45, 90, 61, 0.3)'
+                  },
+                  "&:disabled": {
+                    backgroundColor: '#cccccc',
+                    color: '#888'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {isLoading ? "Signing In..." : "Enter Vinoir ✨"}
+              </Button>
+            </form>
+
+            {/* Divider */}
+            <Box sx={{ my: 4, position: 'relative', textAlign: 'center' }}>
+              <Divider sx={{ borderColor: 'rgba(45, 90, 61, 0.2)' }} />
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  backgroundColor: 'white',
+                  px: 2,
+                  color: '#666',
+                  fontStyle: 'italic'
+                }}
+              >
+                New to luxury?
+              </Typography>
+            </Box>
+
+            {/* Create Account Section */}
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="body2" sx={{ mb: 2, color: '#666' }}>
+                Join the exclusive world of premium fragrances
+              </Typography>
+              <Button
+                fullWidth
+                variant="outlined"
+                component={Link}
+                to="/register"
+                onClick={closeDrawer}
+                sx={{
+                  py: 1.5,
+                  borderColor: '#2d5a3d',
+                  color: '#2d5a3d',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  "&:hover": {
+                    backgroundColor: 'rgba(45, 90, 61, 0.05)',
+                    borderColor: '#2d5a3d',
+                    transform: 'translateY(-1px)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Create Your Account 🌟
+              </Button>
+            </Box>
+          </Box>
+        )}
+      </Box>
     </Box>
   ), [
     isAuthenticated,
