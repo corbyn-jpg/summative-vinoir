@@ -20,6 +20,9 @@ const AboutPage = lazy(() => import("./Pages/about/about"));
 const ContactPage = lazy(() => import("./Pages/contact/ContactPage"));
 const AccountPage = lazy(() => import("./Pages/account/AccountPage"));
 const PersonalDataPage = lazy(() => import("./Pages/account/PersonalDataPage"));
+const EnhancedPersonalDataPage = lazy(() => import("./Pages/account/EnhancedPersonalDataPage"));
+const SecuritySettingsPage = lazy(() => import("./Pages/account/SecuritySettingsPage"));
+const OrderHistoryPage = lazy(() => import("./Pages/account/OrderHistoryPage"));
 const OrdersPage = lazy(() => import("./Pages/account/OrdersPage"));
 const WishlistPage = lazy(() => import("./Pages/Shop/WishlistPage"));
 const ShopPage = lazy(() => import("./Pages/Shop/ShopPage"));
@@ -87,6 +90,9 @@ function AppInner() {
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/account" element={<AccountPage />} />
                     <Route path="/account/personal-data" element={<PersonalDataPage />} />
+                    <Route path="/account/enhanced-profile" element={<EnhancedPersonalDataPage />} />
+                    <Route path="/account/security" element={<SecuritySettingsPage />} />
+                    <Route path="/account/order-history" element={<OrderHistoryPage />} />
                     <Route path="/account/orders" element={<OrdersPage />} />
                     <Route path="/wishlist" element={<WishlistPage />} />
                     <Route path="/shop" element={<ShopPage />} />

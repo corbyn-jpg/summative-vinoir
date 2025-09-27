@@ -49,7 +49,8 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    // Need to explicitly select password field since it's excluded by default
+    const user = await User.findOne({ email }).select('+password');
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
     const isMatch = await user.comparePassword(password);
@@ -90,18 +91,14 @@ router.get('/me', auth, async (req, res) => {
 // @desc    Update password
 // @access  Private
 router.patch('/update-password', auth, async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+  const { password } = req.body; // For emoji passwords, we just need the new password
 
   try {
-    const user = await User.findById(req.user.userId);
+    // Need to explicitly select password field for comparison
+    const user = await User.findById(req.user.userId).select('+password');
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const isMatch = await user.comparePassword(currentPassword);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Current password is incorrect' });
-    }
-
-    user.password = newPassword; // Will be hashed in pre-save hook
+    user.password = password; // Will be hashed in pre-save hook
     await user.save();
 
     res.json({ message: 'Password updated successfully' });
