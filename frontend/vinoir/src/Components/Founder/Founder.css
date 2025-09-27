@@ -18,7 +18,7 @@
   transform: translateY(-10px);
   box-shadow: inset 0 12px 12px rgba(0, 0, 0, 0.3),
     0 30px 60px rgba(0, 0, 0, 0.35) !important;
-  border-color: var(--gold-accent);
+  border-color: #2d5a3d;
 }
 
 .founder-image-container {
@@ -45,7 +45,7 @@
 
 .founder-name {
   margin-bottom: 0.5rem;
-  color: var(--gold-accent) !important;
+  color: #2d5a3d !important;
   font-size: 1.6rem !important;
   font-family: "Playfair Display", serif !important;
   font-weight: 600 !important;

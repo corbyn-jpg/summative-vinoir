@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: column;
   color: var(--silver) !important;
-  border-right: 1px solid var(--gold-accent) !important;
+  border-right: 1px solid #2d5a3d !important;
   box-sizing: border-box;
   padding-top: 1rem;
 }
@@ -74,7 +74,7 @@
 
 /* Focus styles for accessibility */
 .luxury-menu .MuiListItem-root:focus-visible {
-  outline: 2px solid var(--gold-accent);
+  outline: 2px solid #2d5a3d;
   outline-offset: 2px;
   background-color: rgba(42, 73, 54, 0.4) !important;
 }

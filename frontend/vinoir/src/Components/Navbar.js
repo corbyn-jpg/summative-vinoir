@@ -11,6 +11,7 @@ import {
   TextField,
   Divider,
   Badge,
+  InputAdornment,
 } from "@mui/material";
 import {
   Search,
@@ -482,17 +483,45 @@ export default function Navbar() {
     );
   }, [cart, cartCount, closeDrawer, updateCartItem, removeFromCart]);
 
-  // ───── Search Drawer ─────
+  // ───── Enhanced Search Drawer ─────
   const renderSearchDrawer = useCallback(() => (
-    <Box sx={{ width: 350, p: 3 }} role="presentation">
+    <Box sx={{ width: 400, p: 3 }} role="presentation">
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5" fontWeight="bold">
+        <Typography 
+          variant="h5" 
+          fontWeight="bold"
+          sx={{ 
+            fontFamily: '"Playfair Display", serif',
+            color: '#2d5a3d'
+          }}
+        >
           Search Fragrances
         </Typography>
-        <IconButton onClick={closeDrawer} aria-label="Close search drawer">
+        <IconButton 
+          onClick={closeDrawer} 
+          aria-label="Close search drawer"
+          sx={{
+            color: '#2d5a3d',
+            '&:hover': {
+              backgroundColor: 'rgba(45, 90, 61, 0.1)'
+            }
+          }}
+        >
           <Close />
         </IconButton>
       </Box>
+
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          mb: 3, 
+          color: '#666',
+          fontStyle: 'italic'
+        }}
+      >
+        Discover your perfect scent by searching for fragrances, brands, or fragrance notes
+      </Typography>
+
       <form onSubmit={onSearchSubmit}>
         <TextField
           fullWidth
@@ -500,23 +529,83 @@ export default function Navbar() {
           variant="outlined"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ mb: 3 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search sx={{ color: '#2d5a3d' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ 
+            mb: 3,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '12px',
+              backgroundColor: 'rgba(45, 90, 61, 0.02)',
+              '& fieldset': {
+                borderColor: 'rgba(45, 90, 61, 0.3)'
+              },
+              '&:hover fieldset': {
+                borderColor: '#2d5a3d'
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#2d5a3d',
+                borderWidth: '2px'
+              }
+            },
+            '& .MuiInputBase-input': {
+              fontSize: '1rem',
+              '&::placeholder': {
+                color: 'rgba(45, 90, 61, 0.6)',
+                opacity: 1
+              }
+            }
+          }}
           autoFocus
           aria-label="Search fragrance products"
         />
+        
         <Button
           type="submit"
           fullWidth
           variant="contained"
           disabled={!searchQuery.trim()}
           sx={{
-            backgroundColor: "#146e3a",
-            "&:hover": { backgroundColor: "#0d5a2c" },
+            backgroundColor: "#2d5a3d",
+            py: 1.5,
+            fontSize: '1rem',
+            fontWeight: 600,
+            borderRadius: '12px',
+            textTransform: 'none',
+            letterSpacing: '0.5px',
+            "&:hover": { 
+              backgroundColor: "#1e3e29",
+              transform: 'translateY(-1px)',
+              boxShadow: '0 4px 12px rgba(45, 90, 61, 0.3)'
+            },
+            "&:disabled": {
+              backgroundColor: '#cccccc',
+              color: '#888'
+            },
+            transition: 'all 0.3s ease'
           }}
         >
-          Search
+          Search Fragrances
         </Button>
       </form>
+
+      {/* Search Tips */}
+      <Box sx={{ mt: 4, p: 2, backgroundColor: 'rgba(45, 90, 61, 0.05)', borderRadius: '8px' }}>
+        <Typography variant="subtitle2" sx={{ color: '#2d5a3d', mb: 1, fontWeight: 600 }}>
+          Search Tips:
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#666', fontSize: '0.9rem', lineHeight: 1.4 }}>
+          • Try searching for specific notes like "vanilla", "rose", or "sandalwood"
+          <br />
+          • Search by fragrance type: "Eau de Parfum" or "Eau de Toilette"  
+          <br />
+          • Look for your favorite brands or designer names
+        </Typography>
+      </Box>
     </Box>
   ), [searchQuery, onSearchSubmit, closeDrawer]);
 

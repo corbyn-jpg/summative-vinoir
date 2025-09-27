@@ -23,6 +23,7 @@ const PersonalDataPage = lazy(() => import("./Pages/account/PersonalDataPage"));
 const OrdersPage = lazy(() => import("./Pages/account/OrdersPage"));
 const WishlistPage = lazy(() => import("./Pages/Shop/WishlistPage"));
 const ShopPage = lazy(() => import("./Pages/Shop/ShopPage"));
+const SearchResults = lazy(() => import("./Pages/SearchResults"));
 const FragranceDetail = lazy(() => import("./Pages/Fragrance/FragranceDetail"));
 const CartPage = lazy(() => import("./Pages/cart/CartPage"));
 const CheckoutPage = lazy(() => import("./Pages/Checkout/CheckoutPage"));
@@ -89,6 +90,7 @@ function AppInner() {
                     <Route path="/account/orders" element={<OrdersPage />} />
                     <Route path="/wishlist" element={<WishlistPage />} />
                     <Route path="/shop" element={<ShopPage />} />
+                    <Route path="/search" element={<SearchResults />} />
                     <Route path="/fragrance/:id" element={<FragranceDetail />} />
                     <Route path="/cart" element={<CartPage />} />
                     <Route path="/checkout" element={<CheckoutPage />} />

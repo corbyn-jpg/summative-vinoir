@@ -1,7 +1,7 @@
 :root{
   /* local fallbacks if main theme vars are missing */
-  --accent-gold: #c9a66b;
-  --accent-gold-600: #b88e53;
+  --accent-green: #2d5a3d;
+  --accent-green-600: #1e3e29;
   --muted: rgba(255,255,255,0.82);
   --glass-border: rgba(255,255,255,0.03);
   --max-width: 1280px;
@@ -56,7 +56,7 @@
 }
 .footer-link:hover,
 .footer-link:focus {
-  color: var(--accent-gold, #c9a66b);
+  color: #2d5a3d;
   transform: translateX(4px);
 }
 

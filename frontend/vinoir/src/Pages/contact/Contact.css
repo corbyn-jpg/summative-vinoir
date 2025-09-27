@@ -135,7 +135,7 @@
   font-weight: 600;
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #d4af37; /* Gold accent */
+  color: #2d5a3d; /* Green accent */
   letter-spacing: 0.1em;
 }
 
@@ -156,7 +156,7 @@
 }
 .contact-method p a:hover,
 .contact-method p a:focus {
-  color: #d4af37; /* Gold on hover */
+  color: #2d5a3d; /* Green on hover */
   outline: none;
 }
 
