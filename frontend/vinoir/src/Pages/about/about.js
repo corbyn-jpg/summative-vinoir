@@ -103,18 +103,11 @@ const AboutPage = () => {
       {/* Mission Section */}
       <div className="mission-section">
         <div className="mission-content">
-          <h1>Our Essence</h1>
-          <p className="mission-text">
-            Born in the heart of South Africa's wilderness, Vinoir is a luxury
-            fragrance brand that captures the untamed beauty of nature in every
-            bottle. Founded in 2023, we specialize in crafting exclusive scents
-            from the purest natural ingredients.
-          </p>
-          <p className="mission-text">
-            We believe in the art of pairing the perfect wine with the right
-            fragrance, creating an experience that tantalizes the senses. Our
-            team is dedicated to sourcing the finest products from around the
-            world.
+          <h2>Our Mission</h2>
+          <p>
+            At Vinoir, we craft exclusive fragrances inspired by the untamed
+            wilderness of Africa. Each scent is a journey into nature's most
+            intimate secrets, designed for those who seek authenticity in luxury.
           </p>
         </div>
       </div>
@@ -133,7 +126,7 @@ const AboutPage = () => {
           >
             Our Achievements
           </Typography>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} justifyContent="center">
             {brandStats.map((stat, index) => (
               <Grid item xs={6} md={3} key={index}>
                 <Card
@@ -255,14 +248,14 @@ const AboutPage = () => {
       </div>
 
       {/* ===== CUSTOMER TESTIMONIALS ===== */}
-      <Box sx={{ py: 8, background: 'linear-gradient(180deg, #f8f5f2 0%, #ffffff 100%)' }}>
+      <Box sx={{ py: 8, background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)' }}>
         <Container maxWidth="xl">
           <Typography 
             variant="h2" 
             sx={{
               textAlign: 'center',
               fontFamily: '"Playfair Display", serif',
-              color: '#2d5a3d',
+              color: 'white',
               mb: 6
             }}
           >

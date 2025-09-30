@@ -72,7 +72,7 @@ const ContactPageLuxury = () => {
 
   return (
     <Box sx={{ 
-      background: 'linear-gradient(180deg, #f8f5f2 0%, #ffffff 100%)',
+      backgroundColor: "#2a4936",
       minHeight: '100vh',
       pt: { xs: 15, sm: 20 }
     }}>
@@ -152,13 +152,10 @@ const ContactPageLuxury = () => {
           <Grid item xs={12} lg={8}>
             <Grow in timeout={1200}>
               <Card
-                elevation={0}
+                elevation={1}
                 sx={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,245,242,0.9) 100%)',
-                  borderRadius: '24px',
-                  border: '1px solid rgba(45, 90, 61, 0.1)',
-                  boxShadow: '0 20px 40px rgba(45, 90, 61, 0.1)',
-                  overflow: 'hidden'
+                  borderRadius: '8px',
+                  border: '1px solid #e0e0e0'
                 }}
               >
                 {/* Form Header */}
@@ -286,7 +283,6 @@ const ContactPageLuxury = () => {
                             <option value="Order Support">Order Support</option>
                             <option value="Press & Media">Press & Media</option>
                             <option value="Partnership Opportunity">Partnership Opportunity</option>
-                            <option value="VIP Services">VIP Services</option>
                             <option value="Other">Other</option>
                           </TextField>
                         </Grid>
@@ -351,140 +347,9 @@ const ContactPageLuxury = () => {
             </Grow>
           </Grid>
 
-          {/* ===== CONTACT INFO & VIP SERVICES ===== */}
+          {/* ===== CONTACT INFO REMOVED ===== */}
           <Grid item xs={12} lg={4}>
-            <Box sx={{ position: 'sticky', top: 100 }}>
-              
-              {/* Contact Information */}
-              <Grow in timeout={1400}>
-                <Card
-                  elevation={0}
-                  sx={{
-                    background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
-                    color: 'white',
-                    borderRadius: '24px',
-                    mb: 4,
-                    overflow: 'hidden'
-                  }}
-                >
-                  <CardContent sx={{ p: 4 }}>
-                    <Typography 
-                      variant="h5" 
-                      sx={{
-                        fontFamily: '"Playfair Display", serif',
-                        mb: 3,
-                        fontWeight: 300
-                      }}
-                    >
-                      Get in Touch
-                    </Typography>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                      <Email sx={{ mr: 2, color: 'rgba(255,255,255,0.8)' }} />
-                      <Box>
-                        <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
-                          Email
-                        </Typography>
-                        <Typography variant="body1">
-                          241040@virtualwindow.co.za
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                      <Phone sx={{ mr: 2, color: 'rgba(255,255,255,0.8)' }} />
-                      <Box>
-                        <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
-                          Phone
-                        </Typography>
-                        <Typography variant="body1">
-                          +27 12 345 6789
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                      <LocationOn sx={{ mr: 2, color: 'rgba(255,255,255,0.8)' }} />
-                      <Box>
-                        <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
-                          Visit Our Atelier
-                        </Typography>
-                        <Typography variant="body1">
-                          Open Window - Centurion<br />
-                          1297 John Vorster<br />
-                          Centurion, Gauteng
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Schedule sx={{ mr: 2, color: 'rgba(255,255,255,0.8)' }} />
-                      <Box>
-                        <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>
-                          Hours
-                        </Typography>
-                        <Typography variant="body1">
-                          Mon-Fri: 9AM-6PM<br />
-                          Sat: 10AM-4PM<br />
-                          Sun: By Appointment
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grow>
-
-              {/* VIP Services */}
-              <Grow in timeout={1600}>
-                <Card
-                  elevation={0}
-                  sx={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,245,242,0.9) 100%)',
-                    borderRadius: '24px',
-                    border: '1px solid rgba(45, 90, 61, 0.1)',
-                    boxShadow: '0 20px 40px rgba(45, 90, 61, 0.1)'
-                  }}
-                >
-                  <CardContent sx={{ p: 4 }}>
-                    <Typography 
-                      variant="h6" 
-                      sx={{
-                        fontFamily: '"Playfair Display", serif',
-                        color: '#2d5a3d',
-                        mb: 2,
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Star sx={{ mr: 1, color: '#6a4c93' }} />
-                      VIP Services
-                    </Typography>
-                    
-                    <Typography variant="body2" sx={{ color: '#666', mb: 2 }}>
-                      Experience luxury beyond the ordinary
-                    </Typography>
-
-                    <Box sx={{ '& > *': { mb: 1.5 } }}>
-                      <Typography variant="body2">
-                        • Personal Fragrance Consultation
-                      </Typography>
-                      <Typography variant="body2">
-                        • Custom Blend Creation
-                      </Typography>
-                      <Typography variant="body2">
-                        • Private Shopping Sessions
-                      </Typography>
-                      <Typography variant="body2">
-                        • Home Delivery Service
-                      </Typography>
-                      <Typography variant="body2">
-                        • Gift Wrapping & Personalization
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grow>
-            </Box>
+            {/* Contact information section removed */}
           </Grid>
         </Grid>
 

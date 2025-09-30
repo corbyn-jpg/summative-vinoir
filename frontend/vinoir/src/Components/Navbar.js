@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
   Stack,
   Drawer,
   Box,
@@ -12,6 +9,7 @@ import {
   Divider,
   Badge,
   InputAdornment,
+  IconButton,
 } from "@mui/material";
 import {
   Search,
@@ -166,7 +164,7 @@ export default function Navbar() {
           >
             My Account
           </Typography>
-          <IconButton 
+          <IconButton
             onClick={closeDrawer} 
             aria-label="Close account drawer"
             sx={{
@@ -840,7 +838,7 @@ export default function Navbar() {
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
 
     return (
-      <Box sx={{ width: { xs: "100vw", sm: 420, md: 450 }, maxWidth: "100vw", p: 0 }} role="presentation">
+      <Box sx={{ width: { xs: "100vw", sm: 420, md: 460 }, maxWidth: "100vw", p: 0, overflowX: "hidden" }} role="presentation">
         {/* Elegant Header */}
         <Box 
           sx={{ 
@@ -870,7 +868,8 @@ export default function Navbar() {
               sx={{
                 fontFamily: '"Playfair Display", serif',
                 fontWeight: 300,
-                letterSpacing: '0.02em'
+                letterSpacing: '0.02em',
+                fontSize: { xs: '1.8rem', sm: '2rem' }
               }}
             >
               Shopping Cart
@@ -906,7 +905,11 @@ export default function Navbar() {
         </Box>
 
         {/* Content Area */}
-        <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+        <Box sx={{ 
+          p: { xs: 2, sm: 3, md: 3 },
+          pr: { xs: 3, sm: 4, md: 4 },
+          overflowX: "hidden"
+        }}>
           {cart.length === 0 ? (
             <Box sx={{ textAlign: 'center' }}>
               <Box
@@ -972,7 +975,7 @@ export default function Navbar() {
             </Box>
           ) : (
             <>
-              <Box sx={{ maxHeight: "60vh", overflowY: "auto", mb: 4 }}>
+              <Box sx={{ maxHeight: "60vh", overflowY: "auto", mb: 4, pr: 1 }}>
                 {cart.map((item) => (
                   <Box
                     key={item._id}
@@ -985,6 +988,8 @@ export default function Navbar() {
                       boxShadow: "0 4px 16px rgba(45, 90, 61, 0.1)",
                       border: '1px solid rgba(45, 90, 61, 0.1)',
                       transition: 'all 0.3s ease',
+                      maxWidth: "100%",
+                      boxSizing: "border-box",
                       '&:hover': {
                         transform: 'translateY(-2px)',
                         boxShadow: "0 8px 24px rgba(45, 90, 61, 0.15)"
@@ -1014,14 +1019,17 @@ export default function Navbar() {
                         }}
                       />
                     </Box>
-                    <Box sx={{ ml: { xs: 1.5, sm: 2 }, flexGrow: 1, minWidth: 0 }}>
+                    <Box sx={{ ml: { xs: 1.5, sm: 2 }, flexGrow: 1, minWidth: 0, overflow: "hidden" }}>
                       <Typography 
                         variant="subtitle1" 
                         sx={{
                           fontFamily: '"Playfair Display", serif',
                           fontWeight: 600,
                           color: '#2d5a3d',
-                          mb: 0.5
+                          mb: 0.5,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap"
                         }}
                       >
                         {item.name}
@@ -1037,7 +1045,7 @@ export default function Navbar() {
                       >
                         R {item.price.toFixed(2)} × {item.quantity}
                       </Typography>
-                      <Stack direction="row" spacing={1} alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: "nowrap" }}>
                         <IconButton
                           size="small"
                           onClick={() => updateCartItem(item._id, item.quantity - 1)}
@@ -1307,26 +1315,38 @@ export default function Navbar() {
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        sx={{
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
           backgroundColor: "#146e3a",
-          boxShadow: "none",
-          zIndex: 1200,
           height: "80px",
+          zIndex: 1200,
+          boxShadow: "none",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        <Toolbar sx={{ justifyContent: "space-between", px: 3 }}>
+        <div style={{ 
+          display: "flex", 
+          justifyContent: "space-between", 
+          alignItems: "center",
+          padding: "0 24px", 
+          width: "100%",
+          height: "100%" 
+        }}>
           <HamburgerMenu />
           {showShrinkingTitle && <ShrinkingTitle />}
           <Stack direction="row" spacing={3} alignItems="center">
-            <IconButton onClick={toggleDrawer("search")} color="inherit" aria-label="Open search drawer">
+            <IconButton onClick={toggleDrawer("search")} sx={{ color: "white" }} aria-label="Open search drawer">
               <Search />
             </IconButton>
-            <IconButton onClick={toggleDrawer("account")} color="inherit" aria-label="Open account drawer">
+            <IconButton onClick={toggleDrawer("account")} sx={{ color: "white" }} aria-label="Open account drawer">
               <PersonOutline />
             </IconButton>
-            <IconButton onClick={toggleDrawer("wishlist")} color="inherit" aria-label="Open wishlist drawer">
+            <IconButton onClick={toggleDrawer("wishlist")} sx={{ color: "white" }} aria-label="Open wishlist drawer">
               <Badge 
                 badgeContent={wishlistCount} 
                 sx={{
@@ -1340,7 +1360,7 @@ export default function Navbar() {
                 <FavoriteBorder />
               </Badge>
             </IconButton>
-            <IconButton onClick={toggleDrawer("cart")} color="inherit" aria-label="Open cart drawer">
+            <IconButton onClick={toggleDrawer("cart")} sx={{ color: "white" }} aria-label="Open cart drawer">
               <Badge 
                 badgeContent={cartCount} 
                 sx={{
@@ -1355,8 +1375,8 @@ export default function Navbar() {
               </Badge>
             </IconButton>
           </Stack>
-        </Toolbar>
-      </AppBar>
+        </div>
+      </div>
 
       {/* Drawers */}
       <Drawer anchor="right" open={drawer === "account"} onClose={closeDrawer}>
@@ -1373,8 +1393,10 @@ export default function Navbar() {
         onClose={closeDrawer}
         sx={{
           "& .MuiDrawer-paper": {
-            width: { xs: "100%", sm: 400 },
+            width: { xs: "100%", sm: 420, md: 460 },
+            maxWidth: "100vw",
             backgroundColor: "#f9f9f9",
+            overflowX: "hidden"
           },
         }}
       >

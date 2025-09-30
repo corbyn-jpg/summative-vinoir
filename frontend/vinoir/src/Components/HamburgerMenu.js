@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -10,8 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 
 export default function DiorHamburgerMenu() {
   const [open, setOpen] = useState(false);
@@ -44,26 +41,35 @@ export default function DiorHamburgerMenu() {
 
   return (
     <>
-      <IconButton
+      <button
         aria-label="Open menu"
         onClick={() => setOpen(true)}
-        sx={{
-          color: "#ffffffff ",
-          fontSize: 32,
-          p: 1.2,
-          bgcolor: "transparent",
+        style={{
+          color: "#ffffffff",
+          fontSize: "32px",
+          padding: "12px",
+          backgroundColor: "transparent",
           borderRadius: "50%",
-          border: "2px solid #146e3a ",
+          border: "2px solid #146e3a",
+          cursor: "pointer",
           transition: "background 0.3s, color 0.3s",
-          "&:hover": {
-            color: "#fff",
-            backgroundColor: "#146e3a ",
-          },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "56px",
+          height: "56px",
         }}
-        size="large"
+        onMouseEnter={(e) => {
+          e.target.style.color = "#fff";
+          e.target.style.backgroundColor = "#146e3a";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.color = "#ffffffff";
+          e.target.style.backgroundColor = "transparent";
+        }}
       >
-        <MenuIcon fontSize="inherit" />
-      </IconButton>
+        <span style={{ fontSize: "inherit" }}>☰</span>
+      </button>
 
       <Drawer
         anchor="left"
@@ -83,22 +89,36 @@ export default function DiorHamburgerMenu() {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "flex-end", p: 2, pb: 0 }}>
-          <IconButton
+          <button
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            sx={{
-              color: "#146e3a ",
+            style={{
+              color: "#146e3a",
+              backgroundColor: "transparent",
+              border: "none",
               borderRadius: "50%",
+              cursor: "pointer",
               transition: "transform 0.3s, background 0.3s",
-              "&:hover": {
-                bgcolor: "#146e3a ",
-                color: "#161616",
-                transform: "scale(1.1)",
-              },
+              padding: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "40px",
+              height: "40px",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#146e3a";
+              e.target.style.color = "#161616";
+              e.target.style.transform = "scale(1.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "transparent";
+              e.target.style.color = "#146e3a";
+              e.target.style.transform = "scale(1)";
             }}
           >
-            <CloseIcon />
-          </IconButton>
+            <span style={{ fontSize: "20px" }}>✕</span>
+          </button>
         </Box>
         <BrandHeader />
         <Divider
