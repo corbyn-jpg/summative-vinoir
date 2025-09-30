@@ -526,108 +526,304 @@ export default function Navbar() {
     loginSuccess,
   ]);
 
-  // ───── Wishlist Drawer ─────
+  // ───── Luxury Wishlist Drawer (DIOR-inspired) ─────
   const renderWishlistDrawer = useCallback(() => (
-    <Box sx={{ width: 350, p: 3 }} role="presentation">
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5" fontWeight="bold">
-          Your Wishlist ({wishlistCount})
+    <Box sx={{ width: 450, p: 0 }} role="presentation">
+      {/* Elegant Header */}
+      <Box 
+        sx={{ 
+          background: 'linear-gradient(135deg, #6a4c93 0%, #2d5a3d 100%)',
+          p: 4,
+          color: 'white',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Background Pattern */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+            pointerEvents: 'none'
+          }}
+        />
+        
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} position="relative">
+          <Typography 
+            variant="h4" 
+            sx={{
+              fontFamily: '"Playfair Display", serif',
+              fontWeight: 300,
+              letterSpacing: '0.02em'
+            }}
+          >
+            My Wishlist
+          </Typography>
+          <IconButton 
+            onClick={closeDrawer} 
+            aria-label="Close wishlist drawer"
+            sx={{
+              color: 'white',
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,0.2)',
+                transform: 'rotate(90deg)'
+              },
+              transition: 'all 0.3s ease'
+            }}
+          >
+            <Close />
+          </IconButton>
+        </Box>
+        
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            opacity: 0.9,
+            fontFamily: '"Cormorant Garamond", serif',
+            fontSize: '1.1rem',
+            fontStyle: 'italic'
+          }}
+        >
+          {wishlistCount} {wishlistCount === 1 ? 'fragrance' : 'fragrances'} treasured
         </Typography>
-        <IconButton onClick={closeDrawer} aria-label="Close wishlist drawer">
-          <Close />
-        </IconButton>
       </Box>
 
-      {!isAuthenticated ? (
-        <>
-          <Typography variant="body1" mb={3}>
-            Sign in to view and manage your wishlist
-          </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={toggleDrawer("account")}
-            sx={{
-              backgroundColor: "#146e3a",
-              "&:hover": { backgroundColor: "#0d5a2c" },
-            }}
-          >
-            Sign In
-          </Button>
-        </>
-      ) : wishlist.length === 0 ? (
-        <>
-          <Typography variant="body1" mb={3}>
-            Your wishlist is empty
-          </Typography>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={closeDrawer}
-            sx={{
-              color: "#146e3a",
-              borderColor: "#146e3a",
-              "&:hover": {
-                backgroundColor: "#146e3a",
-                color: "white",
-              },
-            }}
-          >
-            Continue Shopping
-          </Button>
-        </>
-      ) : (
-        <Box sx={{ maxHeight: "60vh", overflowY: "auto" }}>
-          {wishlist.map((item) => (
+      {/* Content Area */}
+      <Box sx={{ p: 4 }}>
+        {!isAuthenticated ? (
+          <Box sx={{ textAlign: 'center' }}>
             <Box
-              key={item._id}
               sx={{
-                display: "flex",
-                mb: 2,
-                p: 2,
-                backgroundColor: "white",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                mb: 4,
+                p: 3,
+                background: 'linear-gradient(135deg, rgba(106, 76, 147, 0.05) 0%, rgba(45, 90, 61, 0.05) 100%)',
+                borderRadius: '16px',
+                border: '1px solid rgba(106, 76, 147, 0.1)'
               }}
             >
-              <img
-                src={item.images?.[0]?.url || "/images/fallback.jpg"}
-                alt={item.name}
-                style={{
+              <Box
+                sx={{
                   width: 80,
                   height: 80,
-                  objectFit: "cover",
-                  borderRadius: "4px",
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #6a4c93 0%, #2d5a3d 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  fontSize: '2rem'
                 }}
-              />
-              <Box sx={{ ml: 2, flexGrow: 1 }}>
-                <Typography variant="subtitle1">{item.name}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  R {item.price.toFixed(2)}
-                </Typography>
+              >
+                💜
               </Box>
-              <Stack direction="column" spacing={1}>
-                <IconButton
-                  onClick={() => addToCart({ ...item, quantity: 1 })}
-                  size="small"
-                  color="primary"
-                  aria-label={`Add ${item.name} to cart`}
-                >
-                  <ShoppingBagOutlined fontSize="small" />
-                </IconButton>
-                <IconButton
-                  onClick={() => removeFromWishlist(item._id)}
-                  size="small"
-                  color="error"
-                  aria-label={`Remove ${item.name} from wishlist`}
-                >
-                  <Close fontSize="small" />
-                </IconButton>
-              </Stack>
+              <Typography 
+                variant="h6" 
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  color: '#6a4c93',
+                  mb: 1
+                }}
+              >
+                Your Luxury Collection Awaits
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#666', fontStyle: 'italic' }}>
+                Sign in to save and manage your favorite fragrances
+              </Typography>
             </Box>
-          ))}
-        </Box>
-      )}
+            
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeDrawer();
+                setDrawer("account");
+              }}
+              sx={{
+                py: 1.5,
+                background: 'linear-gradient(135deg, #6a4c93 0%, #2d5a3d 100%)',
+                borderRadius: '12px',
+                fontWeight: 600,
+                textTransform: 'none',
+                letterSpacing: '0.5px',
+                "&:hover": { 
+                  background: 'linear-gradient(135deg, #4a3269 0%, #1e3e29 100%)',
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 12px rgba(106, 76, 147, 0.3)'
+                },
+                transition: 'all 0.3s ease'
+              }}
+            >
+              Enter Your Account ✨
+            </Button>
+          </Box>
+        ) : wishlist.length === 0 ? (
+          <Box sx={{ textAlign: 'center' }}>
+            <Box
+              sx={{
+                mb: 4,
+                p: 4,
+                background: 'linear-gradient(135deg, rgba(106, 76, 147, 0.05) 0%, rgba(45, 90, 61, 0.05) 100%)',
+                borderRadius: '16px',
+                border: '1px solid rgba(106, 76, 147, 0.1)'
+              }}
+            >
+              <FavoriteBorder sx={{ fontSize: 64, color: '#6a4c93', mb: 2, opacity: 0.7 }} />
+              <Typography 
+                variant="h6" 
+                sx={{
+                  fontFamily: '"Playfair Display", serif',
+                  color: '#6a4c93',
+                  mb: 1
+                }}
+              >
+                Your Wishlist is Empty
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#666', fontStyle: 'italic' }}>
+                Discover exquisite fragrances to treasure
+              </Typography>
+            </Box>
+            
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={closeDrawer}
+              sx={{
+                py: 1.5,
+                borderColor: '#6a4c93',
+                color: '#6a4c93',
+                borderRadius: '12px',
+                fontWeight: 600,
+                textTransform: 'none',
+                "&:hover": {
+                  backgroundColor: 'rgba(106, 76, 147, 0.05)',
+                  borderColor: '#6a4c93',
+                  transform: 'translateY(-1px)'
+                },
+                transition: 'all 0.3s ease'
+              }}
+            >
+              Explore Collection
+            </Button>
+          </Box>
+        ) : (
+          <Box sx={{ maxHeight: "60vh", overflowY: "auto" }}>
+            {wishlist.map((item) => (
+              <Box
+                key={item._id}
+                sx={{
+                  display: "flex",
+                  mb: 3,
+                  p: 3,
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,245,242,0.9) 100%)',
+                  borderRadius: "16px",
+                  boxShadow: "0 4px 16px rgba(106, 76, 147, 0.1)",
+                  border: '1px solid rgba(106, 76, 147, 0.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: "0 8px 24px rgba(106, 76, 147, 0.15)"
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    backgroundColor: '#f8f5f2',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <img
+                    src={item.images?.[0]?.url || "/images/fallback.jpg"}
+                    alt={item.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>
+                <Box sx={{ ml: 2, flexGrow: 1 }}>
+                  <Typography 
+                    variant="subtitle1" 
+                    sx={{
+                      fontFamily: '"Playfair Display", serif',
+                      fontWeight: 600,
+                      color: '#2d5a3d',
+                      mb: 0.5
+                    }}
+                  >
+                    {item.name}
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    sx={{
+                      color: '#6a4c93',
+                      fontWeight: 600,
+                      fontSize: '1rem'
+                    }}
+                  >
+                    R {item.price.toFixed(2)}
+                  </Typography>
+                </Box>
+                <Stack direction="column" spacing={1}>
+                  <IconButton
+                    onClick={() => addToCart({ ...item, quantity: 1 })}
+                    size="small"
+                    sx={{
+                      backgroundColor: 'rgba(45, 90, 61, 0.1)',
+                      color: '#2d5a3d',
+                      '&:hover': {
+                        backgroundColor: '#2d5a3d',
+                        color: 'white',
+                        transform: 'scale(1.1)'
+                      },
+                      transition: 'all 0.3s ease'
+                    }}
+                    aria-label={`Add ${item.name} to cart`}
+                  >
+                    <ShoppingBagOutlined fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      try {
+                        await removeFromWishlist(item._id);
+                      } catch (error) {
+                        console.error('Failed to remove from wishlist:', error);
+                      }
+                    }}
+                    size="small"
+                    sx={{
+                      backgroundColor: 'rgba(106, 76, 147, 0.1)',
+                      color: '#6a4c93',
+                      '&:hover': {
+                        backgroundColor: '#6a4c93',
+                        color: 'white',
+                        transform: 'scale(1.1)'
+                      },
+                      transition: 'all 0.3s ease'
+                    }}
+                    aria-label={`Remove ${item.name} from wishlist`}
+                  >
+                    <Close fontSize="small" />
+                  </IconButton>
+                </Stack>
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
     </Box>
   ), [
     wishlistCount,
@@ -639,135 +835,343 @@ export default function Navbar() {
     addToCart,
   ]);
 
-  // ───── Cart Drawer ─────
+  // ───── Luxury Cart Drawer (DIOR-inspired) ─────
   const renderCartDrawer = useCallback(() => {
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
 
     return (
-      <Box sx={{ width: { xs: "100%", sm: 400 }, p: 3 }} role="presentation">
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-          <Typography variant="h5" fontWeight="bold">
-            Your Cart ({cartCount})
+      <Box sx={{ width: { xs: "100vw", sm: 420, md: 450 }, maxWidth: "100vw", p: 0 }} role="presentation">
+        {/* Elegant Header */}
+        <Box 
+          sx={{ 
+            background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+            p: { xs: 3, sm: 4 },
+            color: 'white',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          {/* Background Pattern */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+              pointerEvents: 'none'
+            }}
+          />
+          
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} position="relative">
+            <Typography 
+              variant="h4" 
+              sx={{
+                fontFamily: '"Playfair Display", serif',
+                fontWeight: 300,
+                letterSpacing: '0.02em'
+              }}
+            >
+              Shopping Cart
+            </Typography>
+            <IconButton 
+              onClick={closeDrawer} 
+              aria-label="Close cart drawer"
+              sx={{
+                color: 'white',
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  transform: 'rotate(90deg)'
+                },
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <Close />
+            </IconButton>
+          </Box>
+          
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              opacity: 0.9,
+              fontFamily: '"Cormorant Garamond", serif',
+              fontSize: '1.1rem',
+              fontStyle: 'italic'
+            }}
+          >
+            {cartCount} {cartCount === 1 ? 'item' : 'items'} ready for luxury
           </Typography>
-          <IconButton onClick={closeDrawer} aria-label="Close cart drawer">
-            <Close />
-          </IconButton>
         </Box>
 
-        {cart.length === 0 ? (
-          <>
-            <Typography variant="body1" mb={3} textAlign="center">
-              Your cart is empty
-            </Typography>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={closeDrawer}
-              sx={{
-                color: "#146e3a",
-                borderColor: "#146e3a",
-                "&:hover": {
-                  backgroundColor: "#146e3a",
-                  color: "white",
-                },
-              }}
-            >
-              Continue Shopping
-            </Button>
-          </>
-        ) : (
-          <>
-            <Box sx={{ maxHeight: "60vh", overflowY: "auto", mb: 3 }}>
-              {cart.map((item) => (
-                <Box
-                  key={item._id}
-                  sx={{
-                    display: "flex",
-                    mb: 2,
-                    p: 2,
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  <img
-                    src={item.images?.[0]?.url || "/images/fallback.jpg"}
-                    alt={item.name}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      objectFit: "cover",
-                      borderRadius: "4px",
-                    }}
-                  />
-                  <Box sx={{ ml: 2, flexGrow: 1 }}>
-                    <Typography variant="subtitle1">{item.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      R {item.price.toFixed(2)} × {item.quantity}
-                    </Typography>
-                    <Stack direction="row" spacing={1} mt={1}>
-                      <IconButton
-                        size="small"
-                        onClick={() => updateCartItem(item._id, item.quantity - 1)}
-                        disabled={item.quantity <= 1}
-                        aria-label={`Decrease quantity of ${item.name}`}
-                      >
-                        <RemoveIcon fontSize="small" />
-                      </IconButton>
-                      <Typography variant="body1">{item.quantity}</Typography>
-                      <IconButton
-                        size="small"
-                        onClick={() => updateCartItem(item._id, item.quantity + 1)}
-                        aria-label={`Increase quantity of ${item.name}`}
-                      >
-                        <AddIcon fontSize="small" />
-                      </IconButton>
-                    </Stack>
-                  </Box>
-                  <IconButton
-                    onClick={() => removeFromCart(item._id)}
-                    color="error"
-                    sx={{ alignSelf: "flex-start" }}
-                    aria-label={`Remove ${item.name} from cart`}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              ))}
-            </Box>
-
-            <Box
-              sx={{
-                backgroundColor: "white",
-                p: 3,
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              }}
-            >
-              <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography variant="subtitle1">Subtotal:</Typography>
-                <Typography variant="subtitle1" fontWeight="bold">
-                  R {subtotal}
-                </Typography>
-              </Box>
-
-              <Button
-                fullWidth
-                variant="contained"
-                component={Link}
-                to="/checkout"
-                onClick={closeDrawer}
-                endIcon={<ArrowForward />}
+        {/* Content Area */}
+        <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+          {cart.length === 0 ? (
+            <Box sx={{ textAlign: 'center' }}>
+              <Box
                 sx={{
-                  backgroundColor: "#146e3a",
-                  "&:hover": { backgroundColor: "#0d5a2c" },
+                  mb: 4,
+                  p: 4,
+                  background: 'linear-gradient(135deg, rgba(45, 90, 61, 0.05) 0%, rgba(106, 76, 147, 0.05) 100%)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(45, 90, 61, 0.1)'
                 }}
               >
-                Proceed to Checkout
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 16px',
+                    fontSize: '2rem'
+                  }}
+                >
+                  🛍️
+                </Box>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    fontFamily: '"Playfair Display", serif',
+                    color: '#2d5a3d',
+                    mb: 1
+                  }}
+                >
+                  Your Cart is Empty
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#666', fontStyle: 'italic' }}>
+                  Discover luxury fragrances to begin your collection
+                </Typography>
+              </Box>
+              
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={closeDrawer}
+                sx={{
+                  py: 1.5,
+                  borderColor: '#2d5a3d',
+                  color: '#2d5a3d',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  "&:hover": {
+                    backgroundColor: 'rgba(45, 90, 61, 0.05)',
+                    borderColor: '#2d5a3d',
+                    transform: 'translateY(-1px)'
+                  },
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Continue Shopping
               </Button>
             </Box>
-          </>
-        )}
+          ) : (
+            <>
+              <Box sx={{ maxHeight: "60vh", overflowY: "auto", mb: 4 }}>
+                {cart.map((item) => (
+                  <Box
+                    key={item._id}
+                    sx={{
+                      display: "flex",
+                      mb: { xs: 2, sm: 3 },
+                      p: { xs: 2, sm: 3 },
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,245,242,0.9) 100%)',
+                      borderRadius: "16px",
+                      boxShadow: "0 4px 16px rgba(45, 90, 61, 0.1)",
+                      border: '1px solid rgba(45, 90, 61, 0.1)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: "0 8px 24px rgba(45, 90, 61, 0.15)"
+                      }
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: { xs: 60, sm: 80 },
+                        height: { xs: 60, sm: 80 },
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        backgroundColor: '#f8f5f2',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}
+                    >
+                      <img
+                        src={item.images?.[0]?.url || "/images/fallback.jpg"}
+                        alt={item.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: "cover",
+                        }}
+                      />
+                    </Box>
+                    <Box sx={{ ml: { xs: 1.5, sm: 2 }, flexGrow: 1, minWidth: 0 }}>
+                      <Typography 
+                        variant="subtitle1" 
+                        sx={{
+                          fontFamily: '"Playfair Display", serif',
+                          fontWeight: 600,
+                          color: '#2d5a3d',
+                          mb: 0.5
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        sx={{
+                          color: '#6a4c93',
+                          fontWeight: 600,
+                          fontSize: '0.95rem',
+                          mb: 1
+                        }}
+                      >
+                        R {item.price.toFixed(2)} × {item.quantity}
+                      </Typography>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <IconButton
+                          size="small"
+                          onClick={() => updateCartItem(item._id, item.quantity - 1)}
+                          disabled={item.quantity <= 1}
+                          sx={{
+                            backgroundColor: 'rgba(45, 90, 61, 0.1)',
+                            color: '#2d5a3d',
+                            width: 28,
+                            height: 28,
+                            '&:hover': {
+                              backgroundColor: '#2d5a3d',
+                              color: 'white'
+                            },
+                            '&:disabled': {
+                              backgroundColor: 'rgba(0,0,0,0.05)',
+                              color: 'rgba(0,0,0,0.3)'
+                            }
+                          }}
+                          aria-label={`Decrease quantity of ${item.name}`}
+                        >
+                          <RemoveIcon fontSize="small" />
+                        </IconButton>
+                        <Typography 
+                          variant="body1" 
+                          sx={{ 
+                            minWidth: 24, 
+                            textAlign: 'center', 
+                            fontWeight: 600,
+                            color: '#2d5a3d'
+                          }}
+                        >
+                          {item.quantity}
+                        </Typography>
+                        <IconButton
+                          size="small"
+                          onClick={() => updateCartItem(item._id, item.quantity + 1)}
+                          sx={{
+                            backgroundColor: 'rgba(45, 90, 61, 0.1)',
+                            color: '#2d5a3d',
+                            width: 28,
+                            height: 28,
+                            '&:hover': {
+                              backgroundColor: '#2d5a3d',
+                              color: 'white'
+                            }
+                          }}
+                          aria-label={`Increase quantity of ${item.name}`}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                      </Stack>
+                    </Box>
+                    <IconButton
+                      onClick={() => removeFromCart(item._id)}
+                      sx={{
+                        alignSelf: "flex-start",
+                        backgroundColor: 'rgba(106, 76, 147, 0.1)',
+                        color: '#6a4c93',
+                        '&:hover': {
+                          backgroundColor: '#6a4c93',
+                          color: 'white',
+                          transform: 'scale(1.1)'
+                        },
+                        transition: 'all 0.3s ease'
+                      }}
+                      aria-label={`Remove ${item.name} from cart`}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                ))}
+              </Box>
+
+              {/* Luxury Checkout Section */}
+              <Box
+                sx={{
+                  background: 'linear-gradient(135deg, rgba(45, 90, 61, 0.05) 0%, rgba(106, 76, 147, 0.05) 100%)',
+                  p: { xs: 3, sm: 4 },
+                  borderRadius: "16px",
+                  border: '1px solid rgba(45, 90, 61, 0.1)',
+                  boxShadow: "0 4px 16px rgba(45, 90, 61, 0.1)",
+                }}
+              >
+                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+                  <Typography 
+                    variant="h6" 
+                    sx={{
+                      fontFamily: '"Playfair Display", serif',
+                      color: '#2d5a3d'
+                    }}
+                  >
+                    Subtotal:
+                  </Typography>
+                  <Typography 
+                    variant="h6" 
+                    sx={{
+                      fontWeight: 700,
+                      color: '#6a4c93',
+                      fontFamily: '"Playfair Display", serif'
+                    }}
+                  >
+                    R {subtotal}
+                  </Typography>
+                </Box>
+
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={Link}
+                  to="/checkout"
+                  onClick={closeDrawer}
+                  endIcon={<ArrowForward />}
+                  sx={{
+                    py: 1.5,
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    borderRadius: '12px',
+                    textTransform: 'none',
+                    letterSpacing: '0.5px',
+                    background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+                    "&:hover": { 
+                      background: 'linear-gradient(135deg, #1e3e29 0%, #4a3269 100%)',
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 4px 12px rgba(45, 90, 61, 0.3)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  Proceed to Checkout ✨
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
       </Box>
     );
   }, [cart, cartCount, closeDrawer, updateCartItem, removeFromCart]);
@@ -923,12 +1327,30 @@ export default function Navbar() {
               <PersonOutline />
             </IconButton>
             <IconButton onClick={toggleDrawer("wishlist")} color="inherit" aria-label="Open wishlist drawer">
-              <Badge badgeContent={wishlistCount} color="error">
+              <Badge 
+                badgeContent={wishlistCount} 
+                sx={{
+                  '& .MuiBadge-badge': {
+                    backgroundColor: '#6a4c93',
+                    color: 'white',
+                    fontWeight: 600
+                  }
+                }}
+              >
                 <FavoriteBorder />
               </Badge>
             </IconButton>
             <IconButton onClick={toggleDrawer("cart")} color="inherit" aria-label="Open cart drawer">
-              <Badge badgeContent={cartCount} color="error">
+              <Badge 
+                badgeContent={cartCount} 
+                sx={{
+                  '& .MuiBadge-badge': {
+                    backgroundColor: '#6a4c93',
+                    color: 'white',
+                    fontWeight: 600
+                  }
+                }}
+              >
                 <ShoppingBagOutlined />
               </Badge>
             </IconButton>

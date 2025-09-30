@@ -19,7 +19,7 @@ export default function FragranceDetail() {
   const [mainImage, setMainImage] = useState(null);
   const { addToCart } = useCart();
   const { toggleWishlist, wishlist } = useWishlist();
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     let mounted = true;
@@ -40,13 +40,17 @@ export default function FragranceDetail() {
     };
   }, [id]);
 
-  const handleWishlistClick = useCallback(() => {
-    if (!isLoggedIn) {
+  const handleWishlistClick = useCallback(async () => {
+    if (!isAuthenticated) {
       navigate("/login?redirect=" + encodeURIComponent(window.location.pathname));
       return;
     }
-    toggleWishlist(product);
-  }, [isLoggedIn, navigate, toggleWishlist, product]);
+    try {
+      await toggleWishlist(product);
+    } catch (error) {
+      console.error('Wishlist toggle failed:', error);
+    }
+  }, [isAuthenticated, navigate, toggleWishlist, product]);
 
   if (loading) return <div className="pd-loading">Loading…</div>;
   if (!product) return <div className="pd-notfound">Product not found</div>;
@@ -119,7 +123,12 @@ export default function FragranceDetail() {
             <IconButton
               onClick={handleWishlistClick}
               className="wishlist-toggle"
-              color={inWishlist ? "error" : "default"}
+              sx={{
+                color: inWishlist ? '#6a4c93' : 'inherit',
+                '&:hover': {
+                  backgroundColor: inWishlist ? 'rgba(106, 76, 147, 0.1)' : 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
               aria-pressed={inWishlist}
               aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
             >

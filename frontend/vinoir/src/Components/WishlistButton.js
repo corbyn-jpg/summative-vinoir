@@ -19,17 +19,22 @@ const WishlistButton = ({ product, size = "medium" }) => {
   );
 
   const handleClick = useCallback(
-    (e) => {
+    async (e) => {
       e.stopPropagation();
       e.preventDefault();
       if (!isAuthenticated) {
         navigate("/login?redirect=" + encodeURIComponent(window.location.pathname));
         return;
       }
-      if (isInWishlist) {
-        removeFromWishlist(prodId);
-      } else {
-        addToWishlist(product);
+      
+      try {
+        if (isInWishlist) {
+          await removeFromWishlist(prodId);
+        } else {
+          await addToWishlist(product);
+        }
+      } catch (error) {
+        console.error('Wishlist action failed:', error);
       }
     },
     [isAuthenticated, navigate, isInWishlist, removeFromWishlist, addToWishlist, prodId, product]
@@ -43,7 +48,12 @@ const WishlistButton = ({ product, size = "medium" }) => {
         className={`wishlist-toggle ${isInWishlist ? "active" : ""}`}
         aria-pressed={isInWishlist}
         aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-        color="inherit"
+        sx={{
+          color: isInWishlist ? '#6a4c93' : 'inherit',
+          '&:hover': {
+            backgroundColor: isInWishlist ? 'rgba(106, 76, 147, 0.1)' : 'rgba(0, 0, 0, 0.04)'
+          }
+        }}
       >
         {isInWishlist ? <Favorite fontSize={size === "small" ? "small" : "medium"} /> : <FavoriteBorder fontSize={size === "small" ? "small" : "medium"} />}
       </IconButton>

@@ -25,31 +25,35 @@ const ProductCard = ({ product = {} }) => {
     removeFromWishlist,
     loading: wishlistLoading
   } = useWishlist();
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const prodId = product.id || product._id;
   const isInWishlist = Array.isArray(wishlist) && wishlist.some(item => (item._id || item.id) === prodId);
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart({ ...product, quantity: 1 });
+    await addToCart({ ...product, quantity: 1 });
   };
 
-  const handleWishlistToggle = (e) => {
+  const handleWishlistToggle = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       navigate('/login?redirect=' + encodeURIComponent(window.location.pathname));
       return;
     }
 
-    if (isInWishlist) {
-      removeFromWishlist(prodId);
-    } else {
-      addToWishlist(product);
+    try {
+      if (isInWishlist) {
+        await removeFromWishlist(prodId);
+      } else {
+        await addToWishlist(product);
+      }
+    } catch (error) {
+      console.error('Wishlist toggle failed:', error);
     }
   };
 
@@ -87,8 +91,11 @@ const ProductCard = ({ product = {} }) => {
           <IconButton
             onClick={handleWishlistToggle}
             disabled={wishlistLoading}
-            sx={{ backgroundColor: "rgba(255,255,255,0.8)", "&:hover": { backgroundColor: "rgba(255,255,255,0.95)" } }}
-            color={isInWishlist ? "error" : "default"}
+            sx={{ 
+              backgroundColor: "rgba(255,255,255,0.8)", 
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.95)" },
+              color: isInWishlist ? '#6a4c93' : 'inherit'
+            }}
             aria-pressed={isInWishlist}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >

@@ -19,19 +19,16 @@ const PromoSection = ({ products = [] }) => {
   const featuredProducts = useMemo(() => {
     if (products.length > 0) return products.filter((p) => p.featured).slice(0, 5);
     return [
-      { _id: '1', name: 'Élégance Noir', description: 'A mysterious oriental blend with notes of vanilla and amber', price: 120, images: [{ url: '/images/promo1.jpg' }], featured: true },
-      { _id: '2', name: 'Lumière d\'Or', description: 'Golden citrus top notes with a warm woody base', price: 95, images: [{ url: '/images/promo2.jpg' }], featured: true },
-      { _id: '3', name: 'Velvet Rose', description: 'Luxurious floral bouquet with hints of peony and musk', price: 110, images: [{ url: '/images/promo3.jpg' }], featured: true },
-      { _id: '4', name: 'Oud Royal', description: 'Regal woody intensity with smoky undertones', price: 150, images: [{ url: '/images/promo4.jpg' }], featured: true },
-      { _id: '5', name: 'Jardin Secret', description: 'Fresh green accords with citrus and herbal notes', price: 85, images: [{ url: '/images/promo5.jpg' }], featured: true },
+      { _id: '1', name: 'Élégance Noir', description: 'A mysterious oriental blend with notes of vanilla and amber', price: 120, images: [{ url: '/images/dior1.jpg' }], featured: true },
+      { _id: '2', name: 'Lumière d\'Or', description: 'Golden citrus top notes with a warm woody base', price: 95, images: [{ url: '/images/dior2.jpg' }], featured: true },
+      { _id: '3', name: 'Velvet Rose', description: 'Luxurious floral bouquet with hints of peony and musk', price: 110, images: [{ url: '/images/dior4.jpeg' }], featured: true },
+      { _id: '4', name: 'Oud Royal', description: 'Regal woody intensity with smoky undertones', price: 150, images: [{ url: '/images/dior6.jpeg' }], featured: true },
+      { _id: '5', name: 'Jardin Secret', description: 'Fresh green accords with citrus and herbal notes', price: 85, images: [{ url: '/images/dior10.jpg' }], featured: true },
     ];
   }, [products]);
 
   return (
     <Box className="promo-section">
-      <Typography variant="h2" className="promo-title">FEATURED COLLECTION</Typography>
-      <Typography variant="subtitle1" className="promo-subtitle">Discover our most coveted fragrances</Typography>
-
       <Box className="swiper-container">
         <Swiper
           effect="coverflow"
@@ -52,10 +49,10 @@ const PromoSection = ({ products = [] }) => {
                 <Box className="promo-card">
                   <Box className="promo-image-container">
                     <img
-                      src={product.images?.[0]?.url || '/images/fallback.jpg'}
+                      src={product.images?.[0]?.url || '/images/dior1.jpg'}
                       alt={product.name || 'Featured fragrance'}
                       className="promo-image"
-                      onError={(e) => { e.target.onerror = null; e.target.src = '/images/fallback.jpg'; }}
+                      onError={(e) => { e.target.onerror = null; e.target.src = '/images/dior1.jpg'; }}
                       loading="lazy"
                     />
                     <Box className="promo-overlay" aria-hidden="true">

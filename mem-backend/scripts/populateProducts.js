@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
-require('dotenv').config({ path: '../.env' });
-console.log('MONGO_URI:', process.env.MONGO_URI);
+require('dotenv').config();
+
+console.log('Loading environment variables...');
+console.log('MONGO_URI defined:', !!process.env.MONGO_URI);
 
 const products = [
   {
@@ -18,7 +20,7 @@ const products = [
     stock: 15,
     featured: true,
     images: [{
-      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750285070/dior1_s2qxso.jpg',
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759227227/dior1_yfz6h6.jpg',
       altText: 'Noir Essence bottle'
     }]
   },
@@ -254,6 +256,114 @@ const products = [
     images: [{
       url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1750456775/dior17_srhldq.jpg',
       altText: 'Fleur Blanche bottle'
+    }]
+  },
+  {
+    name: 'Midnight Orchid',
+    price: 1650,
+    description: 'A mysterious blend of dark florals and exotic woods for evening elegance.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Black Currant', 'Bergamot'],
+      middleNotes: ['Black Orchid', 'Jasmine Sambac'],
+      baseNotes: ['Leather', 'Dark Amber']
+    },
+    size: '100ml',
+    stock: 12,
+    featured: false,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759227502/Firefly_An_empty_pefume_bottle_with_a_mysterious_blend_of_dark_florals_and_exotic_woods_for_evening_vonvw0.jpg',
+      altText: 'Midnight Orchid bottle'
+    }]
+  },
+  {
+    name: 'Solar Flare',
+    price: 1450,
+    description: 'Radiant citrus and solar notes that capture the energy of sunlight.',
+    category: 'Eau de Toilette',
+    fragranceNotes: {
+      topNotes: ['Blood Orange', 'Ginger'],
+      middleNotes: ['Neroli', 'Orange Blossom'],
+      baseNotes: ['Amberwood', 'White Musk']
+    },
+    size: '100ml',
+    stock: 18,
+    featured: true,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759227805/Firefly_An_empty_pefume_bottle_with_a_Radiant_citrus_and_solar_notes_that_capture_the_energy_of_sunl_y3wua9.jpg',
+      altText: 'Solar Flare bottle'
+    }]
+  },
+  {
+    name: 'Tobacco Vanille',
+    price: 2200,
+    description: 'Rich tobacco leaf with creamy vanilla and honeyed sweetness.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Tobacco Leaf', 'Spices'],
+      middleNotes: ['Tonka Bean', 'Vanilla'],
+      baseNotes: ['Cocoa', 'Dried Fruits']
+    },
+    size: '100ml',
+    stock: 8,
+    featured: false,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759227940/Firefly_An_empty_perfume_bottle_with_a_Rich_tobacco_leaf_with_creamy_vanilla_and_honeyed_sweetness._ndhhjn.jpg',
+      altText: 'Tobacco Vanille bottle'
+    }]
+  },
+  {
+    name: 'Ocean Breeze',
+    price: 1250,
+    description: 'Fresh aquatic notes with marine accords and crisp sea salt.',
+    category: 'Eau de Toilette',
+    fragranceNotes: {
+      topNotes: ['Sea Salt', 'Calone'],
+      middleNotes: ['Water Lily', 'Marine Notes'],
+      baseNotes: ['Driftwood', 'Musk']
+    },
+    size: '100ml',
+    stock: 22,
+    featured: false,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759228051/Firefly_An_empty_perfume_bottle_with_a_Fresh_aquatic_notes_with_marine_accords_and_crisp_sea_salt._3_qum436.jpg',
+      altText: 'Ocean Breeze bottle'
+    }]
+  },
+  {
+    name: 'Royal Oud',
+    price: 2400,
+    description: 'Luxurious oud wood with rose and saffron for a regal presence.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Oud', 'Saffron'],
+      middleNotes: ['Rose', 'Cardamom'],
+      baseNotes: ['Sandalwood', 'Leather']
+    },
+    size: '100ml',
+    stock: 6,
+    featured: true,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759228238/Firefly_An_empty_perfume_bottle_with_a_Luxurious_oud_wood_with_rose_and_saffron_for_a_regal_presence_w3xjmh.jpg',
+      altText: 'Royal Oud bottle'
+    }]
+  },
+  {
+    name: 'Berry Noir',
+    price: 1550,
+    description: 'Dark berries and blackcurrant with a touch of patchouli mystery.',
+    category: 'Eau de Parfum',
+    fragranceNotes: {
+      topNotes: ['Blackberry', 'Black Currant'],
+      middleNotes: ['Violet', 'Jasmine'],
+      baseNotes: ['Patchouli', 'Amber']
+    },
+    size: '100ml',
+    stock: 14,
+    featured: false,
+    images: [{
+      url: 'https://res.cloudinary.com/dx8wt3el4/image/upload/v1759228331/Firefly_An_empty_perfume_bottle_with_a_Dark_berries_and_blackcurrant_with_a_touch_of_patchouli_myste_kjgqeu.jpg',
+      altText: 'Berry Noir bottle'
     }]
   }
 ];
