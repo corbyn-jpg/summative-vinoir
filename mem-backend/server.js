@@ -32,7 +32,6 @@ async function connectAndStart() {
     app.use('/api/users', require('./routes/userRoutes'));
     app.use('/api/wishlist', require('./routes/wishlistRoutes'));
 
-  // (Static frontend serving removed — not using Heroku / integrated deploy now)
 
     // Health check route
     app.get('/', (req, res) => {
