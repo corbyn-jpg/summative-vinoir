@@ -11,7 +11,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  process.env.FRONTEND_URL, // e.g. https://your-frontend.com
+  'http://localhost:3000'
+].filter(Boolean);
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // --- Ensure JWT_SECRET is present ---
@@ -27,10 +38,21 @@ async function connectAndStart() {
     });
     console.log('✅ MongoDB connected successfully');
 
-    // Routes
+  // Routes (API)
     app.use('/api/products', require('./routes/productRoutes'));
     app.use('/api/users', require('./routes/userRoutes'));
     app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+
+  // In case we later decide to serve the React build from here (Option B)
+  // we could uncomment this block after copying the build folder:
+  // const path = require('path');
+  // if (process.env.SERVE_FRONTEND === 'true') {
+  //   const buildPath = path.join(__dirname, '../frontend/vinoir/build');
+  //   app.use(express.static(buildPath));
+  //   app.get('*', (req, res) => {
+  //     res.sendFile(path.join(buildPath, 'index.html'));
+  //   });
+  // }
 
     // Health check route
     app.get('/', (req, res) => {

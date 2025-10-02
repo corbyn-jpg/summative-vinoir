@@ -34,6 +34,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
+import { API_BASE } from '../../config/api';
 
 function PersonalDataPage() {
   const [userData, setUserData] = useState({
@@ -81,7 +82,7 @@ function PersonalDataPage() {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('vinoir_token');
-      const response = await axios.get('http://localhost:5000/api/users/me', {
+      const response = await axios.get(`${API_BASE}/users/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -113,7 +114,7 @@ function PersonalDataPage() {
 
     try {
       const token = localStorage.getItem('vinoir_token');
-      await axios.put('http://localhost:5000/api/users/profile', userData, {
+      await axios.put(`${API_BASE}/users/profile`, userData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

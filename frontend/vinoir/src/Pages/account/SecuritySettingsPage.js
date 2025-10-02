@@ -33,6 +33,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import EmojiSelector from '../../Components/EmojiSelector';
 import axios from 'axios';
+import { API_BASE } from '../../config/api';
 
 function SecuritySettingsPage() {
   const [emojiPassword, setEmojiPassword] = useState([]);
@@ -85,7 +86,7 @@ function SecuritySettingsPage() {
   const fetchSecurityData = async () => {
     try {
       const token = localStorage.getItem('vinoir_token');
-      const response = await axios.get('http://localhost:5000/api/users/security', {
+      const response = await axios.get(`${API_BASE}/users/security`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -119,7 +120,7 @@ function SecuritySettingsPage() {
 
     try {
       const token = localStorage.getItem('vinoir_token');
-      await axios.patch('http://localhost:5000/api/users/update-password', {
+      await axios.patch(`${API_BASE}/users/update-password`, {
         password: emojiPassword.join('')
       }, {
         headers: { Authorization: `Bearer ${token}` }

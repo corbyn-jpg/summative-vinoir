@@ -1,15 +1,22 @@
-// src/services/api.js
+// Central API configuration for frontend
+// Priority order:
+// 1. Explicit REACT_APP_API_URL env
+// 2. If running on browser with same origin & served path (relative '/api')
+// 3. Fallback to localhost (dev)
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+export const API_BASE = (function() {
+  if (process.env.REACT_APP_API_URL) return process.env.REACT_APP_API_URL.replace(/\/$/, '');
+  if (typeof window !== 'undefined' && window.location && !window.location.hostname.includes('localhost')) {
+    return window.location.origin + '/api';
+  }
+  return 'http://localhost:5000/api';
+})();
 
-// Create an Axios instance with defaults
+// Axios instance
 const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  // You can add timeout, authorization headers, interceptors here if needed
+  baseURL: API_BASE,
+  headers: { 'Content-Type': 'application/json' }
 });
 
 /**
@@ -32,7 +39,7 @@ function extractErrorMessage(error) {
  */
 const getProducts = async (params = {}) => {
   try {
-    const response = await api.get('/products', { params });
+  const response = await api.get('/products', { params });
     return response.data; // Expecting { products: [], page, totalPages, total }
   } catch (error) {
     throw new Error(extractErrorMessage(error));
@@ -47,7 +54,7 @@ const getProducts = async (params = {}) => {
 const getProductById = async (id) => {
   if (!id) throw new Error('Product ID is required');
   try {
-    const response = await api.get(`/products/${id}`);
+  const response = await api.get(`/products/${id}`);
     return response.data; // Expecting product object
   } catch (error) {
     throw new Error(extractErrorMessage(error));

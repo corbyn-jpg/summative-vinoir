@@ -34,6 +34,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
+import { API_BASE } from '../../config/api';
 
 function AccountPage() {
   const [userData, setUserData] = useState(null);
@@ -58,12 +59,12 @@ function AccountPage() {
         }
 
         // Fetch user profile
-        const userResponse = await axios.get("http://localhost:5000/api/users/me", {
+        const userResponse = await axios.get(`${API_BASE}/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         // Fetch recent orders (mock data for now)
-        const ordersResponse = await axios.get("http://localhost:5000/api/orders/recent", {
+        const ordersResponse = await axios.get(`${API_BASE}/orders/recent`, {
           headers: { Authorization: `Bearer ${token}` },
         }).catch(() => ({ data: [] })); // Fallback if orders endpoint doesn't exist
 

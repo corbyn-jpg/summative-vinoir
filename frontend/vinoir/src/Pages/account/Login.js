@@ -1,6 +1,7 @@
 // src/Pages/Login/Login.js
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE } from '../../config/api';
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -47,7 +48,7 @@ const Login = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${API_BASE}/users/login`,
         {
           email: email.trim(),
           password: emojiPassword.join(""),

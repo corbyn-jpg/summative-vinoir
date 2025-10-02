@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE } from '../config/api';
 import { 
   Box, 
   Typography, 
@@ -45,7 +46,7 @@ const HomeLuxury = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products');
+  const response = await fetch(`${API_BASE}/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
 

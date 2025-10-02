@@ -1,6 +1,7 @@
 // src/Pages/CreateUser/CreateUser.js
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE } from '../../config/api';
 import { 
   Box, 
   Typography, 
@@ -68,7 +69,7 @@ const CreateUser = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${API_BASE}/users/register`,
         {
           name: name.trim(),
           email: email.trim(),

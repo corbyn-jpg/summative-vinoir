@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useAuth } from "./AuthContext";
+import { API_BASE } from '../config/api';
 
 const WishlistContext = createContext(undefined);
 
@@ -24,7 +25,7 @@ export function WishlistProvider({ children }) {
 
     try {
       setLoading(true);
-      const response = await fetch('/api/wishlist', {
+  const response = await fetch(`${API_BASE}/wishlist`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -79,7 +80,7 @@ export function WishlistProvider({ children }) {
     setError(null);
 
     try {
-      const response = await fetch('/api/wishlist', {
+  const response = await fetch(`${API_BASE}/wishlist`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -126,7 +127,7 @@ export function WishlistProvider({ children }) {
     setError(null);
 
     try {
-      const response = await fetch(`/api/wishlist/${productId}`, {
+  const response = await fetch(`${API_BASE}/wishlist/${productId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -176,7 +177,7 @@ export function WishlistProvider({ children }) {
     setError(null);
 
     try {
-      const response = await fetch('/api/wishlist', {
+  const response = await fetch(`${API_BASE}/wishlist`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

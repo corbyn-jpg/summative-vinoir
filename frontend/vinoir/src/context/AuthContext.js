@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 
-// Fetch user profile data
+// Fetch user profile data (centralized)
 async function fetchUser(token) {
-  const res = await fetch('http://localhost:5000/api/users/me', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+  const res = await fetch(`${API_BASE}/users/me`, {
+    headers: { Authorization: `Bearer ${token}` }
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch user: ${res.status}`);
