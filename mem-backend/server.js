@@ -10,19 +10,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-const allowedOrigins = [
-  process.env.FRONTEND_URL, // e.g. https://your-frontend.com
-  'http://localhost:3000'
-].filter(Boolean);
-
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true
-}));
+// Middleware (simplified CORS for local dev only)
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 
 // --- Ensure JWT_SECRET is present ---
@@ -43,16 +32,7 @@ async function connectAndStart() {
     app.use('/api/users', require('./routes/userRoutes'));
     app.use('/api/wishlist', require('./routes/wishlistRoutes'));
 
-  // In case we later decide to serve the React build from here (Option B)
-  // we could uncomment this block after copying the build folder:
-  // const path = require('path');
-  // if (process.env.SERVE_FRONTEND === 'true') {
-  //   const buildPath = path.join(__dirname, '../frontend/vinoir/build');
-  //   app.use(express.static(buildPath));
-  //   app.get('*', (req, res) => {
-  //     res.sendFile(path.join(buildPath, 'index.html'));
-  //   });
-  // }
+  // (Static frontend serving removed — not using Heroku / integrated deploy now)
 
     // Health check route
     app.get('/', (req, res) => {
