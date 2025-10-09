@@ -3,17 +3,17 @@ import ProductCard from "./ProductCard";
 import { Box, Typography } from "@mui/material";
 
 function ShopSection({ products = [] }) {
-  const displayProducts = products.slice(0, 4); 
-  
+  const displayProducts = Array.isArray(products) ? products.slice(0, 4) : [];
+
   return (
-    <Box sx={{ 
-      maxWidth: '1600px', 
-      mx: 'auto', 
+    <Box sx={{
+      maxWidth: '1600px',
+      mx: 'auto',
       px: 2,
-      py: 6 
+      py: 6
     }}>
-      <Typography variant="h2" sx={{ 
-        textAlign: 'center', 
+      <Typography variant="h2" sx={{
+        textAlign: 'center',
         mb: 4,
         fontSize: '2rem',
         fontWeight: 300,
@@ -23,7 +23,7 @@ function ShopSection({ products = [] }) {
         OUR SIGNATURE SCENTS
       </Typography>
       
-      <Box sx={{ 
+      <Box sx={{
         display: 'flex',
         justifyContent: 'center',
         gap: 4,

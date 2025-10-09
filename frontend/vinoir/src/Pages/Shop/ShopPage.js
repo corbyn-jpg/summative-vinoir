@@ -73,7 +73,7 @@ function ShopPage() {
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     setCategory(newCategory);
-    setActiveFilters(newCategory !== 'all' ? 
+    setActiveFilters(newCategory !== 'all' ?
       [...activeFilters.filter(f => f.type !== 'category'), { type: 'category', value: newCategory }] :
       activeFilters.filter(f => f.type !== 'category')
     );
@@ -81,7 +81,7 @@ function ShopPage() {
 
   const handleSortChange = (sortType) => {
     setSortBy(sortType);
-    setActiveFilters(sortType !== 'none' ? 
+    setActiveFilters(sortType !== 'none' ?
       [...activeFilters.filter(f => f.type !== 'sort'), { type: 'sort', value: sortType }] :
       activeFilters.filter(f => f.type !== 'sort')
     );
@@ -135,9 +135,9 @@ function ShopPage() {
 
   if (isLoading) {
     return (
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
         height: '50vh'
       }}>

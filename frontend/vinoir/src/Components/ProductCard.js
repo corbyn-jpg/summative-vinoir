@@ -1,8 +1,8 @@
 import React from "react";
-import { 
-  Box, 
-  Typography, 
-  Button, 
+import {
+  Box,
+  Typography,
+  Button,
   IconButton,
   Badge,
   Tooltip
@@ -20,9 +20,9 @@ import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
-  const { 
-    wishlist, 
-    addToWishlist, 
+  const {
+    wishlist,
+    addToWishlist,
     removeFromWishlist,
     loading: wishlistLoading
   } = useWishlist();
@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (!isLoggedIn) {
       navigate('/login?redirect=' + window.location.pathname);
       return;
@@ -73,11 +73,11 @@ const ProductCard = ({ product }) => {
       }}
     >
       {/* Wishlist Button */}
-      <Box sx={{ 
-        position: 'absolute', 
-        top: 8, 
+      <Box sx={{
+        position: 'absolute',
+        top: 8,
         right: 8,
-        zIndex: 1 
+        zIndex: 1
       }}>
         <Tooltip title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}>
           <IconButton
