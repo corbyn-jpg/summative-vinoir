@@ -66,10 +66,11 @@ function AccountPage() {
         // Fetch recent orders (mock data for now)
         const ordersResponse = await axios.get(`${API_BASE}/orders/recent`, {
           headers: { Authorization: `Bearer ${token}` },
-        }).catch(() => ({ data: [] })); // Fallback if orders endpoint doesn't exist
+        }).catch(() => ({ data: { orders: [] } })); // Fallback if orders endpoint doesn't exist
 
-        setUserData(userResponse.data);
-        setRecentOrders(ordersResponse.data || []);
+  setUserData(userResponse.data);
+  // Normalize to array; backend returns { orders: [] }
+  setRecentOrders((ordersResponse.data && ordersResponse.data.orders) || []);
       } catch (error) {
         console.error("Error fetching user data:", error);
         if (error.response?.status === 401) {

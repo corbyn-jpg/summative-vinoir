@@ -39,22 +39,19 @@ async function connectAndStart() {
     console.log('✅ MongoDB connected successfully');
 
   // Routes (API)
-    app.use('/api/products', require('./routes/productRoutes'));
+  app.use('/api/products', require('./routes/productRoutes'));
     app.use('/api/users', require('./routes/userRoutes'));
     app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+  app.use('/api/upload', require('./routes/uploadRoutes'));
 
-  // In case we later decide to serve the React build from here (Option B)
-  // we could uncomment this block after copying the build folder:
-  // const path = require('path');
-  // if (process.env.SERVE_FRONTEND === 'true') {
-  //   const buildPath = path.join(__dirname, '../frontend/vinoir/build');
-  //   app.use(express.static(buildPath));
-  //   app.get('*', (req, res) => {
-  //     res.sendFile(path.join(buildPath, 'index.html'));
-  //   });
-  // }
 
     // Health check route
+    
+    // Temporary stub for recent orders to stop 404s from the frontend.
+    // Replace with real implementation when orders are built.
+    app.get('/api/orders/recent', (req, res) => {
+      return res.json({ orders: [] });
+    });
     app.get('/', (req, res) => {
       res.send('Vinoir API is running');
     });

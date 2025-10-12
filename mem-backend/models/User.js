@@ -20,8 +20,26 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6, // More secure minimum
+    // Emoji-aware validation: require at least 3 Unicode code points
+    validate: {
+      validator: function (v) {
+        if (typeof v !== 'string') return false;
+        try {
+          const codePoints = Array.from(v);
+          return codePoints.length >= 3;
+        } catch (e) {
+          return false;
+        }
+      },
+      message: 'Password must contain at least 3 emojis/characters.'
+    },
     select: false // Exclude by default from queries
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+    index: true
   },
   wishlist: [{
     type: mongoose.Schema.Types.ObjectId,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Drawer,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   Divider,
   Box,
@@ -132,9 +132,8 @@ export default function DiorHamburgerMenu() {
         />
         <List disablePadding>
           {menuLinks.map(({ label, path }) => (
-            <ListItem
+            <ListItemButton
               key={label}
-              button
               component={Link}
               to={path}
               onClick={() => setOpen(false)}
@@ -170,7 +169,7 @@ export default function DiorHamburgerMenu() {
                   }
                 }}
               />
-            </ListItem>
+            </ListItemButton>
           ))}
         </List>
       </Drawer>

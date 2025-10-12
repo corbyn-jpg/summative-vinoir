@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       } catch (err) {
         console.error('Failed to fetch user after login:', err);
         // Don't logout on fetch failure, use fallback user data
-        setUser({ email: 'user@vinoir.com', name: 'Vinoir User' });
+        setUser((prev) => prev || { email: 'user@vinoir.com', name: 'Vinoir User' });
       }
     }
   };
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         } catch (err) {
           console.error('Auth check failed:', err);
           // Use fallback user data instead of logging out
-          setUser({ email: 'user@vinoir.com', name: 'Vinoir User' });
+          setUser((prev) => prev || { email: 'user@vinoir.com', name: 'Vinoir User' });
         }
       }
       setIsLoading(false);

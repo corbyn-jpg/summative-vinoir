@@ -7,11 +7,8 @@ import {
   Grid,
   Button,
   Alert,
-  Card,
-  CardContent,
   Fade,
   Switch,
-  FormControlLabel,
   Divider,
   List,
   ListItem,
@@ -26,7 +23,7 @@ import {
   SaveOutlined,
   VisibilityOutlined,
   ShieldOutlined,
-  NotificationsOutlined,
+  // NotificationsOutlined,
   DevicesOutlined
 } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -57,7 +54,7 @@ function SecuritySettingsPage() {
     { id: 3, device: 'Firefox on MacBook', lastActive: '3 days ago', current: false }
   ]);
   
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,6 +64,7 @@ function SecuritySettingsPage() {
     }
 
     fetchSecurityData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
@@ -382,6 +380,9 @@ function SecuritySettingsPage() {
                   setSelectedEmojis={setEmojiPassword}
                   maxLength={5}
                 />
+                <Typography variant="caption" sx={{ display: 'block', mt: 1, color: '#2d5a3d' }}>
+                  Minimum 3 emojis required
+                </Typography>
                 
                 {/* Password Strength */}
                 {emojiPassword.length > 0 && (

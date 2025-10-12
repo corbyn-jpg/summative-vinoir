@@ -92,7 +92,7 @@ export default function Navbar() {
         });
 
         localStorage.setItem("vinoir_token", res.data.token);
-        await login(res.data.token);
+        await login(res.data.token, res.data.user);
         setLoginSuccess(true);
 
         setTimeout(() => {
@@ -405,8 +405,11 @@ export default function Navbar() {
                 >
                   🎭 Your Signature Emoji Password
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 2, color: '#666', fontStyle: 'italic' }}>
+                <Typography variant="body2" sx={{ mb: 0.5, color: '#666', fontStyle: 'italic' }}>
                   Select your unique emoji combination (up to 5 emojis)
+                </Typography>
+                <Typography variant="caption" sx={{ display: 'block', mb: 2, color: '#2d5a3d' }}>
+                  Minimum 3 emojis required to sign in
                 </Typography>
                 <EmojiSelector selectedEmojis={emojiPassword} setSelectedEmojis={setEmojiPassword} maxLength={5} />
               </Box>
@@ -433,7 +436,7 @@ export default function Navbar() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={isLoading || emojiPassword.length === 0}
+                disabled={isLoading || emojiPassword.length < 3}
                 sx={{
                   py: 1.5,
                   fontSize: '1rem',
@@ -828,7 +831,6 @@ export default function Navbar() {
     isAuthenticated,
     wishlist,
     closeDrawer,
-    toggleDrawer,
     removeFromWishlist,
     addToCart,
   ]);
@@ -1340,6 +1342,17 @@ export default function Navbar() {
           <HamburgerMenu />
           {showShrinkingTitle && <ShrinkingTitle />}
           <Stack direction="row" spacing={3} alignItems="center">
+            {isAuthenticated && user?.role === 'admin' && (
+              <Button
+                component={Link}
+                to="/admin/products"
+                variant="text"
+                size="small"
+                sx={{ color: 'white', textTransform: 'none', fontWeight: 600 }}
+              >
+                Admin
+              </Button>
+            )}
             <IconButton onClick={toggleDrawer("search")} sx={{ color: "white" }} aria-label="Open search drawer">
               <Search />
             </IconButton>

@@ -82,8 +82,7 @@ const CreateUser = () => {
         }
       );
 
-      localStorage.setItem("token", response.data.token);
-      
+  localStorage.setItem("vinoir_token", response.data.token);
       // Success animation sequence
       setCurrentStep(2);
       setShowSuccess(true);
@@ -393,6 +392,9 @@ const CreateUser = () => {
                       setSelectedEmojis={setEmojiPassword}
                       maxLength={5}
                     />
+                    <Typography variant="caption" sx={{ display: 'block', mt: 1, color: '#2d5a3d', textAlign: 'center' }}>
+                      Minimum 3 emojis required
+                    </Typography>
                   </Box>
 
                   {/* Submit Button */}

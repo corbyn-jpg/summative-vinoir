@@ -31,6 +31,7 @@ const CheckoutPage = lazy(() => import("./Pages/Checkout/CheckoutPage"));
 const OrderConfirmation = lazy(() => import("./Pages/Checkout/OrderConfirmation"));
 const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./Pages/TermsOfService"));
+const ProductsAdminPage = lazy(() => import("./Pages/admin/ProductsAdminPage"));
 
 // Simple ErrorBoundary to show runtime errors instead of blank screen
 class ErrorBoundary extends React.Component {
@@ -90,6 +91,7 @@ function AppInner() {
               <Suspense fallback={<div style={{ padding: 24 }}>Loading...</div>}>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/admin/products" element={<ProductsAdminPage />} />
                   <Route path="/register" element={<CreateUser />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/about" element={<AboutPage />} />
