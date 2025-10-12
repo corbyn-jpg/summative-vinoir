@@ -22,6 +22,7 @@ const EnhancedPersonalDataPage = lazy(() => import("./Pages/account/EnhancedPers
 const SecuritySettingsPage = lazy(() => import("./Pages/account/SecuritySettingsPage"));
 const OrderHistoryPage = lazy(() => import("./Pages/account/OrderHistoryPage"));
 const OrdersPage = lazy(() => import("./Pages/account/OrdersPage"));
+const ProductsAdminPage = lazy(() => import("./Pages/admin/ProductsAdminPage"));
 const WishlistPage = lazy(() => import("./Pages/Shop/WishlistPage"));
 const ShopPage = lazy(() => import("./Pages/Shop/ShopPage"));
 const SearchResults = lazy(() => import("./Pages/SearchResults"));
@@ -31,7 +32,6 @@ const CheckoutPage = lazy(() => import("./Pages/Checkout/CheckoutPage"));
 const OrderConfirmation = lazy(() => import("./Pages/Checkout/OrderConfirmation"));
 const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./Pages/TermsOfService"));
-const ProductsAdminPage = lazy(() => import("./Pages/admin/ProductsAdminPage"));
 
 // Simple ErrorBoundary to show runtime errors instead of blank screen
 class ErrorBoundary extends React.Component {
