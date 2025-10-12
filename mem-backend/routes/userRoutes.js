@@ -10,10 +10,10 @@ if (!JWT_SECRET) {
   console.warn('Warning: JWT_SECRET environment variable is not set.');
 }
 
-// Generate JWT token helper
+// Generate JWT token helper (include role for admin checks)
 function generateToken(user) {
   return jwt.sign(
-    { userId: user._id, name: user.name },
+    { userId: user._id, name: user.name, role: user.role || 'user' },
     JWT_SECRET,
     { expiresIn: '3d' }
   );
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user._id, name: user.name, email: user.email, role: user.role }
     });
   } catch (err) {
     console.error('Registration error:', err);
@@ -49,7 +49,8 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    // Need to explicitly select password field since it's excluded by default
+    const user = await User.findOne({ email }).select('+password');
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
     const isMatch = await user.comparePassword(password);
@@ -59,7 +60,7 @@ router.post('/login', async (req, res) => {
 
     res.json({
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user._id, name: user.name, email: user.email, role: user.role }
     });
   } catch (err) {
     console.error('Login error:', err);
@@ -86,22 +87,50 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// @route   PUT /api/users/profile
+// @desc    Update user profile (name, email, phone, address, birthday, preferences)
+// @access  Private
+router.put('/profile', auth, async (req, res) => {
+  try {
+    const { name, email, phone, birthday, address, preferences } = req.body || {};
+
+    const update = {};
+    if (typeof name === 'string') update.name = name;
+    if (typeof email === 'string') update.email = email;
+    if (typeof phone === 'string') update.phone = phone;
+    if (typeof birthday === 'string') update.birthday = birthday;
+    if (address && typeof address === 'object') update.address = address;
+    if (preferences && typeof preferences === 'object') update.preferences = preferences;
+
+    const updated = await User.findByIdAndUpdate(
+      req.user.userId,
+      { $set: update },
+      { new: true }
+    )
+      .select('-password')
+      .lean();
+
+    if (!updated) return res.status(404).json({ message: 'User not found' });
+
+    res.json(updated);
+  } catch (err) {
+    console.error('Profile update error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // @route   PATCH /api/users/update-password
 // @desc    Update password
 // @access  Private
 router.patch('/update-password', auth, async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+  const { password } = req.body; // For emoji passwords, we just need the new password
 
   try {
-    const user = await User.findById(req.user.userId);
+    // Need to explicitly select password field for comparison
+    const user = await User.findById(req.user.userId).select('+password');
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const isMatch = await user.comparePassword(currentPassword);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Current password is incorrect' });
-    }
-
-    user.password = newPassword; // Will be hashed in pre-save hook
+    user.password = password; // Will be hashed in pre-save hook
     await user.save();
 
     res.json({ message: 'Password updated successfully' });

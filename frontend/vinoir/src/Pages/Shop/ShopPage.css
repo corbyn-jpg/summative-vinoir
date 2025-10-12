@@ -1,180 +1,203 @@
-/* Shop Section Container */
-
-.section-title {
-  margin-bottom: 1rem;
-  color: var(--gold-accent) !important;
-  font-size: 2.5rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.1em !important;
-  font-family: "Playfair Display", serif !important;
-  text-transform: uppercase;
+:root {
+  --green-accent: var(--accent, #146e3a);
+  --dark-green: var(--accent-600, #16532f);
+  --silver: var(--muted, #bfc6bd);
+  --off-white: var(--panel, #f8f5f2);
+  --font-heading: var(--font-heading, "Playfair Display", serif);
+  --font-serif: "Cormorant Garamond", serif;
 }
 
-.dior-shop-section {
-  padding: 8rem 0;
-  position: relative;
-  overflow: hidden;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  background: linear-gradient(
-    to bottom,
-    var(--raisin-black) 0%,
-    var(--dark-green) 100%
-  );
+/* page scope container - reduced top padding to remove extra space */
+.shop-page {
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: clamp(6px, 0.5vw, 20px); /* reduced */
+  padding-bottom: 4rem;
 }
 
-/* Shop Title */
+/* Title */
 .dior-shop-title {
-  font-weight: 700 !important;
-  letter-spacing: 0.3em !important;
-  text-align: center;
-  color: var(--gold-accent) !important;
-  position: relative;
-  font-family: "Playfair Display", serif !important;
-  font-size: 2.5rem !important;
-  margin-bottom: 5rem !important;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  font-size: clamp(2.2rem, 2.6vw, 1.9rem);
+  color: var(--green-accent);
   text-transform: uppercase;
+  margin: 0; /* ensure no top margin */
+  text-align: center;
+  position: relative;
+  line-height: 1.02;
+  padding-top: 4rem;
+   padding-bottom: 2rem;
 }
-
 .dior-shop-title::after {
   content: "";
-  display: block;
-  width: 100px;
-  height: 2px;
-  background: var(--gold-accent);
-  margin: 2rem auto;
+  display:block;
+  width:90px;
+  height:2px;
+  background: var(--green-accent);
+  margin: 1rem auto 0;
 }
 
-/* Product Grid */
+/* Subtitle */
+.dior-subtitle {
+  color: var(--silver);
+  font-weight: 400;
+  text-align: center;
+  margin: 0 0 2rem;
+  font-family: var(--font-serif);
+}
+
+/* Product grid */
 .dior-product-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 2rem;
+  box-sizing: border-box;
 }
 
-/* Product Card Styling */
+/* Product wrapper */
 .dior-product-item {
-  width: 100%;
-  height: 55vh;
-  min-height: 500px;
-  border-radius: 4px;
-  background: linear-gradient(
-    to bottom,
-    rgba(42, 73, 54, 0.2),
-    rgba(39, 39, 39, 0.7)
-  ) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: all 0.5s ease;
-  border: 1px solid rgba(186, 185, 185, 0.1);
-  overflow: hidden;
+  min-height: 480px;
+  background: var(--off-white);
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 20px 60px rgba(39,39,39,0.04);
+  display:flex;
+  flex-direction:column;
+  cursor:pointer;
+  transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+  overflow:hidden;
+}
+.dior-product-item:hover,
+.dior-product-item:focus-within {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 80px rgba(20,110,58,0.08);
+  border-color: var(--green-accent);
+  outline: none;
 }
 
-.dior-product-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-  border-color: var(--gold-accent);
-}
-
-/* Image Container */
+/* image container */
 .dior-product-image-container {
-  background-color: rgba(0, 0, 0, 0.2);
-  width: 100%;
-  height: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  width:100%;
+  aspect-ratio: 4/5;
+  overflow:hidden;
+  border-top-left-radius:12px;
+  border-top-right-radius:12px;
+  background-color: rgba(0,0,0,0.03);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-
 .dior-product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s ease;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition: transform .6s cubic-bezier(.4,0,.2,1);
+}
+.dior-product-item:hover .dior-product-image,
+.dior-product-item:focus-within .dior-product-image {
+  transform: scale(1.04);
 }
 
-.dior-product-item:hover .dior-product-image {
-  transform: scale(1.05);
-}
-
-/* Text Styles */
+/* text */
 .dior-product-title {
-  font-size: 1.6rem !important;
-  font-weight: 600 !important;
-  margin: 1.5rem 0 0.5rem !important;
-  color: var(--gold-accent) !important;
-  text-align: center;
-  font-family: "Playfair Display", serif !important;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
   letter-spacing: 0.05em;
+  color: var(--green-accent);
+  text-align:center;
+  padding: 1rem 1rem 0.5rem;
+  text-transform: uppercase;
 }
-
 .dior-product-subtitle {
-  font-size: 1.1rem !important;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--dark-green);
+  text-align:center;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+  padding: 0 1rem 1rem;
+}
+.dior-product-price {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight:700;
+  color: var(--dark-green);
+  text-align:center;
+  padding: 0 1rem 1.25rem;
+}
+
+/* Strong indicator override (covers MUI implementations) */
+.shop-page .MuiTabs-indicator,
+.shop-page .MuiTabs-indicator span,
+.shop-page .MuiTabs-indicatorSpan {
+  background-color: var(--green-accent) !important;
+  height: 3px !important;
+  opacity: 1 !important;
+  border-radius: 3px;
+}
+
+/* Tab colors */
+.shop-page .MuiTab-root {
   color: var(--silver) !important;
-  text-align: center;
-  font-family: "Cormorant Garamond", serif !important;
-  letter-spacing: 0.05em;
-  opacity: 0.8;
-  padding: 0 1rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.shop-page .MuiTab-root.Mui-selected {
+  color: var(--green-accent) !important;
 }
 
-/* Responsive Breakpoints */
+/* Remove leftover blue pseudo-elements or box-shadows beneath tabs */
+.shop-page .MuiTab-root::after,
+.shop-page .MuiTab-root.Mui-selected::before,
+.shop-page .MuiTab-root .MuiTouchRipple-root {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Ensure indicator spacing */
+.shop-page .MuiTabs-flexContainer { gap: 1rem; }
+
+/* Outlined inputs / selects - use site accent instead of blue */
+.shop-page .MuiInputLabel-root { color: var(--silver); }
+.shop-page .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline { border-color: rgba(0,0,0,0.08); }
+.shop-page .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline { border-color: rgba(20,110,58,0.12); }
+.shop-page .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--green-accent) !important;
+  box-shadow: 0 0 0 6px rgba(20,110,58,0.06);
+}
+.shop-page .MuiInputLabel-root.Mui-focused { color: var(--green-accent) !important; }
+.shop-page .MuiSelect-icon { color: var(--green-accent) !important; }
+.shop-page .MuiInputBase-input { caret-color: var(--green-accent); }
+
+/* Buttons inside controls */
+.shop-page .MuiButton-root { color: var(--green-accent) !important; border-color: var(--green-accent) !important; }
+.shop-page .MuiButton-root.Mui-selected,
+.shop-page .MuiButton-root[aria-pressed="true"] { background: rgba(20,110,58,0.06) !important; }
+
+/* small accessibility tweak */
+.shop-page .Mui-focused:focus-visible { outline-offset: 4px; outline: 3px solid rgba(111,168,139,0.12); }
+
+/* responsive */
 @media (max-width: 1200px) {
-  .dior-shop-section {
-    padding: 6rem 0;
-  }
-
-  .dior-product-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  .dior-product-title {
-    font-size: 1.4rem !important;
-  }
+  .dior-product-grid { grid-template-columns: repeat(3, 1fr); }
+  .dior-product-item { min-height: 420px; }
 }
-
 @media (max-width: 900px) {
-  .dior-shop-title {
-    font-size: 2rem !important;
-    margin-bottom: 3rem !important;
-  }
-
-  .dior-product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
+  .dior-product-grid { grid-template-columns: repeat(2, 1fr); gap:1.5rem; }
+  .dior-product-item { min-height: 380px; }
+  .dior-product-title { font-size: 1.05rem; }
+  .dior-product-subtitle { font-size: .98rem; }
 }
-
 @media (max-width: 600px) {
-  .dior-shop-section {
-    padding: 4rem 0;
-  }
-
-  .dior-shop-title {
-    font-size: 1.5rem !important;
-    letter-spacing: 0.2em !important;
-  }
-
-  .dior-product-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 0 1rem;
-  }
-  
-  .dior-product-title {
-    font-size: 1.3rem !important;
-  }
-  
-  .dior-product-subtitle {
-    font-size: 1rem !important;
-  }
+  .dior-product-grid { grid-template-columns: 1fr; gap:1rem; padding: 0 1rem; }
+  .dior-product-item { min-height: 320px; }
+  .dior-product-title { font-size: 1rem; }
 }

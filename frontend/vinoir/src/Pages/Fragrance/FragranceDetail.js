@@ -1,178 +1,154 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-  Divider,
-  CircularProgress,
-  Alert,
-  Chip,
-  Stack,
-} from "@mui/material";
+// ...existing code...
+import React, { useEffect, useState, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Box, Typography, Button, IconButton } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { getProductById } from "../../services/ProductService";
 import { useCart } from "../../context/CartContext";
-import ProductService from "../../services/ProductService";
+import { useWishlist } from "../../context/WishlistContext";
+import { useAuth } from "../../context/AuthContext";
+import "./FragranceDetail.css";
 
-function FragranceDetail() {
+export default function FragranceDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [mainImage, setMainImage] = useState(null);
   const { addToCart } = useCart();
-
-  // Optional: for retry button
-  const fetchProduct = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const product = await ProductService.getProductById(id);
-      setProduct(product);
-    } catch (error) {
-      setError(error.message || "Failed to load product details");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { toggleWishlist, wishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    fetchProduct();
-    // eslint-disable-next-line
+    let mounted = true;
+    setLoading(true);
+    getProductById(id)
+      .then((p) => {
+        if (!mounted) return;
+        setProduct(p || null);
+        setMainImage((p && (p.images?.[0]?.url || p.image)) || "/images/dior1.jpg");
+      })
+      .catch((err) => {
+        console.error(err);
+        if (mounted) setProduct(null);
+      })
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
   }, [id]);
 
-  if (isLoading) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <CircularProgress size={60} />
-      </Box>
-    );
-  }
+  const handleWishlistClick = useCallback(async () => {
+    if (!isAuthenticated) {
+      navigate("/login?redirect=" + encodeURIComponent(window.location.pathname));
+      return;
+    }
+    try {
+      await toggleWishlist(product);
+    } catch (error) {
+      console.error('Wishlist toggle failed:', error);
+    }
+  }, [isAuthenticated, navigate, toggleWishlist, product]);
 
-  if (error) {
-    return (
-      <Alert severity="error" sx={{ m: 3 }}>
-        {error}
-        {/* Uncomment below for a retry button */}
-        {/* <Button sx={{ ml: 2 }} onClick={fetchProduct}>Retry</Button> */}
-      </Alert>
-    );
-  }
+  if (loading) return <div className="pd-loading">Loading…</div>;
+  if (!product) return <div className="pd-notfound">Product not found</div>;
 
-  if (!product) {
-    return (
-      <Typography variant="h5" sx={{ textAlign: "center", mt: 4 }}>
-        Product not found
-      </Typography>
-    );
-  }
-
-  const {
-    name,
-    category,
-    size,
-    price,
-    description,
-    fragranceNotes,
-    images,
-    stock,
-  } = product;
-
-  // Graceful fallback for alt text
-  const mainImage = images?.[0];
-  const imageUrl = mainImage?.url || "/placeholder-product.jpg";
-  const imageAlt = mainImage?.altText || name || "Fragrance image";
+  const prodId = product.id || product._id;
+  const inWishlist = Array.isArray(wishlist) && wishlist.some((p) => (p.id || p._id) === prodId);
+  const images = Array.isArray(product.images) && product.images.length ? product.images.map((i) => i.url) : product.image ? [product.image] : ["/images/dior1.jpg"];
+  const priceText = product.price ? `R ${Number(product.price).toFixed(2)}` : "N/A";
 
   return (
-    <Box sx={{ maxWidth: 1200, margin: "4rem auto", padding: "2rem" }}>
-      <Grid container spacing={6}>
-        <Grid item xs={12} md={6}>
-          <img
-            src={imageUrl}
-            alt={imageAlt}
-            style={{
-              width: "100%",
-              borderRadius: "8px",
-              maxHeight: "500px",
-              objectFit: "contain",
-            }}
-          />
-        </Grid>
+    <Box component="main" className="product-detail fade-in" role="main" aria-labelledby="pd-title">
+      <Button
+        startIcon={<ArrowBackIosNewIcon fontSize="small" />}
+        onClick={() => navigate(-1)}
+        className="pd-back"
+        aria-label="Go back"
+      >
+        Back
+      </Button>
 
-        <Grid item xs={12} md={6}>
-          <Typography variant="h3" sx={{ mb: 2 }}>
-            {name}
-          </Typography>
+      <Box className="product-grid">
+        <Box className="product-gallery card" aria-label="Product images">
+          <div className="main-image-wrapper">
+            <img src={mainImage} alt={product.name} className="main-image" />
+            {product.onSale && <span className="sale-badge">Sale</span>}
+          </div>
 
-          <Typography variant="subtitle1" sx={{ mb: 1 }}>
-            {category} • {size}
-          </Typography>
-
-          <Typography variant="h5" sx={{ mb: 3, color: "#146e3a" }}>
-            ${price?.toFixed(2)}
-          </Typography>
-
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            {description}
-          </Typography>
-
-          <Divider sx={{ my: 3 }} />
-
-          {fragranceNotes && (
-            <>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                Fragrance Notes:
-              </Typography>
-              <Stack direction="column" spacing={1} sx={{ mb: 3 }}>
-                {/* Only show sections if notes present, else display None */}
-                {["topNotes", "middleNotes", "baseNotes"].map((field) => (
-                  <div key={field}>
-                    <Typography variant="subtitle2">
-                      {field === "topNotes"
-                        ? "Top Notes"
-                        : field === "middleNotes"
-                        ? "Middle Notes"
-                        : "Base Notes"}
-                      :
-                    </Typography>
-                    <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                      {(fragranceNotes[field] && fragranceNotes[field].length > 0) ? (
-                        fragranceNotes[field].map((note, idx) => (
-                          <Chip key={idx} label={note} size="small" />
-                        ))
-                      ) : (
-                        <Typography variant="caption" color="text.secondary">
-                          None
-                        </Typography>
-                      )}
-                    </Stack>
-                  </div>
-                ))}
-              </Stack>
-            </>
+          {images.length > 1 && (
+            <div className="thumb-row" role="list" aria-label="Image thumbnails">
+              {images.map((src, i) => (
+                <button
+                  key={i}
+                  className={`thumb-btn ${mainImage === src ? "active" : ""}`}
+                  onClick={() => setMainImage(src)}
+                  aria-pressed={mainImage === src}
+                  aria-label={`Show image ${i + 1}`}
+                >
+                  <img src={src} alt={`${product.name} ${i + 1}`} />
+                </button>
+              ))}
+            </div>
           )}
+        </Box>
 
-          <Button
-            variant="contained"
-            size="large"
-            disabled={stock === 0}
-            onClick={() =>
-              addToCart({
-                ...product,
-                id: product._id || product.id, // Ensure consistent ID
-              })
-            }
-            sx={{
-              mt: 3,
-              backgroundColor: "#146e3a",
-              "&:hover": { backgroundColor: "#0d5a2c" },
-            }}
-          >
-            {stock === 0 ? "Out of Stock" : "Add to Cart"}
-          </Button>
-        </Grid>
-      </Grid>
+        <Box className="product-info card" aria-labelledby="pd-title">
+          <Typography id="pd-title" component="h1" variant="h4" className="product-title">
+            {product.name}
+          </Typography>
+
+          {product.category && <Typography className="product-category muted">{product.category}</Typography>}
+
+          <Typography className="product-price" variant="h5" component="p" aria-live="polite">
+            {priceText}
+          </Typography>
+
+          <Typography className="product-desc" component="div">
+            {product.description || "A refined scent with top, heart and base notes to inspire the senses."}
+          </Typography>
+
+          <Box className="product-actions" mt={2}>
+            <Button
+              variant="contained"
+              onClick={() => addToCart(product)}
+              className="btn-add"
+              aria-label="Add to cart"
+            >
+              Add to cart
+            </Button>
+
+            <IconButton
+              onClick={handleWishlistClick}
+              className="wishlist-toggle"
+              sx={{
+                color: inWishlist ? '#6a4c93' : 'inherit',
+                '&:hover': {
+                  backgroundColor: inWishlist ? 'rgba(106, 76, 147, 0.1)' : 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+              aria-pressed={inWishlist}
+              aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              {inWishlist ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+          </Box>
+
+          <Box className="product-meta" mt={3}>
+            <Typography variant="caption" className="muted">
+              SKU: {product.sku || prodId}
+            </Typography>
+            {product.brand && (
+              <Typography variant="caption" className="muted" sx={{ display: "block" }}>
+                Brand: {product.brand}
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }
-
-export default FragranceDetail;
+// ...existing code...

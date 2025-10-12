@@ -1,33 +1,27 @@
 import React, { useState } from "react";
-import HeroSection from "../../Components/HeroSection";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
+import Navbar from "../../Components/Navbar";
 import "./Contact.css";
 
-// Static image imports
-import contactHeroImage from "../../assets/spritz.jpeg";
-import contactHeroVideo from "../../assets/ManUnited.jpeg";
-
-// Initialize EmailJS with your User ID
-emailjs.init("_QatdQkHx_mavwiI-");
+// Initialize EmailJS only if emailjs is available
+if (emailjs) {
+  emailjs.init("_QatdQkHx_mavwiI-");
+}
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+    name: "", 
+    email: "", 
+    subject: "", 
+    message: ""
   });
-
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -36,23 +30,23 @@ const ContactPage = () => {
     setError("");
 
     try {
-      // Send email using EmailJS
-      await emailjs.send(
-        "service_jtead7u", // EmailJS Service ID
-        "template_63xglp9", // EmailJS Template ID
-        {
-          to_email: "241040@virtualwindow.co.za",
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        }
-      );
+      if (emailjs) {
+        await emailjs.send(
+          "service_jtead7u",
+          "template_63xglp9",
+          {
+            to_email: "241040@virtualwindow.co.za",
+            from_name: formData.name,
+            from_email: formData.email,
+            subject: formData.subject,
+            message: formData.message,
+          }
+        );
+      }
 
       setIsSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
-      console.error("Email sending failed:", err);
       setError("Failed to send message. Please try again later.");
     } finally {
       setIsLoading(false);
@@ -60,144 +54,133 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="contact-container">
-      {/* Hero Section */}
-      <div className="contact-hero-wrapper">
-        <HeroSection
-          title={"CONTACT VINOIR"}
-          backgroundImage={contactHeroImage}
-          buttonText={"EXPLORE"}
-          buttonLink={"/shop"}
-          videoSrc={contactHeroVideo}
-        />
+    <>
+      <Navbar />
+      
+      {/* Hero Header Section */}
+      <div className="contact-hero">
+        <div className="hero-content">
+          <h1 className="hero-title">Contact Us</h1>
+          <p className="hero-description">
+            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
+        </div>
       </div>
-
-      {/* Contact Form Section */}
-      <div className="contact-form-section">
+      
+      <div className="contact-page">
         <div className="form-container">
-          <h2 className="section-title">Send Us a Message</h2>
-          {error && <div className="error-message">{error}</div>}
           {isSubmitted ? (
-            <div className="success-message">
-              <h3>Thank you for your message!</h3>
-              <p>We've received your inquiry and will respond shortly.</p>
+            <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+              <div style={{
+                fontSize: '3rem',
+                color: '#2a4936',
+                marginBottom: '1rem'
+              }}>
+                ✓
+              </div>
+              <h2 style={{
+                fontFamily: '"Playfair Display", serif',
+                color: '#2a4936',
+                marginBottom: '1rem'
+              }}>
+                Message Sent Successfully!
+              </h2>
+              <p style={{
+                color: '#666',
+                marginBottom: '2rem',
+                fontSize: '1.1rem'
+              }}>
+                We've received your message and will respond within 24 hours.
+              </p>
               <button
                 onClick={() => setIsSubmitted(false)}
                 className="submit-button"
               >
-                Send another message
+                Send Another Message
               </button>
             </div>
           ) : (
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="Full Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Email Address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <select
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
+            <>
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="name">Your Name *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="email">Email Address *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="subject">Subject *</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="message">Your Message *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows="6"
+                    required
+                  ></textarea>
+                </div>
+                
+                {error && <div className="error-message">{error}</div>}
+                
+                <button 
+                  type="submit" 
+                  className="submit-button"
+                  disabled={isLoading}
                 >
-                  <option value="">Select a subject</option>
-                  <option value="Product Inquiry">Product Inquiry</option>
-                  <option value="Order Support">Order Support</option>
-                  <option value="Press Inquiry">Press Inquiry</option>
-                  <option value="Partnership Opportunity">
-                    Partnership Opportunity
-                  </option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+                  {isLoading ? "Sending..." : "Send Message"}
+                </button>
+              </form>
 
-              <div className="form-group">
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  placeholder="Your message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                ></textarea>
+              {/* Email Subscribe Section */}
+              <div className="newsletter-section">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for exclusive offers and new fragrance releases.</p>
+                <div className="newsletter-form">
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email" 
+                    className="newsletter-input"
+                  />
+                  <button className="newsletter-button">Subscribe</button>
+                </div>
               </div>
-
-              <button
-                type="submit"
-                className="submit-button"
-                disabled={isLoading}
-              >
-                {isLoading ? "Sending..." : "Send Message"}
-              </button>
-            </form>
+            </>
           )}
         </div>
       </div>
-
-      {/* Contact Info Section */}
-      <div className="contact-info-section">
-        <div className="contact-info-content">
-          <h2>Contact Information</h2>
-          <div className="contact-details">
-            <div className="contact-method">
-              <h3>General Inquiries</h3>
-              <p>
-                <a href="mailto:241040@virtualwindow.co.za">
-                  241040@virtualwindow.co.za
-                </a>
-              </p>
-              <p>+27 12 345 6789</p>
-            </div>
-
-            <div className="contact-method">
-              <h3>Visit Us</h3>
-              <p>Open Window - Centurion</p>
-              <p>1297 John Vorster</p>
-              <p>Centurion, Gauteng</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Location Section */}
-      <div className="location-section">
-        <div className="map-container">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.8473501694!2d28.2094135!3d-25.8919438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956608911ce097%3A0x519896b4b6eda40a!2sOpen%20Window%20-%20Centurion!5e0!3m2!1sen!2sza!4v1718200000000!5m2!1sen!2sza"
-            width="100%"
-            height="500"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Open Window Location Map"
-          ></iframe>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

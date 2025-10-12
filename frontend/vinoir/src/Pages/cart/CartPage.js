@@ -17,13 +17,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateCartItem, cartCount } = useCart();
+  const { cart, removeFromCart, updateCartItem, clearCart } = useCart();
   const navigate = useNavigate();
-
-  // If your useCart doesn't provide clearCart, you can implement it like this:
-  const clearCart = () => {
-    cart.forEach((item) => removeFromCart(item._id));
-  };
 
   const [loading, setLoading] = React.useState(true);
 
@@ -32,28 +27,24 @@ const CartPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   const formatPrice = (price) => {
     const num = Number(price);
     return isNaN(num) ? "0.00" : num.toFixed(2);
   };
 
-  // Calculate order summary values
-  const subtotal = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const shipping = 50; // Shipping is never free
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shipping = 50; // shipping fee fixed
   const total = subtotal + shipping;
 
   const handleCheckout = () => {
-    if (cart.length === 0) {
-      return; // Don't proceed if cart is empty
-    }
+    if (cart.length === 0) return; // do nothing if empty
     navigate("/checkout");
   };
 
   const handleClearCart = () => {
-    clearCart(); // Use the clearCart function from your context
+    clearCart();
   };
 
   if (loading) {
@@ -88,7 +79,7 @@ const CartPage = () => {
   return (
     <Box sx={{ p: 3, maxWidth: 1200, margin: "0 auto" }}>
       <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold" }}>
-        Your Shopping Cart ({cartCount})
+        Your Shopping Cart ({totalItems})
       </Typography>
 
       <Grid container spacing={4}>
@@ -109,14 +100,13 @@ const CartPage = () => {
                   />
                 </Grid>
                 <Grid item xs={8} sm={9}>
-                  <Box
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box>
                       <Typography
                         variant="h6"
                         component={Link}
                         to={`/fragrance/${item._id}`}
+                        sx={{ textDecoration: "none", color: "inherit" }}
                       >
                         {item.name}
                       </Typography>
@@ -124,10 +114,7 @@ const CartPage = () => {
                         {item.category}
                       </Typography>
                     </Box>
-                    <IconButton
-                      onClick={() => removeFromCart(item._id)}
-                      color="error"
-                    >
+                    <IconButton onClick={() => removeFromCart(item._id)} color="error" aria-label="Remove item">
                       <DeleteIcon />
                     </IconButton>
                   </Box>
@@ -143,19 +130,17 @@ const CartPage = () => {
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <IconButton
                         size="small"
-                        onClick={() =>
-                          updateCartItem(item._id, item.quantity - 1)
-                        }
+                        onClick={() => updateCartItem(item._id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
+                        aria-label="Decrease quantity"
                       >
                         <RemoveIcon fontSize="small" />
                       </IconButton>
                       <Typography>{item.quantity}</Typography>
                       <IconButton
                         size="small"
-                        onClick={() =>
-                          updateCartItem(item._id, item.quantity + 1)
-                        }
+                        onClick={() => updateCartItem(item._id, item.quantity + 1)}
+                        aria-label="Increase quantity"
                       >
                         <AddIcon fontSize="small" />
                       </IconButton>
@@ -177,25 +162,19 @@ const CartPage = () => {
             </Typography>
             <Divider sx={{ my: 2 }} />
 
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
-            >
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
               <Typography>Subtotal</Typography>
               <Typography>R {formatPrice(subtotal)}</Typography>
             </Box>
 
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
-            >
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
               <Typography>Shipping</Typography>
               <Typography>R {formatPrice(shipping)}</Typography>
             </Box>
 
             <Divider sx={{ my: 2 }} />
 
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}
-            >
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
               <Typography variant="h6">Total</Typography>
               <Typography variant="h6">R {formatPrice(total)}</Typography>
             </Box>

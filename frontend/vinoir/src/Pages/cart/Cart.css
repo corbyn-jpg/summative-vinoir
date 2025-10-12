@@ -7,7 +7,7 @@
 .cart-title {
   font-size: 2.5rem !important;
   margin-bottom: 3rem !important;
-  color: var(--gold-accent) !important;
+  color: #2d5a3d !important;
   text-align: center;
   position: relative;
   font-family: "Playfair Display", serif !important;
@@ -18,7 +18,7 @@
   display: block;
   width: 100px;
   height: 2px;
-  background: var(--gold-accent);
+  background: #2d5a3d;
   margin: 1rem auto;
 }
 
@@ -56,28 +56,28 @@
 
 /* Quantity controls */
 .MuiIconButton-root {
-  color: var(--gold-accent) !important;
-  border: 1px solid var(--gold-accent) !important;
+  color: #2d5a3d !important;
+  border: 1px solid #2d5a3d !important;
   margin: 0 0.5rem !important;
   padding: 0.5rem !important;
 }
 
 .MuiIconButton-root:hover {
-  background-color: rgba(212, 175, 55, 0.1) !important;
+  background-color: rgba(45, 90, 61, 0.1) !important;
 }
 
 /* Summary section */
 .cart-summary {
   background: rgba(39, 39, 39, 0.7) !important;
   padding: 2rem !important;
-  border: 1px solid var(--gold-accent) !important;
+  border: 1px solid #2d5a3d !important;
   margin-top: 3rem !important;
 }
 
 .summary-title {
   font-size: 1.8rem !important;
   margin-bottom: 1.5rem !important;
-  color: var(--gold-accent) !important;
+  color: #2d5a3d !important;
   font-family: "Playfair Display", serif !important;
 }
 
@@ -91,7 +91,7 @@
   font-size: 1.5rem !important;
   font-weight: 600 !important;
   margin-top: 1.5rem !important;
-  color: var(--gold-accent) !important;
+  color: #2d5a3d !important;
 }
 
 /* Empty cart */
@@ -101,7 +101,7 @@
 }
 
 .empty-cart .MuiTypography-h5 {
-  color: var(--gold-accent) !important;
+  color: #2d5a3d !important;
   margin-bottom: 2rem !important;
 }
 

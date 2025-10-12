@@ -1,55 +1,62 @@
 const express = require('express');
-const router = express.Router();
 const Product = require('../models/Product');
+const auth = require('../middleware/auth');
+const requireAdmin = require('../middleware/requireAdmin');
+const router = express.Router();
 
-/**
- * @route   GET /api/products
- * @desc    Get all products, with optional filtering, pagination, and sorting
- * @access  Public
- * 
- * Query params supported (optional): 
- *   - page (default: 1) 
- *   - limit (default: 20)
- *   - sortBy (e.g., price, -name)
- *   - ...any Product-schema filter fields
- */
 router.get('/', async (req, res) => {
   try {
-    // Basic pagination
-    const page = Math.max(parseInt(req.query.page) || 1, 1);
-    const limit = Math.max(parseInt(req.query.limit) || 20, 1);
-    const skip = (page - 1) * limit;
-
-    // Optional sorting support
-    const sort = req.query.sortBy
-      ? req.query.sortBy.split(',').join(' ')
-      : '-createdAt';
-
-    // Remove special query params for filter
-    const filter = { ...req.query };
-    delete filter.page;
-    delete filter.limit;
-    delete filter.sortBy;
-
-    // Build the DB query
-    const products = await Product.find(filter)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    // Optionally: Provide a total count for paginated clients
-    const total = await Product.countDocuments(filter);
-
-    res.json({
-      products,
-      page,
-      totalPages: Math.ceil(total / limit),
-      total,
-    });
+    const products = await Product.find();
+    res.json(products);
   } catch (err) {
-    console.error('[Product GET ALL]', err);
-    res.status(500).json({ message: 'Failed to fetch products' });
+    res.status(500).json({ message: 'Error fetching products', error: err.message });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const p = await Product.findById(req.params.id);
+    if (!p) return res.status(404).json({ message: 'Product not found' });
+    res.json(p);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching product', error: err.message });
+  }
+});
+
+// Create product (admin only)
+router.post('/', auth, requireAdmin, async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(400).json({ message: 'Error creating product', error: err.message });
+  }
+});
+
+// Update product (admin only, partial update)
+router.patch('/:id', auth, requireAdmin, async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+    if (!updated) return res.status(404).json({ message: 'Product not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: 'Error updating product', error: err.message });
+  }
+});
+
+// Delete product (admin only)
+router.delete('/:id', auth, requireAdmin, async (req, res) => {
+  try {
+    const deleted = await Product.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Product not found' });
+    res.json({ message: 'Product deleted', id: req.params.id });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting product', error: err.message });
   }
 });
 

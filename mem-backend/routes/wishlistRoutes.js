@@ -11,7 +11,7 @@ const Product = require('../models/Product');
  */
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('wishlist').lean();
+    const user = await User.findById(req.user.userId).populate('wishlist').lean();
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -41,7 +41,7 @@ router.post('/', auth, async (req, res) => {
 
     // Add product if not already present (atomic)
     const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
+      req.user.userId,
       { $addToSet: { wishlist: productId } },
       { new: true }
     )
@@ -70,7 +70,7 @@ router.delete('/:productId', auth, async (req, res) => {
     // Optionally, verify that productId is a valid ObjectId
 
     const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
+      req.user.userId,
       { $pull: { wishlist: productId } },
       { new: true }
     )
@@ -95,7 +95,7 @@ router.delete('/:productId', auth, async (req, res) => {
 router.delete('/', auth, async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
+      req.user.userId,
       { $set: { wishlist: [] } },
       { new: true }
     );

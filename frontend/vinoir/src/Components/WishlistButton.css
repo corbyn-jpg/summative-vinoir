@@ -1,0 +1,76 @@
+/* Luxury Wishlist Button - DIOR Inspired Purple Theme */
+.wishlist-toggle {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid rgba(106, 76, 147, 0.1);
+  color: var(--muted, #bfc6bd);
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 200ms ease, background 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  cursor: pointer;
+}
+
+/* Hover affordance — lift and purple accent background */
+.wishlist-toggle:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, rgba(106, 76, 147, 0.1), rgba(45, 90, 61, 0.1));
+  color: #6a4c93;
+  box-shadow: 0 8px 24px rgba(106, 76, 147, 0.25);
+  border-color: rgba(106, 76, 147, 0.3);
+}
+
+/* Active / selected state - filled purple heart */
+.wishlist-toggle.active,
+.wishlist-toggle[aria-pressed="true"] {
+  background: linear-gradient(135deg, #6a4c93, #2d5a3d);
+  color: white;
+  box-shadow: 0 8px 24px rgba(106, 76, 147, 0.4);
+  border-color: #6a4c93;
+  transform: translateY(-2px);
+}
+
+/* Ensure icons inherit color and size */
+.wishlist-toggle .MuiSvgIcon-root,
+.wishlist-toggle svg {
+  color: inherit !important;
+  width: 22px;
+  height: 22px;
+  transition: all 200ms ease;
+}
+
+/* Active state icon glow */
+.wishlist-toggle.active .MuiSvgIcon-root,
+.wishlist-toggle[aria-pressed="true"] .MuiSvgIcon-root {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+/* Keyboard focus ring with purple accent */
+.wishlist-toggle:focus-visible {
+  outline: 3px solid rgba(106, 76, 147, 0.3);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+/* Pulse animation for wishlist actions */
+.wishlist-toggle:active {
+  transform: scale(0.95) translateY(-1px);
+}
+
+/* Disabled state */
+.wishlist-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.wishlist-toggle:disabled:hover {
+  transform: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: var(--muted, #bfc6bd);
+  box-shadow: none;
+}

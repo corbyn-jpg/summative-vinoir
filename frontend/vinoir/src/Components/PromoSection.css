@@ -1,238 +1,196 @@
-/* Main Container */
+:root{
+  --accent: #0b723d;
+  --accent-600: #16532f;
+  --muted-weak: rgba(255,255,255,0.16);
+  --glass-border: rgba(255,255,255,0.04);
+}
+
+/* PromoSection — cleaned, single source of truth */
 .promo-section {
-  padding: 5rem 2rem;
-  background-color: #f9f5f0;
+  padding: clamp(48px, 8vw, 96px) 12px;
+  max-width: 1400px;
+  margin: 0 auto 32px;
+  box-sizing: border-box;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Playfair Display', serif !important;
 }
 
-/* Title Styling */
 .promo-title {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  position: relative;
-  display: inline-block;
-}
-
-.promo-title::after {
-  content: '';
-  position: absolute;
-  width: 50px;
-  height: 3px;
-  background: #146e3a;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(24px, 3.6vw, 36px);
+  color: #fff;
+  margin: 0 0 12px;
+  letter-spacing: 0.04em;
 }
 
 .promo-subtitle {
-  font-size: 1.1rem;
-  color: #7f8c8d;
-  margin-bottom: 3rem;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 28px;
+  font-size: 1rem;
 }
 
-/* Swiper Container */
-.swiper-container {
-  width: 100%;
-  padding: 2rem 0;
-  position: relative;
-}
-
-.promo-swiper {
-  width: 100%;
-  height: 100%;
-  padding: 2rem 0;
-}
-
-/* Slide Styling */
-.promo-slide {
-  background-position: center;
-  background-size: cover;
-  width: 300px;
-  height: 450px;
-  transition: all 0.3s ease;
-}
-
-.promo-slide:hover {
-  transform: translateY(-10px);
-}
-
-/* Card Styling */
-.promo-card {
-  width: 100%;
-  height: 100%;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.promo-card-link {
+/* Links inherit color and remove default underline */
+.promo-section a,
+.promo-section a:visited {
   text-decoration: none;
   color: inherit;
 }
 
-.promo-image-container {
-  position: relative;
-  width: 100%;
-  height: 65%;
-  overflow: hidden;
-}
-
-.promo-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.promo-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+/* Swiper / card grid */
+.promo-swiper {
   display: flex;
-  align-items: center;
+  gap: 32px;
+  align-items: stretch;
   justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  padding-bottom: 16px;
+  margin: 0 auto;
+  max-width: 1600px;
 }
 
-.promo-card:hover .promo-overlay {
-  opacity: 1;
-}
-
-.promo-card:hover .promo-image {
-  transform: scale(1.05);
-}
-
-.promo-shop-btn {
-  background-color: #146e3a !important;
-  color: white !important;
-  padding: 0.8rem 1.5rem !important;
-  font-weight: 600 !important;
-  border-radius: 25px !important;
-  transition: all 0.3s ease !important;
-}
-
-.promo-shop-btn:hover {
-  background-color: #0d5a2c !important;
-  transform: translateY(-3px);
-}
-
-/* Content Styling */
-.promo-content {
-  padding: 1.5rem;
-  text-align: center;
-  flex: 1;
+.promo-card {
+  width: 400px;
+  height: 580px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  border: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
+  transition: transform 300ms ease;
+}
+.promo-card:hover { transform: translateY(-8px); }
+
+/* Image area */
+.promo-image-container { height: 62%; position: relative; overflow: hidden; }
+.promo-image { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms ease; display: block; }
+.promo-card:hover .promo-image { transform: scale(1.06); }
+
+/* Overlay & CTA — clearer on hover */
+.promo-overlay {
+  position: absolute;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease, backdrop-filter 220ms ease;
+  backdrop-filter: blur(0px);
+}
+.promo-card:hover .promo-overlay {
+  opacity: 1;
+  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.32));
 }
 
-.promo-product-title {
+/* Primary CTA: visible, high-contrast, accessible */
+.promo-shop-btn {
+  pointer-events: auto;
+  background: #fff;
+  color: var(--accent-600);
+  padding: 12px 20px;
+  border-radius: 999px;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
+  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.45);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+}
+.promo-shop-btn:hover,
+.promo-shop-btn:focus {
+  transform: translateY(-4px);
+  background: var(--accent);
+  color: #08150b;
 }
 
-.promo-product-price {
-  font-weight: 600;
-  color: #146e3a;
-  margin-bottom: 0.8rem;
-}
+/* Content area */
+.promo-content { padding: 24px; display:flex; flex-direction:column; gap:12px; flex:1; text-align: center; }
+.promo-product-title { font-family: "Cormorant Garamond", serif; font-size:1.3rem; color:#fff; margin:0; font-weight: 400; }
+.promo-product-price { color: var(--accent); font-weight:700; font-size: 1.1rem; }
+.promo-product-desc { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.4; }
 
-.promo-product-desc {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-  line-height: 1.4;
+/* View all button */
+.promo-view-all-btn {
+  margin-top: 8px;
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease, transform 160ms ease;
 }
+.promo-view-all-btn:hover { background: rgba(111,168,139,0.06); color: #fff; transform: translateY(-3px); }
 
-/* Navigation Buttons */
+/* Elegant luxury arrow buttons */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #146e3a !important;
-  background: rgba(255, 255, 255, 0.8);
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 1.2rem !important;
+  width: 50px !important;
+  height: 50px !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  border-radius: 50% !important;
+  backdrop-filter: blur(10px) !important;
+  color: rgba(255,255,255,0.8) !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+  top: 50% !important;
+  margin-top: -25px !important;
 }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background: white;
-  transform: scale(1.1);
-}
-
-/* Pagination */
-.swiper-pagination-bullet {
-  background: #bdc3c7 !important;
-  opacity: 1 !important;
-  width: 12px !important;
-  height: 12px !important;
-}
-
-.swiper-pagination-bullet-active {
-  background: #146e3a !important;
-  transform: scale(1.2);
-}
-
-/* View All Button */
-.promo-view-all-btn {
-  margin-top: 2rem;
-  padding: 0.8rem 2rem !important;
-  border: 2px solid #146e3a !important;
-  color: #146e3a !important;
-  font-weight: 600 !important;
-  border-radius: 25px !important;
-  transition: all 0.3s ease !important;
-}
-
-.promo-view-all-btn:hover {
-  background-color: #146e3a !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%) !important;
+  border-color: rgba(255,255,255,0.4) !important;
   color: white !important;
-  transform: translateY(-3px);
+  transform: scale(1.1) !important;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .promo-section {
-    padding: 3rem 1rem;
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 14px !important;
+  font-weight: 300 !important;
+}
+
+/* Make arrows slightly smaller on mobile */
+@media (max-width: 880px) {
+  .swiper-button-next, .swiper-button-prev { 
+    width: 42px !important; 
+    height: 42px !important; 
+    margin-top: -21px !important;
   }
-  
-  .promo-title {
-    font-size: 2rem;
-  }
-  
-  .promo-slide {
-    width: 250px;
-    height: 400px;
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 12px !important;
   }
 }
 
-@media (max-width: 480px) {
-  .promo-title {
-    font-size: 1.8rem;
-  }
-  
-  .promo-slide {
-    width: 220px;
-    height: 380px;
-  }
+/* Pagination bullets (underneath circles) */
+.swiper-pagination {
+  margin-top: 12px;
+}
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: var(--muted-weak);
+  opacity: 1;
+  transition: transform 180ms ease, background 180ms ease;
+}
+.swiper-pagination-bullet-active {
+  background: var(--accent) !important;
+  transform: scale(1.25);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 880px) {
+  .promo-swiper { gap: 20px; overflow-x:auto; padding-bottom: 12px; }
+  .promo-card { width: 300px; height: 480px; }
+  .promo-content { padding: 20px; gap: 10px; }
+  .promo-product-title { font-size: 1.15rem; }
+  .promo-product-price { font-size: 1rem; }
+  .promo-product-desc { font-size: 0.95rem; }
 }

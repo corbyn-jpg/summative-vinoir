@@ -1,7 +1,10 @@
 // src/Pages/Login/Login.js
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE } from '../../config/api';
 import { Box, Typography, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import EmojiSelector from "../../Components/EmojiSelector";
 
 const Login = () => {
@@ -10,6 +13,9 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,7 +48,7 @@ const Login = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${API_BASE}/users/login`,
         {
           email: email.trim(),
           password: emojiPassword.join(""),
@@ -54,12 +60,19 @@ const Login = () => {
         }
       );
 
-      localStorage.setItem("token", response.data.token);
-      setMessage("Login successful! Redirecting...");
+      // Store token with correct key and update auth context
+      localStorage.setItem("vinoir_token", response.data.token);
+      
+      // Update auth context with user data
+      if (login) {
+        await login(response.data.token, response.data.user);
+      }
+      
+      setMessage("✨ Login successful! Welcome back to Vinoir!");
 
       setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
+        navigate("/");
+      }, 1500);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       setError(

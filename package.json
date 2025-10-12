@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "framer-motion": "^12.23.6",
     "iswiper": "^1.4.1"
   }
 }

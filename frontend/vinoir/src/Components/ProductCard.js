@@ -4,7 +4,6 @@ import {
   Typography,
   Button,
   IconButton,
-  Badge,
   Tooltip
 } from "@mui/material";
 import { useCart } from "../context/CartContext";
@@ -18,156 +17,121 @@ import {
 } from "@mui/icons-material";
 import "./ProductCard.css";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product = {} }) => {
   const { addToCart } = useCart();
   const {
-    wishlist,
+    wishlist = [],
     addToWishlist,
     removeFromWishlist,
     loading: wishlistLoading
   } = useWishlist();
-  const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const isInWishlist = wishlist.some(item => item._id === product._id);
+  const prodId = product.id || product._id;
+  const isInWishlist = Array.isArray(wishlist) && wishlist.some(item => (item._id || item.id) === prodId);
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart({ ...product, quantity: 1 });
+    await addToCart({ ...product, quantity: 1 });
   };
 
-  const handleWishlistToggle = (e) => {
+  const handleWishlistToggle = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!isLoggedIn) {
-      navigate('/login?redirect=' + window.location.pathname);
+    if (!isAuthenticated) {
+      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname));
       return;
     }
 
-    if (isInWishlist) {
-      removeFromWishlist(product._id);
-    } else {
-      addToWishlist(product);
+    try {
+      if (isInWishlist) {
+        await removeFromWishlist(prodId);
+      } else {
+        await addToWishlist(product);
+      }
+    } catch (error) {
+      console.error('Wishlist toggle failed:', error);
     }
   };
 
+  const formatPrice = (price) => {
+    if (price == null || isNaN(price)) return "R 0.00";
+    return (
+      "R " +
+      Number(price)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    );
+  };
+
   return (
-    <Box 
+    <Box
       component={Link}
-      to={`/fragrance/${product._id}`}
+      to={`/fragrance/${prodId}`}
       sx={{
-        textDecoration: 'none',
-        color: 'inherit',
-        position: 'relative',
-        display: 'block',
-        height: '100%',
-        '&:hover': {
-          transform: 'translateY(-5px)',
-          transition: 'transform 0.3s ease',
-          '& .product-actions': {
-            opacity: 1
-          }
-        }
+        textDecoration: "none",
+        color: "inherit",
+        position: "relative",
+        display: "block",
+        height: "100%",
+        transition: "transform 0.3s ease",
+        "&:hover": { transform: "translateY(-5px)", "& .product-actions": { opacity: 1 } },
+        outline: "none",
+        "&:focus-visible": { boxShadow: "0 0 0 3px var(--gold-accent)", borderRadius: 1 },
+        cursor: 'pointer'
       }}
+      aria-label={`View details of ${product.name}`}
+      tabIndex={0}
     >
-      {/* Wishlist Button */}
-      <Box sx={{
-        position: 'absolute',
-        top: 8,
-        right: 8,
-        zIndex: 1
-      }}>
+      <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 2, pointerEvents: "auto" }}>
         <Tooltip title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}>
           <IconButton
             onClick={handleWishlistToggle}
             disabled={wishlistLoading}
-            sx={{
-              backgroundColor: 'rgba(255,255,255,0.8)',
-              '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.9)'
-              }
+            sx={{ 
+              backgroundColor: "rgba(255,255,255,0.8)", 
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.95)" },
+              color: isInWishlist ? '#6a4c93' : 'inherit'
             }}
-            color={isInWishlist ? "error" : "default"}
+            aria-pressed={isInWishlist}
+            aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >
             {isInWishlist ? <Favorite /> : <FavoriteBorder />}
           </IconButton>
         </Tooltip>
       </Box>
 
-      {/* Product Image */}
-      <Box sx={{ 
-        height: '300px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f8f5f2',
-        borderRadius: '8px',
-        overflow: 'hidden',
-        mb: 2,
-        position: 'relative'
-      }}>
+      <Box sx={{ height: 300, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f8f5f2", borderRadius: 2, overflow: "hidden", mb: 2, position: "relative" }}>
         <img
-          src={product.images?.[0]?.url || '/images/fallback.jpg'}
-          alt={product.name}
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
-            objectFit: 'contain',
-            transition: 'transform 0.3s ease'
-          }}
-          onError={(e) => {
-            e.target.src = '/images/fallback.jpg';
-          }}
+          src={product.images?.[0]?.url || product.image || "/images/dior1.jpg"}
+          alt={product.name || "Product image"}
+          style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", transition: "transform 0.3s ease" }}
+          onError={e => { e.target.onerror = null; e.target.src = "/images/dior1.jpg"; }}
+          loading="lazy"
         />
       </Box>
-      
-      {/* Product Details */}
+
       <Box sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {product.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {product.category}
-        </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
-          R {product.price.toFixed(2)}
-        </Typography>
-        
-        {/* Add to Cart Button */}
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>{product.name}</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{product.category}</Typography>
+        <Typography variant="body1" sx={{ fontWeight: "bold", mb: 2 }}>{formatPrice(product.price)}</Typography>
         <Button
           variant="outlined"
           startIcon={<AddShoppingCart />}
           onClick={handleAddToCart}
           fullWidth
-          sx={{
-            color: '#146e3a',
-            borderColor: '#146e3a',
-            '&:hover': {
-              backgroundColor: '#146e3a',
-              color: 'white'
-            }
-          }}
+          sx={{ color: "#146e3a", borderColor: "#146e3a", "&:hover": { backgroundColor: "#146e3a", color: "white" }, textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.05em", fontFamily: "'Cormorant Garamond', serif", borderRadius: 1, py: 1.25 }}
+          aria-label={`Add ${product.name} to cart`}
         >
           Add to Cart
         </Button>
       </Box>
 
-      {/* Sale Badge (example) */}
       {product.onSale && (
-        <Box sx={{
-          position: 'absolute',
-          top: 8,
-          left: 8,
-          backgroundColor: '#146e3a',
-          color: 'white',
-          px: 1,
-          borderRadius: '4px',
-          zIndex: 1
-        }}>
-          <Typography variant="caption">SALE</Typography>
-        </Box>
+        <Box sx={{ position: "absolute", top: 8, left: 8, backgroundColor: "#146e3a", color: "white", px: 1, borderRadius: 1, zIndex: 2, fontWeight: "bold", fontSize: "0.75rem", textTransform: "uppercase", userSelect: "none" }} aria-label="Sale">SALE</Box>
       )}
     </Box>
   );
