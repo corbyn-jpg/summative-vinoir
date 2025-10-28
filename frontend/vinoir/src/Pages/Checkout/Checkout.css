@@ -84,25 +84,8 @@
   color: #90d4a7 !important;
 }
 
-/* Submit button */
+/* Submit button - uses global .submit-button styling from App.css */
 .submit-button {
-  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1)) !important;
-  color: #e6d478 !important;
-  border: 1px solid rgba(230, 212, 120, 0.3) !important;
-  padding: 1rem !important;
-  font-size: 1rem !important;
-  letter-spacing: 1px !important;
-  text-transform: uppercase !important;
-  transition: all 0.3s ease !important;
-  border-radius: 0 !important;
-  font-family: "Cormorant Garamond", serif !important;
-  font-weight: 600 !important;
+  width: 100% !important;
   margin-top: 2rem !important;
-  width: 100%;
-}
-
-.submit-button:hover {
-  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2)) !important;
-  color: #ffffff !important;
-  transform: translateY(-2px) !important;
 }

@@ -17,21 +17,21 @@
   --accent: #90d4a7;
   --accent-600: #70a085;
   
-  /* Purple accents for elegance - richer and darker */
-  --purple-accent: #6b2c91;
-  --purple-accent-600: #5a1f7a;
-  --purple-accent-700: #4a1865;
-  --purple-accent-800: #3a1350;
-  --purple-light: rgba(107, 44, 145, 0.15);
-  --purple-medium: rgba(107, 44, 145, 0.35);
-  --purple-dark: rgba(107, 44, 145, 0.7);
-  --purple-gradient: linear-gradient(135deg, #6b2c91 0%, #4a1865 100%);
-  --purple-gradient-light: linear-gradient(135deg, rgba(107, 44, 145, 0.25) 0%, rgba(74, 24, 101, 0.15) 100%);
+  /* Purple accents for elegance - richer and more elegant */
+  --purple-accent: #5c1a6b;
+  --purple-accent-600: #4a1456;
+  --purple-accent-700: #381042;
+  --purple-accent-800: #2d0d35;
+  --purple-light: rgba(92, 26, 107, 0.15);
+  --purple-medium: rgba(92, 26, 107, 0.35);
+  --purple-dark: rgba(92, 26, 107, 0.75);
+  --purple-gradient: linear-gradient(135deg, #5c1a6b 0%, #381042 100%);
+  --purple-gradient-light: linear-gradient(135deg, rgba(92, 26, 107, 0.25) 0%, rgba(56, 16, 66, 0.15) 100%);
   
   /* Enhanced purple combinations */
-  --purple-gold-gradient: linear-gradient(135deg, #6b2c91 0%, #e6d478 100%);
-  --purple-green-gradient: linear-gradient(135deg, #6b2c91 0%, #90d4a7 100%);
-  --dark-purple-bg: rgba(74, 24, 101, 0.15);
+  --purple-gold-gradient: linear-gradient(135deg, #5c1a6b 0%, #e6d478 100%);
+  --purple-green-gradient: linear-gradient(135deg, #5c1a6b 0%, #90d4a7 100%);
+  --dark-purple-bg: rgba(56, 16, 66, 0.15);
   
   /* Background colors from About page */
   --raisin-black: #1a1a1a;
@@ -125,7 +125,17 @@ main {
 .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-elev); }
 
 /* Typography helpers */
-.h1, h1, h2, h3, .hero-title {
+.h1, h1, .hero-title {
+  font-family: var(--font-heading);
+  color: #e6d478;
+  letter-spacing: 0.02em;
+}
+h2 {
+  font-family: var(--font-heading);
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+h3 {
   font-family: var(--font-heading);
   color: var(--light-text);
   letter-spacing: 0.02em;
@@ -250,7 +260,7 @@ img { display: block; max-width: 100%; height: auto; }
   font-family: var(--font-heading);
   font-weight:400;
   font-size: clamp(28px, 4.2vw, 54px);
-  color: var(--light-text);
+  color: #e6d478;
 }
 .hero .hero-text p { margin:0 0 16px 0; color: var(--muted-2); max-width: 60ch; }
 
@@ -282,57 +292,79 @@ img { display: block; max-width: 100%; height: auto; }
   * { transition-duration: 0ms !important; animation-duration: 0ms !important; transform: none !important; }
 }
 
-/* Standardized Button Styles */
-.btn-primary {
+/* Standardized Button Styles - Updated for Consistency */
+.btn-primary,
+.submit-button,
+.create-user-button {
   background: var(--purple-gradient) !important;
   color: var(--white-text) !important;
   border: 1px solid var(--purple-medium) !important;
-  border-radius: 10px !important;
-  padding: 12px 20px !important;
-  font-weight: 700 !important;
+  border-radius: 12px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
   text-transform: none !important;
+  font-family: var(--font-heading) !important;
+  letter-spacing: 0.5px !important;
   transition: all 300ms ease !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
 }
 
-.btn-primary:hover {
-  background: var(--purple-gradient) !important;
+.btn-primary:hover,
+.submit-button:hover,
+.create-user-button:hover {
+  background: linear-gradient(135deg, var(--purple-accent) 0%, var(--purple-accent-800) 100%) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 20px var(--purple-medium) !important;
+  box-shadow: 0 8px 24px var(--purple-medium) !important;
+  color: var(--white-text) !important;
 }
 
-.btn-secondary {
+.btn-secondary,
+.btn-gold {
   background: transparent !important;
   color: var(--gold-accent) !important;
   border: 2px solid var(--gold-accent) !important;
-  border-radius: 10px !important;
-  padding: 10px 18px !important;
+  border-radius: 12px !important;
+  padding: 10px 22px !important;
   font-weight: 600 !important;
   text-transform: none !important;
+  font-family: var(--font-heading) !important;
+  letter-spacing: 0.5px !important;
   transition: all 300ms ease !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
 }
 
-.btn-secondary:hover {
-  background: rgba(230, 212, 120, 0.1) !important;
-  color: var(--white-text) !important;
-  transform: translateY(-2px) !important;
-}
-
-.btn-accent {
-  background: linear-gradient(135deg, var(--gold-accent), var(--purple-accent)) !important;
-  color: var(--raisin-black) !important;
-  border: 1px solid var(--gold-accent) !important;
-  border-radius: 10px !important;
-  padding: 12px 20px !important;
-  font-weight: 700 !important;
-  text-transform: none !important;
-  transition: all 300ms ease !important;
-}
-
-.btn-accent:hover {
-  background: var(--purple-gold-gradient) !important;
+.btn-secondary:hover,
+.btn-gold:hover {
+  background: rgba(230, 212, 120, 0.15) !important;
   color: var(--white-text) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 20px rgba(230, 212, 120, 0.3) !important;
+}
+
+.btn-accent,
+.btn-explore {
+  background: linear-gradient(135deg, var(--gold-accent), var(--purple-accent)) !important;
+  color: var(--raisin-black) !important;
+  border: 1px solid var(--gold-accent) !important;
+  border-radius: 12px !important;
+  padding: 12px 24px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  font-family: var(--font-heading) !important;
+  letter-spacing: 0.5px !important;
+  transition: all 300ms ease !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+}
+
+.btn-accent:hover,
+.btn-explore:hover {
+  background: var(--purple-gold-gradient) !important;
+  color: var(--white-text) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(230, 212, 120, 0.4) !important;
 }
 
 /* Purple accent utility classes */

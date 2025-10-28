@@ -165,8 +165,8 @@
   padding: 3rem 5%;
   margin-bottom: 3rem;
   font-family: "Cormorant Garamond", serif;
-  border: 1px solid rgba(107, 44, 145, 0.25);
-  box-shadow: 0 10px 30px rgba(107, 44, 145, 0.15);
+  border: 1px solid rgba(92, 26, 107, 0.25);
+  box-shadow: 0 10px 30px rgba(92, 26, 107, 0.15);
 }
 
 .philosophy-content {
@@ -179,7 +179,7 @@
   margin-bottom: 1rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: #e6d478;
+  color: #ffffff;
   font-family: "Playfair Display", serif;
   text-transform: uppercase;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
