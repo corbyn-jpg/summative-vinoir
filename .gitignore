@@ -1,6 +1,10 @@
 # Dependencies
 **/node_modules/
 **/npm-debug.log*
+**/package-lock.json
+**/yarn.lock
+**/.pnp
+**/.pnp.js
 
 # Environment variables
 **/.env
@@ -10,10 +14,16 @@
 # Build outputs
 **/build/
 **/dist/
+**/.next/
+**/out/
 
 # Logs
 **/*.log
 **/logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/lerna-debug.log*
 
 # IDE files
 **/.vscode/
@@ -28,3 +38,30 @@
 # Runtime data
 **/*.pid
 **/*.seed
+**/*.pid.lock
+
+# Coverage directory used by tools like istanbul
+**/coverage/
+**/.nyc_output
+
+# ESLint cache
+**/.eslintcache
+
+# Optional npm cache directory
+**/.npm
+
+# Optional REPL history
+**/.node_repl_history
+
+# Microbundle cache
+**/.rpt2_cache/
+**/.rts2_cache_cjs/
+**/.rts2_cache_es/
+**/.rts2_cache_umd/
+
+# SASS cache
+**/.sass-cache/
+
+# Temporary folders
+**/tmp/
+**/temp/
