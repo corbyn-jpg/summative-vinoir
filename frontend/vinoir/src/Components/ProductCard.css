@@ -144,15 +144,17 @@
 }
 
 .product-actions .MuiButton-contained {
-  background: linear-gradient(135deg, #e6d478, #d4c76a);
-  color: #2a4936;
-  border-color: rgba(230, 212, 120, 0.3);
+  background: linear-gradient(135deg, #8b5a9e, #6d4682) !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
 }
 
 .product-actions .MuiButton-contained:hover {
-  background: linear-gradient(135deg, #f0e89e, #e6d478);
+  background: linear-gradient(135deg, #a66bb5, #8b5a9e) !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(230, 212, 120, 0.3);
+  box-shadow: 0 8px 20px rgba(139, 90, 158, 0.4);
 }
 
 .product-actions .MuiButton-outlined {

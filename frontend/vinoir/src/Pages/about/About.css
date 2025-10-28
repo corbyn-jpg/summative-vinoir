@@ -169,11 +169,18 @@
 
 /* Philosophy section */
 .philosophy-section {
-  background-color: var(--dark-green);
+  background: linear-gradient(
+    135deg, 
+    var(--dark-green) 0%, 
+    rgba(59, 47, 92, 0.3) 50%, 
+    var(--dark-green) 100%
+  );
   color: #f0f0f0;
-  padding: 2rem 5%;
+  padding: 3rem 5%;
   margin-bottom: 3rem;
   font-family: "Cormorant Garamond", serif;
+  border: 1px solid rgba(139, 90, 158, 0.2);
+  box-shadow: 0 10px 30px rgba(139, 90, 158, 0.1);
 }
 
 .philosophy-content {

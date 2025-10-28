@@ -73,8 +73,12 @@
 .dior-product-item:hover,
 .dior-product-item:focus-within {
   transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-  border-color: rgba(230, 212, 120, 0.4);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(230, 212, 120, 0.4),
+    inset 0 0 20px rgba(139, 90, 158, 0.1);
+  border-color: rgba(230, 212, 120, 0.6);
+  background: rgba(26, 26, 26, 0.98);
   outline: none;
 }
 
@@ -188,9 +192,23 @@
 .shop-page .MuiInputBase-input { caret-color: var(--gold-accent); }
 
 /* Buttons inside controls */
-.shop-page .MuiButton-root { color: var(--gold-accent) !important; border-color: var(--gold-accent) !important; }
+.shop-page .MuiButton-root { 
+  color: #ffffff !important; 
+  border-color: var(--gold-accent) !important; 
+  background: linear-gradient(135deg, #5d3a6f, #4a2c5a) !important;
+}
+
 .shop-page .MuiButton-root.Mui-selected,
-.shop-page .MuiButton-root[aria-pressed="true"] { background: rgba(230, 212, 120, 0.06) !important; }
+.shop-page .MuiButton-root[aria-pressed="true"] { 
+  background: linear-gradient(135deg, #6d4682, #5d3a6f) !important;
+  color: #ffffff !important;
+}
+
+.shop-page .MuiButton-root:hover {
+  background: linear-gradient(135deg, #6d4682, #5d3a6f) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 15px rgba(93, 58, 111, 0.5) !important;
+}
 
 /* small accessibility tweak */
 .shop-page .Mui-focused:focus-visible { outline-offset: 4px; outline: 3px solid rgba(230, 212, 120, 0.12); }

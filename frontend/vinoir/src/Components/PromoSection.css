@@ -8,25 +8,30 @@
 
 /* PromoSection — cleaned, single source of truth */
 .promo-section {
-  padding: clamp(48px, 8vw, 96px) 12px;
+  padding: clamp(60px, 8vw, 120px) clamp(20px, 4vw, 40px);
   max-width: 1400px;
-  margin: 0 auto 32px;
+  margin: 0 auto;
   box-sizing: border-box;
   text-align: center;
 }
 
 .promo-title {
   font-family: "Playfair Display", serif;
-  font-size: clamp(24px, 3.6vw, 36px);
+  font-size: clamp(28px, 4vw, 42px);
   color: #e6d478;
-  margin: 0 0 12px;
+  margin: 0 0 clamp(16px, 2vw, 24px);
   letter-spacing: 0.04em;
+  text-shadow: 2px 2px 4px rgba(139, 90, 158, 0.2);
 }
 
 .promo-subtitle {
-  color: rgba(255,255,255,0.75);
-  margin: 0 0 28px;
-  font-size: 1rem;
+  color: rgba(144, 212, 167, 0.8);
+  margin: 0 0 clamp(32px, 4vw, 48px);
+  font-size: clamp(16px, 1.2vw, 18px);
+  font-weight: 400;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Links inherit color and remove default underline */
@@ -39,11 +44,11 @@
 /* Swiper / card grid */
 .promo-swiper {
   display: flex;
-  gap: 32px;
+  gap: clamp(20px, 3vw, 40px);
   align-items: stretch;
   justify-content: center;
-  padding-bottom: 16px;
-  margin: 0 auto;
+  padding-bottom: clamp(20px, 3vw, 32px);
+  margin: 0 auto clamp(40px, 5vw, 60px);
   max-width: 1600px;
 }
 
@@ -131,10 +136,10 @@
 
 /* Content area */
 .promo-content { 
-  padding: 28px; 
+  padding: clamp(24px, 3vw, 36px); 
   display: flex; 
   flex-direction: column; 
-  gap: 14px; 
+  gap: clamp(12px, 1.5vw, 18px); 
   flex: 1; 
   text-align: center; 
 }
@@ -168,18 +173,28 @@
 
 /* View all button */
 .promo-view-all-btn {
-  margin-top: 8px;
+  margin-top: clamp(20px, 3vw, 32px);
   font-family: "Playfair Display", serif;
-  font-weight: 500;
-  font-size: 1.05rem;
-  padding: 12px 28px;
-  border-radius: 10px;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  background: transparent;
-  transition: background 180ms ease, color 180ms ease, transform 160ms ease;
+  font-weight: 600;
+  font-size: clamp(16px, 1.1vw, 18px);
+  padding: clamp(14px, 1.5vw, 18px) clamp(28px, 3vw, 40px);
+  border-radius: 12px;
+  border: 2px solid #e6d478;
+  color: #2a4936;
+  background: linear-gradient(135deg, #e6d478, #f0e89e);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition: all 300ms ease;
+  box-shadow: 0 4px 15px rgba(230, 212, 120, 0.3);
 }
-.promo-view-all-btn:hover { background: rgba(230, 212, 120, 0.06); color: #fff; transform: translateY(-3px); }
+
+.promo-view-all-btn:hover { 
+  background: linear-gradient(135deg, #f0e89e, #ffffff);
+  color: #2a4936;
+  border-color: #f0e89e;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(230, 212, 120, 0.5);
+}
 
 /* Elegant luxury arrow buttons */
 .swiper-button-next,

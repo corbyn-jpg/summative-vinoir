@@ -89,6 +89,7 @@ const Login = () => {
       sx={{
         maxWidth: "600px",
         margin: "3rem auto",
+        marginTop: "8rem",
         padding: "2rem",
         borderRadius: "12px",
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",

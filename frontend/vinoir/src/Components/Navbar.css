@@ -1,6 +1,6 @@
 .navbar {
-  background-color: #052013;
-  box-shadow: none;
+  background: linear-gradient(135deg, #052013 0%, rgba(59, 47, 92, 0.1) 100%);
+  box-shadow: 0 2px 10px rgba(139, 90, 158, 0.1);
   height: 80px; /* Fixed height */
   transition: all 0.3s ease-in-out;
   z-index: 1200;

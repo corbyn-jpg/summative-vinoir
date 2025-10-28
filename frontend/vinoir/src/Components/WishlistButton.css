@@ -1,10 +1,10 @@
-/* Luxury Wishlist Button - DIOR Inspired Purple Theme */
+/* Luxury Wishlist Button - Enhanced Purple Theme */
 .wishlist-toggle {
   position: relative;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  background: linear-gradient(135deg, rgba(139, 90, 158, 0.1), rgba(26, 26, 26, 0.8));
   border-radius: 12px;
   padding: 8px;
-  border: 1px solid rgba(106, 76, 147, 0.1);
+  border: 1px solid rgba(139, 90, 158, 0.2);
   color: var(--muted, #bfc6bd);
   width: 44px;
   height: 44px;
@@ -13,24 +13,25 @@
   justify-content: center;
   transition: transform 200ms ease, background 200ms ease, color 200ms ease, box-shadow 200ms ease;
   cursor: pointer;
+  backdrop-filter: blur(10px);
 }
 
 /* Hover affordance — lift and purple accent background */
 .wishlist-toggle:hover {
   transform: translateY(-3px);
-  background: linear-gradient(135deg, rgba(106, 76, 147, 0.1), rgba(45, 90, 61, 0.1));
-  color: #6a4c93;
-  box-shadow: 0 8px 24px rgba(106, 76, 147, 0.25);
-  border-color: rgba(106, 76, 147, 0.3);
+  background: linear-gradient(135deg, rgba(139, 90, 158, 0.2), rgba(230, 212, 120, 0.1));
+  color: #8b5a9e;
+  box-shadow: 0 8px 24px rgba(139, 90, 158, 0.3);
+  border-color: rgba(139, 90, 158, 0.4);
 }
 
 /* Active / selected state - filled purple heart */
 .wishlist-toggle.active,
 .wishlist-toggle[aria-pressed="true"] {
-  background: linear-gradient(135deg, #6a4c93, #2d5a3d);
+  background: linear-gradient(135deg, #8b5a9e, #6d4682);
   color: white;
-  box-shadow: 0 8px 24px rgba(106, 76, 147, 0.4);
-  border-color: #6a4c93;
+  box-shadow: 0 8px 24px rgba(139, 90, 158, 0.5);
+  border-color: #8b5a9e;
   transform: translateY(-2px);
 }
 
