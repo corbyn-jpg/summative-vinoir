@@ -1,10 +1,10 @@
 /* Luxury Wishlist Button - Enhanced Purple Theme */
 .wishlist-toggle {
   position: relative;
-  background: linear-gradient(135deg, rgba(139, 90, 158, 0.1), rgba(26, 26, 26, 0.8));
+  background: linear-gradient(135deg, rgba(107, 44, 145, 0.15), rgba(26, 26, 26, 0.8));
   border-radius: 12px;
   padding: 8px;
-  border: 1px solid rgba(139, 90, 158, 0.2);
+  border: 1px solid rgba(107, 44, 145, 0.25);
   color: var(--muted, #bfc6bd);
   width: 44px;
   height: 44px;
@@ -19,19 +19,19 @@
 /* Hover affordance — lift and purple accent background */
 .wishlist-toggle:hover {
   transform: translateY(-3px);
-  background: linear-gradient(135deg, rgba(139, 90, 158, 0.2), rgba(230, 212, 120, 0.1));
-  color: #8b5a9e;
-  box-shadow: 0 8px 24px rgba(139, 90, 158, 0.3);
-  border-color: rgba(139, 90, 158, 0.4);
+  background: linear-gradient(135deg, rgba(107, 44, 145, 0.25), rgba(230, 212, 120, 0.1));
+  color: #6b2c91;
+  box-shadow: 0 8px 24px rgba(107, 44, 145, 0.35);
+  border-color: rgba(107, 44, 145, 0.45);
 }
 
 /* Active / selected state - filled purple heart */
 .wishlist-toggle.active,
 .wishlist-toggle[aria-pressed="true"] {
-  background: linear-gradient(135deg, #8b5a9e, #6d4682);
+  background: linear-gradient(135deg, #6b2c91, #4a1865);
   color: white;
-  box-shadow: 0 8px 24px rgba(139, 90, 158, 0.5);
-  border-color: #8b5a9e;
+  box-shadow: 0 8px 24px rgba(107, 44, 145, 0.6);
+  border-color: #6b2c91;
   transform: translateY(-2px);
 }
 

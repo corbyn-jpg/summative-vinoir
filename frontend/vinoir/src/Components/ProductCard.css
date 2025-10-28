@@ -75,14 +75,14 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: linear-gradient(135deg, #8b5a9e, #6d4682);
+  background: var(--purple-gradient);
   color: #f0f0f0;
   padding: 8px 12px;
   border-radius: 10px;
   font-weight: 800;
   font-size: 0.75rem;
-  box-shadow: 0 8px 20px rgba(139, 90, 158, 0.3);
-  border: 1px solid rgba(139, 90, 158, 0.4);
+  box-shadow: 0 8px 20px rgba(107, 44, 145, 0.4);
+  border: 1px solid rgba(107, 44, 145, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -144,17 +144,17 @@
 }
 
 .product-actions .MuiButton-contained {
-  background: linear-gradient(135deg, #8b5a9e, #6d4682) !important;
+  background: var(--purple-gradient) !important;
   color: #ffffff !important;
   border: 1px solid #ffffff !important;
 }
 
 .product-actions .MuiButton-contained:hover {
-  background: linear-gradient(135deg, #a66bb5, #8b5a9e) !important;
+  background: var(--purple-gradient) !important;
   color: #ffffff !important;
   border-color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(139, 90, 158, 0.4);
+  box-shadow: 0 8px 20px rgba(107, 44, 145, 0.5);
 }
 
 .product-actions .MuiButton-outlined {

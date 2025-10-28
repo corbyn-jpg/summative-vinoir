@@ -1,16 +1,6 @@
 /* Luxury product detail layout — consistent with the app theme */
 /* Matches the existing FragranceDetail.js import (FragnceDetails.css) */
 
-:root{
-  --max-width: 1200px;
-  --radius: 12px;
-  --muted: rgba(255,255,255,0.78);
-  --muted-2: rgba(255,255,255,0.72);
-  --accent: var(--accent, #6fa88b);
-  --accent-600: var(--accent-600, #5b8f71);
-  --glass-border: rgba(255,255,255,0.04);
-}
-
 .product-detail{
   max-width: var(--max-width);
   margin: 28px auto;

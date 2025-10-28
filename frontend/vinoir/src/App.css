@@ -7,6 +7,7 @@
   --panel: #152e22;
   --muted: #f0f0f0;
   --muted-2: rgba(255,255,255,0.95);
+  --muted-weak: rgba(255,255,255,0.16);
 
   /* Gold accent colors from About page */
   --gold-accent: #e6d478;
@@ -16,28 +17,30 @@
   --accent: #90d4a7;
   --accent-600: #70a085;
   
-  /* Purple accents for elegance */
-  --purple-accent: #8b5a9e;
-  --purple-accent-600: #6d4682;
-  --purple-accent-700: #5a3570;
-  --purple-light: rgba(139, 90, 158, 0.15);
-  --purple-medium: rgba(139, 90, 158, 0.3);
-  --purple-dark: rgba(139, 90, 158, 0.6);
-  --purple-gradient: linear-gradient(135deg, #8b5a9e 0%, #6d4682 100%);
-  --purple-gradient-light: linear-gradient(135deg, rgba(139, 90, 158, 0.2) 0%, rgba(109, 70, 130, 0.1) 100%);
+  /* Purple accents for elegance - richer and darker */
+  --purple-accent: #6b2c91;
+  --purple-accent-600: #5a1f7a;
+  --purple-accent-700: #4a1865;
+  --purple-accent-800: #3a1350;
+  --purple-light: rgba(107, 44, 145, 0.15);
+  --purple-medium: rgba(107, 44, 145, 0.35);
+  --purple-dark: rgba(107, 44, 145, 0.7);
+  --purple-gradient: linear-gradient(135deg, #6b2c91 0%, #4a1865 100%);
+  --purple-gradient-light: linear-gradient(135deg, rgba(107, 44, 145, 0.25) 0%, rgba(74, 24, 101, 0.15) 100%);
   
   /* Enhanced purple combinations */
-  --purple-gold-gradient: linear-gradient(135deg, #8b5a9e 0%, #e6d478 100%);
-  --purple-green-gradient: linear-gradient(135deg, #8b5a9e 0%, #90d4a7 100%);
-  --dark-purple-bg: rgba(59, 47, 92, 0.1);
+  --purple-gold-gradient: linear-gradient(135deg, #6b2c91 0%, #e6d478 100%);
+  --purple-green-gradient: linear-gradient(135deg, #6b2c91 0%, #90d4a7 100%);
+  --dark-purple-bg: rgba(74, 24, 101, 0.15);
   
   /* Background colors from About page */
   --raisin-black: #1a1a1a;
   --russian-violet: #3b2f5c;
-  --dark-green: #2a4936;
+  --dark-green: #1e3d2a;
   --silver: #e8e8e8;
   
   /* Text colors with proper contrast */
+  --text-white: #ffffff;
   --white-text: #ffffff;
   --light-text: #f0f0f0;
   --green-bright: #90d4a7;
@@ -292,7 +295,7 @@ img { display: block; max-width: 100%; height: auto; }
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #a66bb5, #8b5a9e) !important;
+  background: var(--purple-gradient) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 20px var(--purple-medium) !important;
 }

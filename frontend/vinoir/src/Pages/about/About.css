@@ -4,15 +4,6 @@
   max-width: 1800px;
 }
 
-/* Define missing color variables locally */
-:root {
-  --gold-accent: #e6c068;
-  --raisin-black: #1a1a1a;
-  --russian-violet: #3b2f5c;
-  --dark-green: #2a4936;
-  --silver: #e8e8e8;
-}
-
 /* Hero section */
 .hero-wrapper {
   overflow: hidden;
@@ -169,18 +160,13 @@
 
 /* Philosophy section */
 .philosophy-section {
-  background: linear-gradient(
-    135deg, 
-    var(--dark-green) 0%, 
-    rgba(59, 47, 92, 0.3) 50%, 
-    var(--dark-green) 100%
-  );
+  background: var(--dark-purple-bg);
   color: #f0f0f0;
   padding: 3rem 5%;
   margin-bottom: 3rem;
   font-family: "Cormorant Garamond", serif;
-  border: 1px solid rgba(139, 90, 158, 0.2);
-  box-shadow: 0 10px 30px rgba(139, 90, 158, 0.1);
+  border: 1px solid rgba(107, 44, 145, 0.25);
+  box-shadow: 0 10px 30px rgba(107, 44, 145, 0.15);
 }
 
 .philosophy-content {

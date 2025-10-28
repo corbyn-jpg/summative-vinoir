@@ -1,15 +1,4 @@
 /* Home Page Elegant Styling */
-:root {
-  --gold-accent: #e6d478;
-  --gold-accent-600: #e6c068;
-  --green-accent: #90d4a7;
-  --purple-accent: #8b5a9e;
-  --purple-accent-600: #6d4682;
-  --purple-light: rgba(139, 90, 158, 0.15);
-  --dark-green: #2a4936;
-  --raisin-black: #1a1a1a;
-  --light-text: #f0f0f0;
-}
 
 /* Main Home Container */
 .home-page {
@@ -33,7 +22,7 @@
   background: linear-gradient(
     135deg,
     rgba(42, 73, 54, 0.4) 0%,
-    rgba(139, 90, 158, 0.3) 50%,
+    rgba(107, 44, 145, 0.35) 50%,
     rgba(59, 47, 92, 0.4) 100%
   );
 }
@@ -72,7 +61,7 @@
   background: linear-gradient(
     135deg,
     rgba(230, 212, 120, 0.2) 0%,
-    rgba(139, 90, 158, 0.2) 100%
+    rgba(107, 44, 145, 0.25) 100%
   ) !important;
   color: var(--light-text) !important;
   border: 1px solid rgba(230, 212, 120, 0.3) !important;
@@ -84,14 +73,14 @@
   background: linear-gradient(
     135deg,
     rgba(230, 212, 120, 0.3) 0%,
-    rgba(139, 90, 158, 0.3) 100%
+    rgba(107, 44, 145, 0.35) 100%
   ) !important;
   transform: translateY(-3px) !important;
-  box-shadow: 0 8px 24px rgba(139, 90, 158, 0.2) !important;
+  box-shadow: 0 8px 24px rgba(107, 44, 145, 0.25) !important;
 }
 
 .hero-secondary-btn {
-  border-color: rgba(139, 90, 158, 0.5) !important;
+  border-color: rgba(107, 44, 145, 0.6) !important;
   color: var(--purple-accent) !important;
   transition: all 0.3s ease !important;
 }
@@ -110,15 +99,15 @@
     rgba(59, 47, 92, 0.8) 100%
   ) !important;
   border-radius: 24px !important;
-  border: 1px solid rgba(139, 90, 158, 0.3) !important;
+  border: 1px solid rgba(107, 44, 145, 0.4) !important;
   backdrop-filter: blur(20px) !important;
-  box-shadow: 0 15px 40px rgba(139, 90, 158, 0.1) !important;
+  box-shadow: 0 15px 40px rgba(107, 44, 145, 0.15) !important;
   transition: all 0.3s ease !important;
 }
 
 .featured-showcase:hover {
   transform: translateY(-8px) !important;
-  box-shadow: 0 25px 60px rgba(139, 90, 158, 0.2) !important;
+  box-shadow: 0 25px 60px rgba(107, 44, 145, 0.25) !important;
   border-color: rgba(230, 212, 120, 0.4) !important;
 }
 
@@ -129,7 +118,7 @@
 }
 
 .featured-image-container {
-  border: 2px solid rgba(139, 90, 158, 0.2) !important;
+  border: 2px solid rgba(107, 44, 145, 0.25) !important;
   border-radius: 16px !important;
   overflow: hidden !important;
   transition: all 0.3s ease !important;
@@ -145,7 +134,7 @@
 }
 
 .featured-product-desc {
-  color: rgba(139, 90, 158, 0.8) !important;
+  color: rgba(107, 44, 145, 0.9) !important;
 }
 
 /* Collection Section */
@@ -153,7 +142,7 @@
   background: linear-gradient(
     180deg,
     rgba(42, 73, 54, 0.1) 0%,
-    rgba(139, 90, 158, 0.05) 50%,
+    rgba(107, 44, 145, 0.08) 50%,
     rgba(26, 26, 26, 0.1) 100%
   ) !important;
 }
@@ -222,8 +211,8 @@
 .purple-gradient-bg {
   background: linear-gradient(
     135deg,
-    rgba(139, 90, 158, 0.1) 0%,
-    rgba(139, 90, 158, 0.05) 100%
+    rgba(107, 44, 145, 0.15) 0%,
+    rgba(107, 44, 145, 0.08) 100%
   ) !important;
 }
 
@@ -272,7 +261,7 @@
 @keyframes shimmerGlow {
   0% { 
     background-position: -200% 0; 
-    box-shadow: 0 0 20px rgba(139, 90, 158, 0.2);
+    box-shadow: 0 0 20px rgba(107, 44, 145, 0.25);
   }
   50% {
     box-shadow: 0 0 30px rgba(230, 212, 120, 0.3);

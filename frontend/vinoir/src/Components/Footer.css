@@ -1,14 +1,3 @@
-:root{
-  /* local fallbacks if main theme vars are missing */
-  --accent-green: #2d5a3d;
-  --accent-green-600: #1e3e29;
-  --gold-accent: #e6d478;
-  --gold-accent-600: #e6c068;
-  --muted: rgba(255,255,255,0.82);
-  --glass-border: rgba(255,255,255,0.03);
-  --max-width: 1280px;
-}
-
 /* Luxury footer */
 /* Uses theme variables from global App.css when available, falls back to local values above */
 .luxury-footer {
