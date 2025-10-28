@@ -4,6 +4,15 @@
   max-width: 1800px;
 }
 
+/* Define missing color variables locally */
+:root {
+  --gold-accent: #e6c068;
+  --raisin-black: #1a1a1a;
+  --russian-violet: #3b2f5c;
+  --dark-green: #2a4936;
+  --silver: #e8e8e8;
+}
+
 /* Hero section */
 .hero-wrapper {
   overflow: hidden;
@@ -27,7 +36,7 @@
   background-size: cover;
   background-position: center;
   padding: 100px;
-  color: #bab9b9;
+  color: #f0f0f0;
   text-align: center;
   font-family: Georgia, "Times New Roman", Times, serif;
   margin-bottom: 50px;
@@ -44,6 +53,37 @@
   font-size: 1.1rem;
 }
 
+/* About Image Section */
+.about-image-section {
+  padding: 50px 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(45, 90, 61, 0.1) 0%, rgba(42, 73, 54, 0.05) 100%);
+  margin-bottom: 50px;
+}
+
+.about-image-container {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.about-section-image {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-section-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
 /* Founders section */
 .founders-section {
   display: flex;
@@ -57,12 +97,13 @@
 
 .section-title {
   margin-bottom: 1rem;
-  color: var(--gold-accent) !important;
+  color: #e6d478 !important;
   font-size: 2.5rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.1em !important;
   font-family: "Playfair Display", serif !important;
   text-transform: uppercase;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .founders-grid {
@@ -105,21 +146,23 @@
 
 .step-number {
   font-size: 3rem;
-  color: #2d5a3d;
+  color: #90d4a7;
   margin-bottom: 1rem;
   font-weight: 300;
   font-family: "Playfair Display", serif;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .process-step h3 {
   margin-bottom: 1rem;
-  color: #2d5a3d;
+  color: #90d4a7;
   font-family: "Playfair Display", serif;
   letter-spacing: 0.05em;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .process-step p {
-  color: var(--silver);
+  color: #f0f0f0;
   line-height: 1.8;
   letter-spacing: 0.05em;
 }
@@ -127,8 +170,8 @@
 /* Philosophy section */
 .philosophy-section {
   background-color: var(--dark-green);
-  color: var(--silver);
-    padding: 2rem 5%;
+  color: #f0f0f0;
+  padding: 2rem 5%;
   margin-bottom: 3rem;
   font-family: "Cormorant Garamond", serif;
 }
@@ -143,9 +186,10 @@
   margin-bottom: 1rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: var(--gold-accent);
+  color: #e6d478;
   font-family: "Playfair Display", serif;
   text-transform: uppercase;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .philosophy-content p {

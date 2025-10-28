@@ -1,8 +1,9 @@
 :root {
-  --green-accent: var(--accent, #146e3a);
-  --dark-green: var(--accent-600, #16532f);
-  --silver: var(--muted, #bfc6bd);
-  --off-white: var(--panel, #f8f5f2);
+  --green-accent: var(--accent, #90d4a7);
+  --dark-green: var(--accent-600, #70a085);
+  --gold-accent: #e6d478;
+  --silver: var(--muted, #f0f0f0);
+  --off-white: #fafafa;
   --font-heading: var(--font-heading, "Playfair Display", serif);
   --font-serif: "Cormorant Garamond", serif;
 }
@@ -21,7 +22,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   font-size: clamp(2.2rem, 2.6vw, 1.9rem);
-  color: var(--green-accent);
+  color: var(--gold-accent);
   text-transform: uppercase;
   margin: 0; /* ensure no top margin */
   text-align: center;
@@ -35,7 +36,7 @@
   display:block;
   width:90px;
   height:2px;
-  background: var(--green-accent);
+  background: var(--gold-accent);
   margin: 1rem auto 0;
 }
 
@@ -75,8 +76,8 @@
 .dior-product-item:hover,
 .dior-product-item:focus-within {
   transform: translateY(-8px);
-  box-shadow: 0 30px 80px rgba(20,110,58,0.08);
-  border-color: var(--green-accent);
+  box-shadow: 0 30px 80px rgba(230, 212, 120, 0.08);
+  border-color: var(--gold-accent);
   outline: none;
 }
 
@@ -109,7 +110,7 @@
   font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: var(--green-accent);
+  color: var(--gold-accent);
   text-align:center;
   padding: 1rem 1rem 0.5rem;
   text-transform: uppercase;
@@ -136,7 +137,7 @@
 .shop-page .MuiTabs-indicator,
 .shop-page .MuiTabs-indicator span,
 .shop-page .MuiTabs-indicatorSpan {
-  background-color: var(--green-accent) !important;
+  background-color: var(--gold-accent) !important;
   height: 3px !important;
   opacity: 1 !important;
   border-radius: 3px;
@@ -151,7 +152,7 @@
   letter-spacing: 0.06em;
 }
 .shop-page .MuiTab-root.Mui-selected {
-  color: var(--green-accent) !important;
+  color: var(--gold-accent) !important;
 }
 
 /* Remove leftover blue pseudo-elements or box-shadows beneath tabs */
@@ -168,19 +169,19 @@
 /* Outlined inputs / selects - use site accent instead of blue */
 .shop-page .MuiInputLabel-root { color: var(--silver); }
 .shop-page .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline { border-color: rgba(0,0,0,0.08); }
-.shop-page .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline { border-color: rgba(20,110,58,0.12); }
+.shop-page .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline { border-color: rgba(230, 212, 120, 0.12); }
 .shop-page .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: var(--green-accent) !important;
-  box-shadow: 0 0 0 6px rgba(20,110,58,0.06);
+  border-color: var(--gold-accent) !important;
+  box-shadow: 0 0 0 6px rgba(230, 212, 120, 0.06);
 }
-.shop-page .MuiInputLabel-root.Mui-focused { color: var(--green-accent) !important; }
-.shop-page .MuiSelect-icon { color: var(--green-accent) !important; }
-.shop-page .MuiInputBase-input { caret-color: var(--green-accent); }
+.shop-page .MuiInputLabel-root.Mui-focused { color: var(--gold-accent) !important; }
+.shop-page .MuiSelect-icon { color: var(--gold-accent) !important; }
+.shop-page .MuiInputBase-input { caret-color: var(--gold-accent); }
 
 /* Buttons inside controls */
-.shop-page .MuiButton-root { color: var(--green-accent) !important; border-color: var(--green-accent) !important; }
+.shop-page .MuiButton-root { color: var(--gold-accent) !important; border-color: var(--gold-accent) !important; }
 .shop-page .MuiButton-root.Mui-selected,
-.shop-page .MuiButton-root[aria-pressed="true"] { background: rgba(20,110,58,0.06) !important; }
+.shop-page .MuiButton-root[aria-pressed="true"] { background: rgba(230, 212, 120, 0.06) !important; }
 
 /* small accessibility tweak */
 .shop-page .Mui-focused:focus-visible { outline-offset: 4px; outline: 3px solid rgba(111,168,139,0.12); }

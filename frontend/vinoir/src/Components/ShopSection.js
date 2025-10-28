@@ -12,16 +12,35 @@ function ShopSection({ products = [] }) {
       px: 2,
       py: 6 
     }}>
-      <Typography variant="h2" sx={{ 
-        textAlign: 'center', 
-        mb: 4,
-        fontSize: '2rem',
-        fontWeight: 300,
-        fontFamily: 'Playfair Display, serif',
-        letterSpacing: '0.1em'
-      }}>
-        OUR SIGNATURE SCENTS
-      </Typography>
+      <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+                  <Typography 
+                    variant="h1" 
+                    sx={{
+                      fontFamily: '"Playfair Display", serif',
+                      color: '#e6d478',
+                      mb: 3,
+                      fontSize: { xs: '3rem', md: '5rem', lg: '6rem' },
+                      fontWeight: 300,
+                      letterSpacing: '0.02em',
+                      lineHeight: 1.1
+                    }}
+                  >
+                    OUR PICKS
+                  </Typography>
+                  <Typography 
+                    variant="h4" 
+                    sx={{
+                      color: '#fff',
+                      fontStyle: 'italic',
+                      fontFamily: '"Cormorant Garamond", serif',
+                      fontSize: { xs: '1.5rem', md: '2rem', lg: '2.5rem' },
+                      maxWidth: '800px',
+                      mx: 'auto'
+                    }}
+                  >
+                    See our team's top picks from the collection, curated for you.
+                  </Typography>
+                </Box>
       
       <Box sx={{ 
         display: 'flex',

@@ -1,10 +1,10 @@
 /* Contact Hero Section */
 .contact-hero {
-  background: linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%);
+  background: linear-gradient(135deg, #2a4936 0%, #3b2f5c 100%);
   padding: 120px 0 80px 0;
   margin-top: 80px;
   text-align: center;
-  color: white;
+  color: #f0f0f0;
 }
 
 .hero-content {
@@ -19,6 +19,7 @@
   font-weight: bold;
   margin-bottom: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  color: #e6d478;
 }
 
 .hero-description {
@@ -40,10 +41,11 @@
 .form-container {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
+  background: rgba(26, 26, 26, 0.95);
   padding: 3rem;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(230, 212, 120, 0.2);
 }
 
 .contact-form {
@@ -65,7 +67,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: #2a4936;
+  color: #e6d478;
   margin-bottom: 0.5rem;
   font-size: 1rem;
 }
@@ -73,20 +75,21 @@
 .form-group input,
 .form-group textarea {
   padding: 15px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid rgba(230, 212, 120, 0.3);
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
-  background-color: #fafafa;
+  background-color: rgba(42, 73, 54, 0.2);
+  color: #f0f0f0;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #2a4936;
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(42, 73, 54, 0.1);
+  border-color: #e6d478;
+  background-color: rgba(42, 73, 54, 0.3);
+  box-shadow: 0 0 0 3px rgba(230, 212, 120, 0.1);
 }
 
 .form-group textarea {
@@ -105,9 +108,9 @@
 }
 
 .submit-button {
-  background-color: #2a4936;
-  color: white;
-  border: none;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1));
+  color: #e6d478;
+  border: 1px solid rgba(230, 212, 120, 0.3);
   padding: 15px 30px;
   font-size: 1.1rem;
   font-weight: 600;
@@ -118,9 +121,10 @@
 }
 
 .submit-button:hover {
-  background-color: #1e3329;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2));
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(42, 73, 54, 0.3);
+  box-shadow: 0 4px 15px rgba(230, 212, 120, 0.3);
 }
 
 .submit-button:disabled {
@@ -133,19 +137,19 @@
 .newsletter-section {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 2px solid #e0e0e0;
+  border-top: 2px solid rgba(230, 212, 120, 0.3);
   text-align: center;
 }
 
 .newsletter-section h3 {
   font-family: "Playfair Display", serif;
   font-size: 1.8rem;
-  color: #2a4936;
+  color: #e6d478;
   margin-bottom: 0.5rem;
 }
 
 .newsletter-section p {
-  color: #666;
+  color: #f0f0f0;
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
@@ -160,22 +164,23 @@
 .newsletter-input {
   flex: 1;
   padding: 12px 15px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid rgba(230, 212, 120, 0.3);
   border-radius: 6px;
   font-size: 1rem;
-  background-color: #fafafa;
+  background-color: rgba(42, 73, 54, 0.2);
+  color: #f0f0f0;
 }
 
 .newsletter-input:focus {
   outline: none;
-  border-color: #2a4936;
-  background-color: white;
+  border-color: #e6d478;
+  background-color: rgba(42, 73, 54, 0.3);
 }
 
 .newsletter-button {
-  background-color: #2a4936;
-  color: white;
-  border: none;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1));
+  color: #e6d478;
+  border: 1px solid rgba(230, 212, 120, 0.3);
   padding: 12px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -185,7 +190,8 @@
 }
 
 .newsletter-button:hover {
-  background-color: #1e3329;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2));
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {

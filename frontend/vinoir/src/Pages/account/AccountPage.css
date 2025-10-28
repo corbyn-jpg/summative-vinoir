@@ -5,9 +5,10 @@
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(145deg, #ffffff, #f3f3f3);
+  background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(42, 73, 54, 0.8));
   font-family: "Playfair Display", serif;
-  color: #333;
+  color: #f0f0f0;
+  border: 1px solid rgba(230, 212, 120, 0.2);
 }
 
 /* Headings */
@@ -17,35 +18,38 @@
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2rem;
-  color: #222;
+  color: #e6d478;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 /* Success Message */
 .account-page-success {
   margin-top: 1.5rem;
   padding: 1rem;
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: rgba(144, 212, 167, 0.2);
+  color: #90d4a7;
   font-weight: bold;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid #90d4a7;
 }
 
 /* Button */
 .account-page-button {
   width: 100%;
   padding: 0.9rem;
-  background: linear-gradient(145deg, #333, #555);
-  color: #fff;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1));
+  color: #e6d478;
   font-weight: bold;
-  border: none;
+  border: 1px solid rgba(230, 212, 120, 0.3);
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
 }
 
 .account-page-button:hover {
-  background: linear-gradient(145deg, #555, #333);
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2));
+  color: #ffffff;
   transform: translateY(-2px);
 }

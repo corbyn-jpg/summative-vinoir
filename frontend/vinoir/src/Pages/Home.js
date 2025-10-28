@@ -27,6 +27,9 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
+// Import Home page styles
+import './Home.css';
+
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,13 +73,11 @@ function Home() {
         justifyContent="center" 
         alignItems="center" 
         minHeight="100vh"
-        sx={{ 
-          background: 'linear-gradient(135deg, #f8f5f2 0%, #ffffff 100%)' 
-        }}
+        className="luxury-loading"
       >
         <Box textAlign="center">
-          <Spa sx={{ fontSize: 60, color: '#6a4c93', mb: 2, animation: 'spin 2s linear infinite' }} />
-          <Typography variant="h6" color="#2d5a3d">
+          <Spa className="loading-icon" sx={{ fontSize: 60, mb: 2, animation: 'spin 2s linear infinite' }} />
+          <Typography variant="h6" className="loading-text">
             Crafting your luxury experience...
           </Typography>
         </Box>
@@ -124,19 +125,22 @@ function Home() {
         <Box sx={{ 
           position: 'absolute', 
           top: '10%', 
-          left: '5%',
-          animation: 'float 6s ease-in-out infinite'
-        }}>
-          <Spa sx={{ fontSize: 100, color: 'rgba(255,255,255,0.1)' }} />
+          left: '5%'
+        }}
+        className="floating-element"
+        >
+          <Spa sx={{ fontSize: 100, color: 'rgba(139, 90, 158, 0.2)' }} />
         </Box>
         <Box sx={{ 
           position: 'absolute', 
           bottom: '20%', 
-          right: '10%',
-          animation: 'float 8s ease-in-out infinite reverse'
-        }}>
-          <LocalFlorist sx={{ fontSize: 120, color: 'rgba(255,255,255,0.1)' }} />
+          right: '10%'
+        }}
+        className="floating-element-reverse"
+        >
+          <LocalFlorist sx={{ fontSize: 120, color: 'rgba(230, 212, 120, 0.2)' }} />
         </Box>
+
 
         <Container maxWidth="xl">
           <Grid container alignItems="center" spacing={6}>
@@ -240,13 +244,15 @@ function Home() {
                 {/* Floating Product Showcase */}
                 <Box
                   sx={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+                    background: 'linear-gradient(135deg, rgba(139, 90, 158, 0.15) 0%, rgba(230, 212, 120, 0.08) 50%, rgba(144, 212, 167, 0.1) 100%)',
                     borderRadius: '24px',
                     p: 4,
                     backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    animation: 'float 4s ease-in-out infinite'
+                    border: '1px solid rgba(139, 90, 158, 0.3)',
+                    animation: 'elegantFloat 6s ease-in-out infinite',
+                    boxShadow: '0 20px 40px rgba(59, 47, 92, 0.2)'
                   }}
+                  className="floating-showcase"
                 >
                   <Typography 
                     variant="h6" 
@@ -307,7 +313,7 @@ function Home() {
               variant="h1" 
               sx={{
                 fontFamily: '"Playfair Display", serif',
-                color: '#2d5a3d',
+                color: '#e6d478',
                 mb: 3,
                 fontSize: { xs: '3rem', md: '5rem', lg: '6rem' },
                 fontWeight: 300,
@@ -320,7 +326,7 @@ function Home() {
             <Typography 
               variant="h4" 
               sx={{
-                color: '#666',
+                color: '#fff',
                 fontStyle: 'italic',
                 fontFamily: '"Cormorant Garamond", serif',
                 fontSize: { xs: '1.5rem', md: '2rem', lg: '2.5rem' },

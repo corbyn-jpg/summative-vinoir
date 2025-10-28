@@ -7,7 +7,7 @@
 .checkout-title {
   font-size: 2.5rem !important;
   margin-bottom: 3rem !important;
-  color: #2d5a3d !important;
+  color: #e6d478 !important;
   font-family: "Playfair Display", serif !important;
   position: relative;
 }
@@ -17,7 +17,7 @@
   display: block;
   width: 100px;
   height: 2px;
-  background: #2d5a3d;
+  background: #e6d478;
   margin: 1rem 0;
 }
 
@@ -48,18 +48,18 @@
 }
 
 .Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: #2d5a3d !important;
+  border-color: #e6d478 !important;
 }
 
 .MuiCheckbox-root {
-  color: #2d5a3d !important;
+  color: #e6d478 !important;
 }
 
 /* Order summary */
 .order-summary {
   background: rgba(39, 39, 39, 0.7) !important;
   padding: 2rem !important;
-  border: 1px solid #2d5a3d !important;
+  border: 1px solid #e6d478 !important;
   position: sticky;
   top: 120px;
 }
@@ -67,7 +67,7 @@
 .order-summary-title {
   font-size: 1.8rem !important;
   margin-bottom: 1.5rem !important;
-  color: #2d5a3d !important;
+  color: #e6d478 !important;
   font-family: "Playfair Display", serif !important;
 }
 
@@ -81,18 +81,14 @@
   font-size: 1.5rem !important;
   font-weight: 600 !important;
   margin-top: 1.5rem !important;
-  color: #2d5a3d !important;
+  color: #90d4a7 !important;
 }
 
 /* Submit button */
 .submit-button {
-  background: linear-gradient(
-    to right,
-    var(--dark-green),
-    var(--brunswick-green)
-  ) !important;
-  color: white !important;
-  border: none !important;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1)) !important;
+  color: #e6d478 !important;
+  border: 1px solid rgba(230, 212, 120, 0.3) !important;
   padding: 1rem !important;
   font-size: 1rem !important;
   letter-spacing: 1px !important;
@@ -106,10 +102,7 @@
 }
 
 .submit-button:hover {
-  background: linear-gradient(
-    to right,
-    var(--brunswick-green),
-    var(--dark-green)
-  ) !important;
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2)) !important;
+  color: #ffffff !important;
   transform: translateY(-2px) !important;
 }

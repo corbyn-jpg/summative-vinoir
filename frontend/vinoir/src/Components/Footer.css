@@ -2,6 +2,8 @@
   /* local fallbacks if main theme vars are missing */
   --accent-green: #2d5a3d;
   --accent-green-600: #1e3e29;
+  --gold-accent: #e6d478;
+  --gold-accent-600: #e6c068;
   --muted: rgba(255,255,255,0.82);
   --glass-border: rgba(255,255,255,0.03);
   --max-width: 1280px;
@@ -38,7 +40,7 @@
 
 /* Headings and links */
 .footer-heading {
-  color: #fff;
+  color: #e6d478;
   margin-bottom: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -56,7 +58,7 @@
 }
 .footer-link:hover,
 .footer-link:focus {
-  color: #2d5a3d;
+  color: #90d4a7;
   transform: translateX(4px);
 }
 
@@ -116,7 +118,7 @@
 /* Accessibility: focus styles */
 .footer-link:focus-visible,
 .footer-social a:focus-visible {
-  outline: 3px solid rgba(201,166,107,0.14);
+  outline: 3px solid rgba(230, 212, 120, 0.14);
   outline-offset: 4px;
   border-radius: 8px;
 }

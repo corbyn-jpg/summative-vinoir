@@ -3,7 +3,7 @@
   transition: transform 0.4s ease-in-out !important;
   background-color: transparent !important;
   padding: 0.5rem !important;
-  color: var(--gold-accent) !important;
+  color: #e6d478 !important;
   cursor: pointer;
   user-select: none;
 }
@@ -14,7 +14,7 @@
 
 /* Close Icon */
 .close-icon {
-  color: var(--gold-accent) !important;
+  color: #e6d478 !important;
   pointer-events: auto !important;
   transition: transform 0.3s ease, color 0.3s ease !important;
   cursor: pointer;
@@ -40,13 +40,13 @@
 /* Luxury Menu Container */
 .luxury-menu {
   width: 280px;
-  background: var(--raisin-black) !important;
+  background: #1a1a1a !important;
   height: 100%;
   font-family: "Cormorant Garamond", serif !important;
   display: flex;
   flex-direction: column;
-  color: var(--silver) !important;
-  border-right: 1px solid #2d5a3d !important;
+  color: #f0f0f0 !important;
+  border-right: 1px solid #90d4a7 !important;
   box-sizing: border-box;
   padding-top: 1rem;
 }
@@ -56,7 +56,7 @@
   font-size: 1.3rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.5px !important;
-  color: var(--silver) !important;
+  color: #f0f0f0 !important;
   transition: color 0.4s ease, letter-spacing 0.4s ease !important;
   font-family: "Cormorant Garamond", serif !important;
   text-transform: capitalize;
@@ -85,13 +85,13 @@
 }
 
 .luxury-menu .MuiListItem-root:hover .MuiListItemText-primary {
-  color: var(--gold-accent) !important;
+  color: #e6d478 !important;
   letter-spacing: 0.1em !important;
 }
 
 /* List item icons (if you add icons later) */
 .luxury-menu .MuiListItemIcon-root {
-  color: var(--gold-accent) !important;
+  color: #e6d478 !important;
   min-width: 40px !important;
   margin-right: 0.5rem;
   transition: color 0.4s ease !important;

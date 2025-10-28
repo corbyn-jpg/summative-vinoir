@@ -120,8 +120,9 @@ const AboutPage = () => {
             sx={{
               textAlign: 'center',
               fontFamily: '"Playfair Display", serif',
-              color: '#2d5a3d',
-              mb: 6
+              color: '#90d4a7',
+              mb: 6,
+              textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
             }}
           >
             Our Achievements
@@ -150,7 +151,7 @@ const AboutPage = () => {
                         width: 60,
                         height: 60,
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #2d5a3d 0%, #6a4c93 100%)',
+                        background: 'linear-gradient(135deg, #90d4a7 0%, #a683e3 100%)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
