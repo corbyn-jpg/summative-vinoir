@@ -1,0 +1,6 @@
+node_modules
+mem-backend
+frontend/vinoir/node_modules
+frontend/vinoir/build
+presentation
+.github

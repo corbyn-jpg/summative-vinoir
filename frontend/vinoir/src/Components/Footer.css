@@ -1,0 +1,113 @@
+/* Luxury footer */
+/* Uses theme variables from global App.css when available, falls back to local values above */
+.luxury-footer {
+  background: linear-gradient(180deg, rgba(6,12,8,0.88), rgba(6,12,8,0.64));
+  color: var(--muted);
+  padding: clamp(28px, 4vw, 56px) 16px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  border-top: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Content wrapper */
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+/* Columns */
+.footer-section {
+  min-width: 180px;
+  flex: 1 1 220px;
+}
+
+/* Headings and links */
+.footer-heading {
+  color: #e6d478;
+  margin-bottom: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.92rem;
+}
+
+.footer-link {
+  display: block;
+  color: rgba(255,255,255,0.76);
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 180ms ease, transform 180ms ease;
+  font-size: 0.95rem;
+}
+.footer-link:hover,
+.footer-link:focus {
+  color: #90d4a7;
+  transform: translateX(4px);
+}
+
+/* Small descriptive text */
+.footer-text {
+  color: rgba(255,255,255,0.68);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Bottom bar */
+.footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 18px;
+  margin-top: 20px;
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.92rem;
+}
+
+/* Social icons row (if used) */
+.footer-social {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.86);
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+.footer-social a:hover {
+  transform: translateY(-4px);
+  color: #08150b;
+  background: linear-gradient(180deg, var(--accent-gold), var(--accent-gold-600));
+  box-shadow: 0 10px 30px rgba(184,142,83,0.10);
+}
+
+/* Responsive layout */
+@media (max-width: 880px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-section { width: 100%; max-width: 480px; }
+  .footer-social { justify-content: center; margin-top: 8px; }
+}
+
+/* Accessibility: focus styles */
+.footer-link:focus-visible,
+.footer-social a:focus-visible {
+  outline: 3px solid rgba(230, 212, 120, 0.14);
+  outline-offset: 4px;
+  border-radius: 8px;
+}

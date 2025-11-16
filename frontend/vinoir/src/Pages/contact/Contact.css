@@ -1,0 +1,229 @@
+/* Contact Hero Section */
+.contact-hero {
+  background: linear-gradient(135deg, #2a4936 0%, #3b2f5c 100%);
+  padding: 120px 0 80px 0;
+  margin-top: 80px;
+  text-align: center;
+  color: #f0f0f0;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  color: #e6d478;
+}
+
+.hero-description {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-page {
+  min-height: 100vh;
+  background-color: #2a4936;
+  padding: 2rem 0;
+  margin-top: 0;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(26, 26, 26, 0.95);
+  padding: 3rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(230, 212, 120, 0.2);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #e6d478;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 15px;
+  border: 2px solid rgba(230, 212, 120, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: rgba(42, 73, 54, 0.2);
+  color: #f0f0f0;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #e6d478;
+  background-color: rgba(42, 73, 54, 0.3);
+  box-shadow: 0 0 0 3px rgba(230, 212, 120, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.error-message {
+  color: #d32f2f;
+  text-align: center;
+  font-weight: 500;
+  padding: 10px;
+  background-color: #ffebee;
+  border-radius: 5px;
+  border: 1px solid #ffcdd2;
+}
+
+.submit-button {
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1));
+  color: #e6d478;
+  border: 1px solid rgba(230, 212, 120, 0.3);
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2));
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(230, 212, 120, 0.3);
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.newsletter-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(230, 212, 120, 0.3);
+  text-align: center;
+}
+
+.newsletter-section h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: #e6d478;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-section p {
+  color: #f0f0f0;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.newsletter-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid rgba(230, 212, 120, 0.3);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: rgba(42, 73, 54, 0.2);
+  color: #f0f0f0;
+}
+
+.newsletter-input:focus {
+  outline: none;
+  border-color: #e6d478;
+  background-color: rgba(42, 73, 54, 0.3);
+}
+
+.newsletter-button {
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.2), rgba(230, 192, 104, 0.1));
+  color: #e6d478;
+  border: 1px solid rgba(230, 212, 120, 0.3);
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletter-button:hover {
+  background: linear-gradient(145deg, rgba(230, 212, 120, 0.3), rgba(230, 192, 104, 0.2));
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: 100px 0 60px 0;
+    margin-top: 60px;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-description {
+    font-size: 1.1rem;
+  }
+  
+  .contact-page {
+    padding: 1rem;
+  }
+  
+  .form-container {
+    padding: 2rem;
+    margin: 0 1rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

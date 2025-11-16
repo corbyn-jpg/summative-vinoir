@@ -1,0 +1,1 @@
+// Backup of original Navbar.js before major modifications
